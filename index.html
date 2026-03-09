@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<link rel="icon" href="logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Guga Energy | Eletricista em Brasília</title>
+
+<meta name="description" content="Eletricista profissional em Brasília. Instalações elétricas, manutenção, quadros elétricos, refletores LED e segurança eletrônica.">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Montserrat',sans-serif;
+}
+
+body{
+background:#0b0b0b;
+color:white;
+overflow-x:hidden;
+}
+
+/* HEADER */
+
+header{
+background:black;
+padding:15px 25px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:3px solid #FFD000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.logo h2{
+font-size:34px;
+letter-spacing:2px;
+}
+
+.logo img{
+height:120px;
+}
+
+.logo span{
+color:#FFD000;
+}
+
+nav{
+display:flex;
+gap:25px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:600;
+}
+
+nav a:hover{
+color:#FFD000;
+}
+
+/* MENU BOTÃO */
+
+.menu-btn{
+display:none;
+font-size:28px;
+padding:8px 12px;
+cursor:pointer;
+border-radius:6px;
+transition:background 0.2s ease, transform 0.15s ease;
+}
+
+.menu-btn:hover{
+background:rgba(255,208,0,0.12);
+}
+
+.menu-btn:active{
+background:rgba(255,208,0,0.25);
+transform:scale(0.95);
+}
+
+.menu-btn{
+-webkit-tap-highlight-color: rgba(255,208,0,0.3);
+}
+
+/* MENU MOBILE */
+
+.mobile-menu{
+position:fixed;
+top:0;
+left:-260px;
+width:260px;
+height:100%;
+background:#111;
+padding:25px;
+transition:left 0.35s ease;
+z-index:2000;
+}
+
+.mobile-menu a{
+display:block;
+color:white;
+padding:18px 10px;
+text-decoration:none;
+font-size:18px;
+border-bottom:1px solid rgba(255,255,255,0.15);
+transition:all 0.25s ease;
+}
+
+.mobile-menu a:hover{
+color:#FFD000;
+padding-left:10px;
+}
+
+.mobile-menu a:active{
+color:#FFD000;
+background:rgba(255,208,0,0.1);
+padding-left:10px;
+}
+
+.close-menu{
+font-size:26px;
+cursor:pointer;
+margin-bottom:25px;
+}
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+opacity:0;
+pointer-events:none;
+transition:0.3s;
+}
+
+.overlay.active{
+opacity:1;
+pointer-events:all;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:80px 20px;
+background:linear-gradient(#000,#151515);
+}
+
+.hero h1{
+font-size:36px;
+color:#FFD000;
+margin-bottom:10px;
+}
+
+/* SEÇÕES */
+
+.section{
+padding:45px 20px;
+max-width:1200px;
+margin:auto;
+}
+
+.section h2{
+text-align:center;
+margin-bottom:35px;
+color:#FFD000;
+}
+
+/* SERVIÇOS */
+
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.service{
+background:#151515;
+padding:25px;
+border-left:4px solid #FFD000;
+}
+
+/* CARROSSEL */
+
+.carousel{
+position:relative;
+width:100%;
+height:300px;
+display:flex;
+justify-content:center;
+align-items:center;
+perspective:1200px;
+}
+
+.carousel-track{
+position:relative;
+width:100%;
+height:100%;
+transform-style:preserve-3d;
+}
+
+.slide{
+position:absolute;
+width:340px;
+height:220px;
+left:50%;
+top:55%;
+overflow:hidden;
+transition:transform 0.8s ease;
+}
+
+.slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:12px;
+}
+
+/* AVALIAÇÕES */
+
+.reviews{
+display:grid;
+gap:20px;
+}
+
+.review{
+background:#151515;
+padding:20px;
+border-left:4px solid #FFD000;
+}
+
+/* FORM */
+
+form{
+background:#161616;
+padding:25px;
+max-width:600px;
+margin:auto;
+border-radius:6px;
+}
+
+textarea,input{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+border:none;
+border-radius:4px;
+}
+
+button{
+background:#FFD000;
+border:none;
+padding:12px;
+width:100%;
+font-weight:700;
+cursor:pointer;
+}
+
+/* MAPA */
+
+iframe{
+width:100%;
+height:300px;
+border:none;
+}
+
+/* FOOTER */
+
+footer{
+background:black;
+text-align:center;
+padding:40px 20px;
+border-top:3px solid #FFD000;
+}
+
+footer strong{
+font-size:22px;
+display:block;
+margin-bottom:8px;
+}
+
+footer a{
+color:#FFD000;
+text-decoration:none;
+}
+
+.footer-copy{
+margin-top:15px;
+font-size:14px;
+color:#999;
+}
+
+/* WHATSAPP */
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+padding:14px 18px;
+border-radius:30px;
+color:white;
+text-decoration:none;
+font-weight:600;
+}
+
+/* BOTÕES SMARTWATCH */
+
+.watch-actions{
+display:none;
+max-width:500px;
+margin:20px auto;
+padding:0 20px;
+}
+
+.watch-btn{
+display:block;
+background:#FFD000;
+color:black;
+text-align:center;
+padding:14px;
+margin:10px 0;
+border-radius:6px;
+font-weight:700;
+text-decoration:none;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:900px){
+
+nav{display:none;}
+
+.menu-btn{display:block;}
+
+.logo img{height:80px;}
+
+.logo h2{font-size:22px;}
+
+.hero h1{font-size:28px;}
+
+.slide{
+width:220px;
+height:150px;
+}
+
+}
+
+/* SMARTWATCH */
+
+@media(max-width:300px){
+
+header{
+flex-direction:column;
+text-align:center;
+}
+
+.mobile-menu{
+width:100%;
+left:-100%;
+}
+
+.mobile-menu a{
+font-size:16px;
+padding:14px 0;
+text-align:center;
+}
+
+.logo{
+flex-direction:column;
+}
+
+.logo img{
+height:45px;
+}
+
+.logo h2{
+font-size:16px;
+}
+
+.hero{
+padding:30px 10px;
+}
+
+.hero h1{
+font-size:15px;
+}
+
+.hero p{
+display:none;
+}
+
+.carousel,
+iframe,
+.reviews{
+display:none;
+}
+
+.services{
+grid-template-columns:1fr;
+}
+
+.service{
+font-size:12px;
+padding:10px;
+}
+
+.watch-actions{
+display:block;
+}
+
+.whatsapp{
+width:90%;
+right:5%;
+text-align:center;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay" id="overlay" onclick="fecharMenu()"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+<div class="close-menu" onclick="fecharMenu()">✕</div>
+
+<a href="#">Início</a>
+<a href="#servicos">Serviços</a>
+<a href="#galeria">Galeria</a>
+<a href="#avaliacoes">Avaliações</a>
+<a href="#agendamento">Agendamento</a>
+
+</div>
+
+<header>
+
+<div class="logo">
+<img src="logo.png">
+<h2>GUGA <span>ENERGY</span></h2>
+</div>
+
+<nav>
+<a href="#">Início</a>
+<a href="#servicos">Serviços</a>
+<a href="#galeria">Galeria</a>
+<a href="#avaliacoes">Avaliações</a>
+<a href="#agendamento">Agendamento</a>
+</nav>
+
+<div class="menu-btn" onclick="abrirMenu()">☰</div>
+
+</header>
+
+<section class="hero">
+
+<h1>Eletricista Profissional em Brasília</h1>
+<p>Instalações elétricas, manutenção e segurança eletrônica.</p>
+
+</section>
+
+<div class="watch-actions">
+
+<a href="tel:+5561992176914" class="watch-btn">📞 Ligar Agora</a>
+<a href="https://wa.me/5561992176914" class="watch-btn">💬 WhatsApp</a>
+<a href="#agendamento" class="watch-btn">📅 Agendar Visita</a>
+
+</div>
+
+<section class="section" id="servicos">
+
+<h2>Serviços que Executamos</h2>
+
+<div class="services">
+
+<div class="service">Instalações elétricas residenciais</div>
+<div class="service">Manutenção elétrica predial</div>
+<div class="service">Quadros elétricos</div>
+<div class="service">Refletores LED</div>
+<div class="service">Perfil LED</div>
+<div class="service">CFTV e segurança eletrônica</div>
+<div class="service">Infraestrutura elétrica</div>
+
+</div>
+
+</section>
+
+<section class="section" id="galeria">
+
+<h2>Serviços Executados</h2>
+
+<div class="carousel">
+
+<div class="carousel-track" id="track">
+
+<div class="slide"><img src="servico1.jpg"></div>
+<div class="slide"><img src="servico2.jpg"></div>
+<div class="slide"><img src="servico3.jpg"></div>
+<div class="slide"><img src="servico4.jpg"></div>
+<div class="slide"><img src="servico5.jpg"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="avaliacoes">
+
+<h2>Avaliações de Clientes</h2>
+
+<div class="reviews">
+
+<div class="review">⭐⭐⭐⭐⭐ Serviço excelente e profissional.</div>
+<div class="review">⭐⭐⭐⭐⭐ Atendimento rápido e seguro.</div>
+<div class="review">⭐⭐⭐⭐⭐ Profissionais pontuais e caprichosos.</div>
+
+</div>
+
+</section>
+
+<section class="section" id="agendamento">
+
+<h2>Agendar Visita Técnica</h2>
+
+<form onsubmit="agendar(event)">
+
+<input type="text" id="nome" placeholder="Nome" required>
+<input type="tel" id="telefone" placeholder="Telefone" required>
+
+<input type="text" id="dataHora" placeholder="Escolher data e horário da visita" required>
+
+<p style="font-size:13px;color:#aaa;margin-top:-5px;margin-bottom:10px;">
+Atendimento de segunda a sábado das 08:00 às 18:00.
+</p>
+
+<textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
+
+<button type="submit">Solicitar Visita Técnica</button>
+
+</form>
+
+</section>
+
+<section class="section">
+
+<h2>Área de Atendimento</h2>
+
+<iframe src="https://maps.google.com/maps?q=Brasilia&t=&z=11&ie=UTF8&iwloc=&output=embed"></iframe>
+
+</section>
+
+<footer>
+
+<strong>Guga Energy – Soluções Elétricas</strong>
+
+<p>CNPJ: 57.042.294/0001-31</p>
+
+<p>Brasília – DF</p>
+
+<p>
+WhatsApp:
+<a href="https://wa.me/5561992176914">(61) 99217-6914</a>
+</p>
+
+<p class="footer-copy">
+© 2026 Guga Energy
+</p>
+
+</footer>
+
+<a class="whatsapp" href="https://wa.me/5561992176914?text=Olá,%20vim%20pelo%20site%20da%20Guga%20Energy" target="_blank">
+WhatsApp
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+<script>
+
+function abrirMenu(){
+
+document.getElementById("mobileMenu").style.left="0"
+
+document.getElementById("overlay").classList.add("active")
+
+}
+
+function fecharMenu(){
+
+if(window.innerWidth <= 300){
+document.getElementById("mobileMenu").style.left="-100%"
+}else{
+document.getElementById("mobileMenu").style.left="-260px"
+}
+
+document.getElementById("overlay").classList.remove("active")
+
+}
+
+const slides=document.querySelectorAll(".slide")
+let angle=0
+const step=72
+const radius=380
+
+function update(){
+slides.forEach((slide,i)=>{
+let rotate=i*step+angle
+slide.style.transform=`translate(-50%, -50%) rotateY(${rotate}deg) translateZ(${radius}px)`
+})
+}
+
+function rotate(){
+angle-=step
+update()
+}
+
+setInterval(rotate,3500)
+update()
+
+function agendar(event){
+
+event.preventDefault()
+
+let nome=document.getElementById("nome").value
+let telefone=document.getElementById("telefone").value
+let dataHora=document.getElementById("dataHora").value
+let problema=document.getElementById("problema").value
+
+let mensagem=`
+Solicitação de Visita Técnica - Guga Energy
+
+Nome: ${nome}
+Telefone: ${telefone}
+Data e Hora: ${dataHora}
+
+Problema:
+${problema}
+`
+
+let url="https://wa.me/5561992176914?text="+encodeURIComponent(mensagem)
+
+window.open(url)
+
+}
+
+flatpickr("#dataHora",{
+
+locale:"pt",
+enableTime:true,
+dateFormat:"d/m/Y H:i",
+time_24hr:true,
+minuteIncrement:30,
+minDate:"today",
+minTime:"08:00",
+maxTime:"18:00",
+
+disable:[
+function(date){
+return date.getDay()===0
+}
+]
+
+})
+
+</script>
+
+</body>
+</html> pq eu não consigo por ele online no github
