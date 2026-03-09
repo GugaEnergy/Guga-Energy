@@ -19,6 +19,10 @@
 
 <style>
 
+html{
+scroll-behavior:smooth;
+}
+
 *{
 margin:0;
 padding:0;
@@ -41,6 +45,10 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 border-bottom:3px solid #FFD000;
+
+position:sticky;
+top:0;
+z-index:3000;
 }
 
 .logo{
@@ -449,11 +457,11 @@ text-align:center;
 <div class="mobile-menu" id="mobileMenu">
 <div class="close-menu" onclick="fecharMenu()">✕</div>
 
-<a href="#">Início</a>
-<a href="#servicos">Serviços</a>
-<a href="#galeria">Galeria</a>
-<a href="#avaliacoes">Avaliações</a>
-<a href="#agendamento">Agendamento</a>
+<a href="#" onclick="fecharMenu()">Início</a>
+<a href="#servicos" onclick="fecharMenu()">Serviços</a>
+<a href="#galeria" onclick="fecharMenu()">Galeria</a>
+<a href="#avaliacoes" onclick="fecharMenu()">Avaliações</a>
+<a href="#agendamento" onclick="fecharMenu()">Agendamento</a>
 
 </div>
 
