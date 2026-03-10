@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Painel Guga Energy</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0b0b0b;
+color:white;
+}
+
+/* LOGIN */
+
+.login{
+display:flex;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+.login input{
+padding:12px;
+margin:8px;
+width:250px;
+border:none;
+border-radius:4px;
+}
+
+.login button{
+padding:12px 20px;
+background:#FFD000;
+border:none;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* PAINEL */
+
+.painel{
+display:none;
+padding:20px;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:2px solid #FFD000;
+padding-bottom:10px;
+margin-bottom:20px;
+}
+
+header h1{
+color:#FFD000;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:#151515;
+padding:20px;
+border-left:4px solid #FFD000;
+}
+
+/* TABELA */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #333;
+}
+
+th{
+background:#111;
+color:#FFD000;
+}
+
+.btn{
+background:#FFD000;
+padding:6px 10px;
+color:black;
+text-decoration:none;
+border-radius:4px;
+font-weight:bold;
+margin-right:6px;
+cursor:pointer;
+}
+
+/* MAPA */
+
+#mapa{
+height:400px;
+margin-top:20px;
+border-radius:6px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+header{
+flex-direction:column;
+align-items:flex-start;
+}
+
+table{
+font-size:12px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div class="login" id="login">
+
+<h2>Login Guga Energy</h2>
+
+<input id="usuario" placeholder="Usuário">
+<input id="senha" type="password" placeholder="Senha">
+
+<button onclick="entrar()">Entrar</button>
+
+</div>
+
+<!-- PAINEL -->
+
+<div class="painel" id="painel">
+
+<header>
+
+<h1>Guga Energy – Painel</h1>
+
+<div>
+Atendimentos: <strong id="total">0</strong>
+</div>
+
+</header>
+
+<div class="cards">
+
+<div class="card">
+<strong>Empresa</strong><br>
+Guga Energy<br>
+Soluções Elétricas
+</div>
+
+<div class="card">
+<strong>Região</strong><br>
+Distrito Federal
+</div>
+
+<div class="card">
+<strong>Normas</strong><br>
+NBR 5410<br>
+NR10
+</div>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Cliente</th>
+<th>Telefone</th>
+<th>Região</th>
+<th>Data</th>
+<th>Problema</th>
+<th>Ações</th>
+</tr>
+</thead>
+
+<tbody id="tabela"></tbody>
+
+</table>
+
+<div id="mapa"></div>
+
+</div>
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
+authDomain: "guga-energy-agendamentos-778f1.firebaseapp.com",
+projectId: "guga-energy-agendamentos-778f1",
+storageBucket: "guga-energy-agendamentos-778f1.firebasestorage.app",
+messagingSenderId: "384265745174",
+appId: "1:384265745174:web:a9284d4036f4a787bf5637"
+
+}
+
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+
+window.db = db
+window.getDocs = getDocs
+window.collection = collection
+
+</script>
+
+<!-- GOOGLE MAPS -->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDSyS6fBp_JgsBdtCTaDuBZzkfyzivFnQ"></script>
+
+<script>
+
+/* COORDENADAS */
+
+const coordenadas = {
+
+"Planaltina-DF": {lat:-15.617,lng:-47.648},
+"Asa Norte": {lat:-15.760,lng:-47.880},
+"Plano Piloto": {lat:-15.794,lng:-47.882},
+"Cruzeiro": {lat:-15.785,lng:-47.940},
+"Taguatinga": {lat:-15.835,lng:-48.056},
+"Águas Claras": {lat:-15.832,lng:-48.040},
+"Ceilândia": {lat:-15.821,lng:-48.107},
+"Samambaia": {lat:-15.865,lng:-48.070},
+"Gama": {lat:-16.022,lng:-48.061}
+
+}
+
+/* LOGIN */
+
+function entrar(){
+
+let user=document.getElementById("usuario").value
+let pass=document.getElementById("senha").value
+
+if(user==="guga" && pass==="Energy2024"){
+
+document.getElementById("login").style.display="none"
+document.getElementById("painel").style.display="block"
+
+carregar()
+
+}else{
+
+alert("Login inválido")
+
+}
+
+}
+
+/* CARREGAR DADOS */
+
+async function carregar(){
+
+let tabela=document.getElementById("tabela")
+tabela.innerHTML=""
+
+let snapshot=await getDocs(collection(db,"agendamentos"))
+
+let total=0
+
+let mapa = new google.maps.Map(document.getElementById("mapa"),{
+zoom:10,
+center:{lat:-15.78,lng:-47.93}
+})
+
+snapshot.forEach(doc=>{
+
+let dados=doc.data()
+
+total++
+
+let linha=`
+
+<tr>
+
+<td>${dados.nome}</td>
+<td>${dados.telefone}</td>
+<td>${dados.regiao}</td>
+<td>${dados.dataHora}</td>
+<td>${dados.problema}</td>
+
+<td>
+
+<a class="btn"
+href="https://wa.me/55${dados.telefone}"
+target="_blank">
+WhatsApp
+</a>
+
+<button class="btn"
+onclick="abrirAgenda('${dados.nome}','${dados.telefone}','${dados.regiao}','${dados.problema}','${dados.dataHora}')">
+Agenda
+</button>
+
+</td>
+
+</tr>
+
+`
+
+tabela.innerHTML+=linha
+
+let pos = coordenadas[dados.regiao] || {lat:-15.78,lng:-47.93}
+
+new google.maps.Marker({
+
+position:pos,
+map:mapa,
+title:dados.regiao
+
+})
+
+})
+
+document.getElementById("total").innerHTML=total
+
+}
+
+/* GOOGLE AGENDA */
+
+function abrirAgenda(nome, telefone, regiao, problema, dataHora){
+
+let partes = dataHora.split(" às ")
+
+let data = partes[0]
+let hora = partes[1]
+
+let inicio = data + "T" + hora
+
+let fim = new Date(inicio)
+fim.setHours(fim.getHours()+1)
+
+let inicioFormatado = inicio.replace(/[-:]/g,"")
+let fimFormatado = fim.toISOString().replace(/[-:]/g,"").split(".")[0]
+
+let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
++ "&text=Visita Técnica - " + nome
++ "&details=Cliente: " + nome + " | Telefone: " + telefone + " | Problema: " + problema
++ "&location=" + regiao
++ "&dates=" + inicioFormatado + "/" + fimFormatado
+
+window.open(agenda)
+
+}
+
+</script>
+
+</body>
+</html>
