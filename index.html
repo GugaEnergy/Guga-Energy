@@ -1007,25 +1007,33 @@ let cidade = document.getElementById("cidade")
 let regiao = cidade.options[cidade.selectedIndex].text
 
 let mensagem=`
-⚡ *GUGA ENERGY - SOLICITAÇÃO DE VISITA TÉCNICA*
+⚡ *GUGA ENERGY – SOLUÇÕES ELÉTRICAS*
 
-👤 *Nome:* ${nome}
+━━━━━━━━━━━━━━━━━━
+
+📋 *SOLICITAÇÃO DE VISITA TÉCNICA*
+
+👤 *Cliente:* ${nome}
 📞 *Telefone:* ${telefone}
 
 📍 *Região:* ${regiao}
-📅 *Data e horário:* ${dataHora}
+📅 *Data e horário solicitado:* ${dataHora}
 
-🔧 *Problema informado:*
+━━━━━━━━━━━━━━━━━━
+
+🔧 *Descrição do problema:*
 ${problema}
 
-<input type="text" id="urgencia" placeholder="Urgência do atendimento (normal / urgente)">
-⚠️ *Urgência:* ${urgencia}
+━━━━━━━━━━━━━━━━━━
 
-———————————————
-*Guga Energy – Soluções Elétricas*
-Atendimento em Brasília
+⚠️ *Observação:*
+A visita técnica é abatida caso o serviço seja aprovado.
+
+🚗 Atendimento em todo DF
+⚡ Instalações conforme (NBR 5410)
+
+📨 *Solicitação enviada pelo site da Guga Energy*
 `
-
 let url="https://wa.me/5561992176914?text="+encodeURIComponent(mensagem)
 
 window.open(url)
