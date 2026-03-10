@@ -127,24 +127,26 @@ color:#FFD000;
 
 .menu-btn{
 display:none;
-width:30px;
-height:22px;
+width:45px;
+height:45px;
 position:relative;
 cursor:pointer;
+padding:10px;
+touch-action:manipulation;
 }
 
 .menu-btn span{
 position:absolute;
-width:100%;
+width:26px;
 height:3px;
 background:#FFD000;
-left:0;
+left:9px;
 transition:.3s;
 }
 
-.menu-btn span:nth-child(1){top:0;}
-.menu-btn span:nth-child(2){top:9px;}
-.menu-btn span:nth-child(3){top:18px;}
+.menu-btn span:nth-child(1){top:12px;}
+.menu-btn span:nth-child(2){top:20px;}
+.menu-btn span:nth-child(3){top:28px;}
 
 .menu-btn.active span:nth-child(1){
 transform:rotate(45deg);
@@ -478,7 +480,9 @@ z-index:9999;
 .mobile-bar a{
 flex:1;
 text-align:center;
-padding:14px 5px;
+padding:18px 5px;
+font-size:15px;
+touch-action:manipulation;
 text-decoration:none;
 font-weight:600;
 color:white;
@@ -727,6 +731,10 @@ font-size:18px;
 
 }
 
+a,button{
+-webkit-tap-highlight-color: transparent;
+}
+
 </style>
 
 </head>
@@ -741,7 +749,9 @@ font-size:18px;
 📞 Ligar
 </a>
 
-<a href="https://wa.me/5561992176914">
+<a href="https://api.whatsapp.com/send?phone=5561992176914" target="_blank">
+💬 WhatsApp
+</a>
 💬 WhatsApp
 </a>
 
@@ -943,7 +953,7 @@ Valor da visita é abatido caso o serviço seja aprovado.
 
 <p>
 WhatsApp:
-<a href="https://wa.me/5561992176914">(61) 99217-6914</a>
+<a href="https://api.whatsapp.com/send?phone=5561992176914" target="_blank">(61) 99217-6914</a>
 </p>
 
 <p class="footer-copy">
@@ -957,9 +967,11 @@ admin
 
 </footer>
 
-<a class="whatsapp" href="https://wa.me/5561992176914?text=Olá,%20vim%20pelo%20site%20da%20Guga%20Energy" target="_blank">WhatsApp</a>
+<a href="https://api.whatsapp.com/send?phone=5561992176914" target="_blank">
+💬 WhatsApp
+</a>
 
-<a class="ligar" href="tel:+5561992176914">📞 Ligar Agora</a>
+<a class="ligar" href="tel:61992176914">📞 Ligar Agora</a>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
@@ -991,25 +1003,26 @@ window.collection = collection
 
 function toggleMenu(){
 
-let menu=document.getElementById("mobileMenu")
-let btn=document.getElementById("menuBtn")
-let overlay=document.getElementById("overlay")
+const menu = document.getElementById("mobileMenu")
+const btn = document.getElementById("menuBtn")
+const overlay = document.getElementById("overlay")
 
-if(menu.style.left==="0px"){
+if(menu.style.left === "0px" || menu.style.left === "0%"){
 
-menu.style.left="-100%"
+menu.style.left = "-100%"
 overlay.classList.remove("active")
 btn.classList.remove("active")
 
 }else{
 
-menu.style.left="0"
+menu.style.left = "0%"
 overlay.classList.add("active")
 btn.classList.add("active")
 
 }
 
 }
+
 
 const slides=document.querySelectorAll(".slide")
 let angle=0
@@ -1124,7 +1137,7 @@ ${problema}
 📨 Solicitação enviada pelo site
 `
 
-let url="https://wa.me/5561992176914?text="+encodeURIComponent(mensagem)
+let url="https://api.whatsapp.com/send?phone=5561992176914&text="+encodeURIComponent(mensagem)
 
 window.open(url)
 
