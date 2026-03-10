@@ -13,34 +13,173 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0b0b0b;
+background:#020202;
 color:white;
 }
 
-/* LOGIN */
+/* TOPO */
+
+.topo{
+position:sticky;
+top:0;
+z-index:999;
+background:#000;
+border-bottom:3px solid #FFD000;
+display:none;
+align-items:center;
+justify-content:space-between;
+padding:12px 20px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:18px;
+font-weight:bold;
+color:#FFD000;
+}
+
+.logo img{
+height:40px;
+width:auto;
+display:block;
+}
+
+.logo span{
+color:white;
+}
+
+.menu{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+font-size:14px;
+transition:0.2s;
+}
+
+.menu a:hover{
+color:#FFD000;
+}
+
+.status{
+background:#FFD000;
+color:black;
+padding:6px 12px;
+border-radius:4px;
+font-weight:bold;
+}
+
+.btn{
+background:#FFD000;
+padding:6px 10px;
+color:black;
+border:none;
+border-radius:4px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* LOGIN AREA */
 
 .login{
 display:flex;
-height:100vh;
-justify-content:center;
 align-items:center;
+justify-content:center;
+height:100vh;
+width:100%;
+background:#020202;
+}
+
+/* CAIXA LOGIN */
+
+.login-box{
+background:rgba(8,8,8,0.92);
+padding:45px;
+border-radius:12px;
+width:340px;
+max-width:90%;
+text-align:center;
+border:1px solid #1a1a1a;
+border-top:3px solid #FFD000;
+box-shadow:0 10px 40px rgba(0,0,0,0.9);
+backdrop-filter:blur(6px);
+-webkit-backdrop-filter:blur(6px);
+animation:fade 0.6s ease;
+}
+
+/* LOGO */
+
+.login-box .logo img{
+width:90px;
+height:auto;
+}
+
+/* SUBTITULO */
+
+.login-sub{
+font-size:13px;
+color:#9c9c9c;
+margin-bottom:20px;
+}
+
+/* INPUTS */
+
+.login-box .logo{
+display:flex;
 flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:10px;
+margin-bottom:20px;
 }
 
-.login input{
+.login-box input{
+width:100%;
 padding:12px;
-margin:8px;
-width:250px;
-border:none;
-border-radius:4px;
+margin:8px 0;
+border-radius:5px;
+border:1px solid #1f1f1f;
+background:#111;
+color:white;
+outline:none;
+font-size:14px;
+transition:0.2s;
 }
 
-.login button{
-padding:12px 20px;
+.login-box input:focus{
+border:1px solid #FFD000;
+background:#151515;
+}
+
+/* BOTÕES */
+
+.login-box button{
+width:100%;
+padding:12px;
+margin-top:10px;
 background:#FFD000;
 border:none;
+border-radius:5px;
 font-weight:bold;
 cursor:pointer;
+transition:0.2s;
+}
+
+.login-box button:hover{
+background:#ffea00;
+transform:translateY(-2px);
+box-shadow:0 4px 10px rgba(255,208,0,0.2);
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 /* PAINEL */
@@ -49,21 +188,6 @@ cursor:pointer;
 display:none;
 padding:20px;
 }
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-border-bottom:2px solid #FFD000;
-padding-bottom:10px;
-margin-bottom:20px;
-}
-
-header h1{
-color:#FFD000;
-}
-
-/* CARDS */
 
 .cards{
 display:grid;
@@ -95,17 +219,6 @@ background:#111;
 color:#FFD000;
 }
 
-.btn{
-background:#FFD000;
-padding:6px 10px;
-color:black;
-text-decoration:none;
-border-radius:4px;
-font-weight:bold;
-margin-right:6px;
-cursor:pointer;
-}
-
 /* MAPA */
 
 #mapa{
@@ -114,19 +227,56 @@ margin-top:20px;
 border-radius:6px;
 }
 
-/* RESPONSIVO */
+@media(max-width:900px){
 
-@media(max-width:700px){
-
-header{
-flex-direction:column;
-align-items:flex-start;
+.cards{
+grid-template-columns:1fr;
 }
 
 table{
-font-size:12px;
+display:block;
+overflow-x:auto;
+white-space:nowrap;
 }
 
+}
+
+.usuario-box{
+position:relative;
+width:90%;
+left: 1%;
+}
+
+.senha-box{
+position:relative;
+width:90%;
+left: 1%;
+}
+
+.senha-box input{
+width:100%;
+padding:12px;
+margin:center 0;
+border-radius:5px;
+border:1px solid #1f1f1f;
+background:#111;
+color:white;
+outline:none;
+}
+
+.ver-senha{
+position:absolute;
+right:12px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+color:#FFD000;
+font-size:18px;
+}
+
+.login-box{
+width:340px;
+max-width:92%;
 }
 
 </style>
@@ -135,32 +285,64 @@ font-size:12px;
 
 <body>
 
+<!-- TOPO -->
+
+<div class="topo" id="topo">
+
+<div class="logo">
+<img src="logo.png" alt="Guga Energy">
+<span>Guga Energy</span>
+</div>
+
+<div class="menu">
+
+<a href="#">Painel</a>
+<a href="index.html">Site</a>
+
+<div class="status">
+Atendimentos: <span id="total">0</span>
+</div>
+
+<button onclick="sair()" class="btn">Sair</button>
+
+</div>
+
+</div>
+
 <!-- LOGIN -->
 
 <div class="login" id="login">
 
-<h2>Login Guga Energy</h2>
+<div class="login-box">
 
+<div class="logo">
+<img src="logo.png" alt="Guga Energy">
+<span>Guga Energy</span>
+</div>
+
+<div class="login-sub">
+Painel de Atendimentos
+</div>
+
+<div class="usuario-box">
 <input id="usuario" placeholder="Usuário">
+</div>
+<div class="senha-box">
 <input id="senha" type="password" placeholder="Senha">
+<span onclick="verSenha()" class="ver-senha">👁</span>
+</div>
 
-<button onclick="entrar()">Entrar</button>
+<button onclick="carregar()" class="btn">Atualizar</button>
+<button onclick="entrar()" class="btn">Entrar no Painel</button>
+<button onclick="voltarSite()" class="btn">Sair</button>
+
+</div>
 
 </div>
 
 <!-- PAINEL -->
 
 <div class="painel" id="painel">
-
-<header>
-
-<h1>Guga Energy – Painel</h1>
-
-<div>
-Atendimentos: <strong id="total">0</strong>
-</div>
-
-</header>
 
 <div class="cards">
 
@@ -237,8 +419,6 @@ window.collection = collection
 
 <script>
 
-/* COORDENADAS */
-
 const coordenadas = {
 
 "Planaltina-DF": {lat:-15.617,lng:-47.648},
@@ -257,32 +437,46 @@ const coordenadas = {
 
 function entrar(){
 
-let user=document.getElementById("usuario").value
-let pass=document.getElementById("senha").value
+let user=document.getElementById("usuario").value.trim().toLowerCase()
+let pass=document.getElementById("senha").value.trim()
 
 if(user==="guga" && pass==="Energy2024"){
 
 document.getElementById("login").style.display="none"
 document.getElementById("painel").style.display="block"
+document.getElementById("topo").style.display="flex"
 
 carregar()
 
 }else{
 
-alert("Login inválido")
+alert("Usuário ou senha incorretos.")
 
 }
+
+}
+
+/* SAIR */
+
+function sair(){
+
+document.getElementById("painel").style.display="none"
+document.getElementById("topo").style.display="none"
+document.getElementById("login").style.display="flex"
+
+document.getElementById("usuario").value=""
+document.getElementById("senha").value=""
 
 }
 
 /* CARREGAR DADOS */
 
+document.getElementById("mapa").innerHTML=""
+
 async function carregar(){
 
 let tabela=document.getElementById("tabela")
 tabela.innerHTML=""
-
-let snapshot=await getDocs(collection(db,"agendamentos"))
 
 let total=0
 
@@ -291,11 +485,17 @@ zoom:10,
 center:{lat:-15.78,lng:-47.93}
 })
 
+try{
+
+let snapshot=await getDocs(collection(db,"agendamentos"))
+
 snapshot.forEach(doc=>{
 
 let dados=doc.data()
 
 total++
+
+let telefoneLimpo = dados.telefone.replace(/\D/g,'')
 
 let linha=`
 
@@ -310,13 +510,13 @@ let linha=`
 <td>
 
 <a class="btn"
-href="https://wa.me/55${dados.telefone}"
+href="https://wa.me/55${telefoneLimpo}"
 target="_blank">
 WhatsApp
 </a>
 
 <button class="btn"
-onclick="abrirAgenda('${dados.nome}','${dados.telefone}','${dados.regiao}','${dados.problema}','${dados.dataHora}')">
+onclick="abrirAgenda('${dados.nome}','${telefoneLimpo}','${dados.regiao}','${dados.problema}','${dados.dataHora}')">
 Agenda
 </button>
 
@@ -331,16 +531,21 @@ tabela.innerHTML+=linha
 let pos = coordenadas[dados.regiao] || {lat:-15.78,lng:-47.93}
 
 new google.maps.Marker({
-
 position:pos,
 map:mapa,
 title:dados.regiao
-
 })
 
 })
 
-document.getElementById("total").innerHTML=total
+document.getElementById("total").innerText = total
+
+}catch(e){
+
+alert("Erro ao carregar agendamentos.")
+console.log(e)
+
+}
 
 }
 
@@ -368,6 +573,24 @@ let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
 + "&dates=" + inicioFormatado + "/" + fimFormatado
 
 window.open(agenda)
+
+}
+
+function voltarSite(){
+
+window.location.href="index.html"
+
+}
+
+function verSenha(){
+
+let campo = document.getElementById("senha")
+
+if(campo.type === "password"){
+campo.type = "text"
+}else{
+campo.type = "password"
+}
 
 }
 
