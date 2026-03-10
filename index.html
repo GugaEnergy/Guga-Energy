@@ -27,8 +27,7 @@
 <meta property="og:type" content="website">
 
 <script type="application/ld+json">
-
-    {
+{
  "@context": "https://schema.org",
  "@type": "Electrician",
  "name": "Guga Energy",
@@ -43,7 +42,6 @@
  "areaServed": "Brasília",
  "priceRange": "$$"
 }
-
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -68,8 +66,8 @@ font-family:'Montserrat',sans-serif;
 body{
 background:#0b0b0b;
 color:white;
-overflow-x:hidden;
 max-width:100vw;
+padding-top:110px;
 }
 
 /* HEADER */
@@ -81,9 +79,11 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 border-bottom:3px solid #FFD000;
-position:sticky;
+position:fixed;
 top:0;
-z-index:3000;
+left:0;
+width:100%;
+z-index:9999;
 }
 
 .logo{
@@ -120,7 +120,7 @@ nav a:hover{
 color:#FFD000;
 }
 
-/* MENU HAMBURGUER */
+/* MENU */
 
 .menu-btn{
 display:none;
@@ -143,22 +143,6 @@ transition:.3s;
 .menu-btn span:nth-child(2){top:9px;}
 .menu-btn span:nth-child(3){top:18px;}
 
-.menu-btn.active span:nth-child(1){
-transform:rotate(45deg);
-top:9px;
-}
-
-.menu-btn.active span:nth-child(2){
-opacity:0;
-}
-
-.menu-btn.active span:nth-child(3){
-transform:rotate(-45deg);
-top:9px;
-}
-
-/* MENU MOBILE */
-
 .mobile-menu{
 position:fixed;
 top:0;
@@ -179,19 +163,6 @@ text-decoration:none;
 font-size:20px;
 border-bottom:1px solid rgba(255,255,255,0.15);
 }
-
-.mobile-menu a:hover{
-color:#FFD000;
-padding-left:10px;
-}
-
-.close-menu{
-font-size:28px;
-margin-bottom:25px;
-cursor:pointer;
-}
-
-/* OVERLAY */
 
 .overlay{
 position:fixed;
@@ -215,14 +186,25 @@ pointer-events:auto;
 
 .hero{
 text-align:center;
-padding:80px 20px;
-background:linear-gradient(#000,#151515);
+padding:70px 20px 120px 20px;
+
+background-image:
+linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)),
+url("equipe.jpg");
+
+background-size:cover;
+background-position:center 7%;
+background-repeat:no-repeat;
 }
 
 .hero h1{
 font-size:36px;
 color:#FFD000;
 margin-bottom:10px;
+}
+
+.hero p{
+font-size:18px;
 }
 
 /* SEÇÕES */
@@ -257,9 +239,6 @@ border-left:4px solid #FFD000;
 
 .carousel{
 overflow:hidden;
-}
-
-.carousel{
 position:relative;
 width:100%;
 height:300px;
@@ -395,56 +374,16 @@ text-decoration:none;
 font-weight:600;
 }
 
-/* RESPONSIVO */
-
-@media(max-width:900px){
-
-nav{display:none;}
-
-.menu-btn{display:block;}
-
-.logo img{height:80px;}
-
-.logo h2{font-size:22px;}
-
-.slide{
-width:220px;
-height:150px;
-}
-
-}
-
-/* AJUSTE BOTÕES MOBILE */
-
-@media(max-width:600px){
-
-.whatsapp{
-bottom:20px;
-right:15px;
-padding:12px 14px;
-font-size:14px;
-}
-
-.ligar{
-bottom:70px;
-right:15px;
-padding:12px 14px;
-font-size:14px;
-}
-
-footer{
-padding-bottom:120px;
-}
-
-}
-
-/* BARRA MOBILE PROFISSIONAL */
+/* MOBILE BAR */
 
 .mobile-bar{
 display:none;
 }
 
 @media(max-width:700px){
+
+nav{display:none;}
+.menu-btn{display:block;}
 
 .mobile-bar{
 display:flex;
@@ -460,11 +399,10 @@ z-index:9999;
 .mobile-bar a{
 flex:1;
 text-align:center;
-padding:14px 5px;
+padding:14px;
 text-decoration:none;
 font-weight:600;
 color:white;
-font-size:14px;
 }
 
 .mobile-bar a:nth-child(1){
@@ -480,66 +418,36 @@ background:#25D366;
 background:#333;
 }
 
+.whatsapp{display:none;}
+.ligar{display:none;}
+
 body{
 padding-bottom:60px;
 }
 
 }
 
-/* ESCONDER BOTÕES ANTIGOS NO CELULAR */
-
-@media(max-width:700px){
-
-.whatsapp{
-display:none;
-}
-
-.ligar{
-display:none;
-}
-
-}
-
-img{
-max-width:100%;
-height:auto;
-display:block;
-}
-
 </style>
 
 </head>
 
-<div class="mobile-bar">
-
-<a href="tel:+5561992176914">
-📞 Ligar
-</a>
-
-<a href="https://wa.me/5561992176914">
-💬 WhatsApp
-</a>
-
-<a href="#agendamento">
-📅 Agendar
-</a>
-
-</div>
-
 <body>
+
+<div class="mobile-bar">
+<a href="tel:+5561992176914">📞 Ligar</a>
+<a href="https://wa.me/5561992176914">💬 WhatsApp</a>
+<a href="#agendamento">📅 Agendar</a>
+</div>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <div class="mobile-menu" id="mobileMenu">
-
 <div class="close-menu" onclick="toggleMenu()">✕</div>
-
-<a href="#" onclick="toggleMenu()">Início</a>
-<a href="#servicos" onclick="toggleMenu()">Serviços</a>
-<a href="#galeria" onclick="toggleMenu()">Galeria</a>
-<a href="#avaliacoes" onclick="toggleMenu()">Avaliações</a>
-<a href="#agendamento" onclick="toggleMenu()">Agendamento</a>
-
+<a href="#">Início</a>
+<a href="#servicos">Serviços</a>
+<a href="#galeria">Galeria</a>
+<a href="#avaliacoes">Avaliações</a>
+<a href="#agendamento">Agendamento</a>
 </div>
 
 <header>
@@ -568,11 +476,9 @@ display:block;
 <section class="hero">
 <h1>Eletricista Profissional em Brasília</h1>
 <p>Instalações elétricas, manutenção e segurança eletrônica.</p>
-
 <p style="margin-top:10px;font-size:14px;color:#ccc;">
 Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasília
 </p>
-
 </section>
 
 <section class="section" id="servicos">
@@ -802,4 +708,3 @@ behavior: "smooth"
 
 </body>
 </html>
-```
