@@ -36,11 +36,11 @@
  "telephone": "+5561992176914",
  "address": {
    "@type": "PostalAddress",
-   "addressLocality": "Distrito Federal",
+   "addressLocality": "Brasília",
    "addressRegion": "DF",
    "addressCountry": "BR"
  },
- "areaServed": "Distrito Federal",
+ "areaServed": "Brasília",
  "priceRange": "$$"
 }
 
@@ -808,7 +808,6 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 <div class="service">Manutenção elétrica predial</div>
 <div class="service">Quadros elétricos</div>
 <div class="service">Refletores LED</div>
-<div class="service">Automatização residencial</div>
 <div class="service">Perfil LED</div>
 <div class="service">CFTV e segurança eletrônica</div>
 <div class="service">Infraestrutura elétrica</div>
@@ -900,16 +899,7 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 <option value="180">Gama</option>
 
 </select>
-
-<input type="text" id="data" placeholder="Escolha a data da visita" required>
-
-<select id="hora" required>
-<option value="">Escolha um horário</option>
-<option value="08:00">08:00</option>
-<option value="10:00">10:00</option>
-<option value="14:00">14:00</option>
-<option value="16:00">16:00</option>
-</select>
+<input type="text" id="dataHora" placeholder="Escolha data e horário da visita" readonly required>
 
 <textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
 
@@ -927,11 +917,13 @@ Valor da visita é abatido caso o serviço seja aprovado.
 
 <section class="section">
 
-<h2>Área de Atendimento no Distrito Federal</h2>
+<h2>Área de Atendimento</h2>
 
-<iframe src="https://maps.google.com/maps?q=Distrito%20Federal&t=&z=10&ie=UTF8&iwloc=&output=embed"></iframe>
+<iframe src="https://maps.google.com/maps?q=Brasilia&t=&z=11&ie=UTF8&iwloc=&output=embed"></iframe>
 
 </section>
+
+<button type="button" onclick="usarLocalizacao()">Usar minha localização</button>
 
 <footer>
 
@@ -950,11 +942,6 @@ WhatsApp:
 © 2024 – 2026 Guga Energy. Todos os direitos reservados.
 </p>
 
-<a href="painel-guga-gestao.html" 
-style="font-size:10px;color:#444;text-decoration:none;">
-admin
-</a>
-
 </footer>
 
 <a class="whatsapp" href="https://wa.me/5561992176914?text=Olá,%20vim%20pelo%20site%20da%20Guga%20Energy" target="_blank">WhatsApp</a>
@@ -963,29 +950,6 @@ admin
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-
-const firebaseConfig = {
-apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
-authDomain: "guga-energy-agendamentos-778f1.firebaseapp.com",
-projectId: "guga-energy-agendamentos-778f1",
-storageBucket: "guga-energy-agendamentos-778f1.firebasestorage.app",
-messagingSenderId: "384265745174",
-appId: "1:384265745174:web:a9284d4036f4a787bf5637"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.db = db
-window.addDoc = addDoc
-window.collection = collection
-
-</script>
 
 <script>
 
@@ -1031,70 +995,16 @@ update()
 setInterval(rotate,3500)
 update()
 
-function identificarZona(regiao){
-
-if(["Planaltina-DF","Arapoanga","Sobradinho II"].includes(regiao)){
-return "NORTE DF"
-}
-
-if(["Sobradinho","Fercal","Itapoã","Paranoá"].includes(regiao)){
-return "LESTE DF"
-}
-
-if(["Lago Norte","Asa Norte","Plano Piloto","Cruzeiro"].includes(regiao)){
-return "CENTRO DF"
-}
-
-if(["Guará","Sudoeste","Octogonal","Lago Sul"].includes(regiao)){
-return "CENTRO SUL DF"
-}
-
-if(["Águas Claras","Taguatinga","Vicente Pires"].includes(regiao)){
-return "OESTE DF"
-}
-
-if(["Ceilândia","Samambaia","Recanto das Emas","Santa Maria","Gama"].includes(regiao)){
-return "SUL DF"
-}
-
-return "DF"
-}
-
-async function agendar(event){
+function agendar(event){
 
 event.preventDefault()
 
 let nome=document.getElementById("nome").value
 let telefone=document.getElementById("telefone").value
-let data=document.getElementById("data").value
-let hora=document.getElementById("hora").value
+let dataHora=document.getElementById("dataHora").value
 let problema=document.getElementById("problema").value
-
-let dataHora = data + " às " + hora
-
 let cidade = document.getElementById("cidade")
 let regiao = cidade.options[cidade.selectedIndex].text
-
-let zona = identificarZona(regiao)
-
-try{
-
-await addDoc(collection(db, "agendamentos"), {
-
-nome: nome,
-telefone: telefone,
-regiao: regiao,
-dataHora: dataHora,
-problema: problema,
-dataCriacao: new Date()
-
-})
-
-}catch(e){
-
-console.log("Erro ao salvar no Firebase")
-
-}
 
 let mensagem=`
 ⚡ *GUGA ENERGY – SOLUÇÕES ELÉTRICAS*
@@ -1107,47 +1017,48 @@ let mensagem=`
 📞 *Telefone:* ${telefone}
 
 📍 *Região:* ${regiao}
-🗺️ *Zona de atendimento:* ${zona}
-
-📅 *Data e horário:* ${dataHora}
+📅 *Data e horário solicitado:* ${dataHora}
 
 ━━━━━━━━━━━━━━━━━━
 
-🔧 *Problema informado:*
+🔧 *Descrição do problema:*
 ${problema}
 
 ━━━━━━━━━━━━━━━━━━
 
+⚠️ *Observação:*
+A visita técnica é abatida caso o serviço seja aprovado.
+
 🚗 Atendimento em todo DF
-⚡ Instalações conforme NBR 5410
+⚡ Instalações conforme (NBR 5410)
 
-📨 Solicitação enviada pelo site
+📨 *Solicitação enviada pelo site da Guga Energy*
 `
-
 let url="https://wa.me/5561992176914?text="+encodeURIComponent(mensagem)
 
 window.open(url)
 
-let inicio = data + "T" + hora
-
-let fim = new Date(inicio)
-fim.setHours(fim.getHours()+1)
-
-let inicioFormatado = inicio.replace(/[-:]/g,"")
-let fimFormatado = fim.toISOString().replace(/[-:]/g,"").split(".")[0]
-
-let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
-+ "&text=Visita Técnica - " + nome
-+ "&details=Cliente: " + nome + " | Telefone: " + telefone + " | Problema: " + problema
-+ "&location=" + regiao
-+ "&dates=" + inicioFormatado + "/" + fimFormatado
-
-window.open(agenda)
-
-document.querySelector("form").reset()
-valorVisita.innerHTML=""
-
 }
+
+flatpickr("#dataHora",{
+
+locale:"pt",
+enableTime:true,
+dateFormat:"d/m/Y H:i",
+time_24hr:true,
+minuteIncrement:30,
+minDate:"today",
+minTime:"08:00",
+maxTime:"18:00",
+disableMobile:true,
+
+disable:[
+function(date){
+return date.getDay()===0
+}
+]
+
+})
 
 const cidade = document.getElementById("cidade")
 const valorVisita = document.getElementById("valorVisita")
@@ -1185,17 +1096,19 @@ behavior: "smooth"
 
 })
 
-flatpickr("#data", {
-locale: "pt",
-dateFormat: "Y-m-d",
-minDate: "today",
-disableMobile: true,
-disable: [
-function(date) {
-return (date.getDay() === 0);
+function usarLocalizacao(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+valorVisita.innerHTML = "Localização enviada. Valor será informado no WhatsApp."
+
+})
+
 }
-]
-});
+
+}
 
 </script>
 
