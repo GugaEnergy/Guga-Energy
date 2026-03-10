@@ -420,21 +420,12 @@ height:150px;
 /* AJUSTE BOTÕES MOBILE */
 
 @media(max-width:600px){
-} 
 
 .whatsapp{
 bottom:20px;
 right:15px;
 padding:12px 14px;
 font-size:14px;
-}
-
-@media(max-width:700px){
-
-body{
-padding-top:90px;
-}
-
 }
 
 .ligar{
@@ -444,12 +435,8 @@ padding:12px 14px;
 font-size:14px;
 }
 
-footer{
-background:black;
-text-align:center;
-padding:40px 20px;
-border-top:3px solid #FFD000;
 }
+
 
 /* BARRA MOBILE PROFISSIONAL */
 
@@ -519,6 +506,189 @@ height:auto;
 display:block;
 }
 
+@media (max-width:240px){
+
+html,body{
+overflow:hidden;
+height:100vh;
+max-height:100vh;
+}
+
+}
+
+iframe{
+width:100%;
+height:300px;
+border:none;
+max-width:100%;
+}
+
+/* MODO SMARTWATCH SIMPLES */
+
+@media (max-width:240px){
+
+/* trava a tela */
+
+html,body{
+overflow:hidden;
+height:100vh;
+max-height:100vh;
+}
+
+/* esconde tudo que não precisa */
+
+nav,
+.menu-btn,
+.mobile-menu,
+.overlay,
+.carousel,
+.slide,
+.services,
+.reviews,
+.section,
+form,
+iframe,
+footer,
+.whatsapp,
+.ligar{
+display:none;
+}
+
+/* header simples */
+
+header{
+padding:6px;
+justify-content:center;
+}
+
+.logo img{
+display:none;
+}
+
+.logo h2{
+font-size:14px;
+}
+
+/* título */
+
+.hero{
+padding:20px 10px;
+}
+
+.hero h1{
+font-size:14px;
+}
+
+.hero p{
+display:none;
+}
+
+/* botões */
+
+.mobile-bar{
+display:flex;
+flex-direction:column;
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+}
+
+.mobile-bar a{
+font-size:13px;
+padding:10px;
+}
+
+/* remove agendar */
+
+.mobile-bar a:nth-child(3){
+display:none;
+}
+
+}
+
+/* ===== TEXTO CURTO APENAS PARA SMARTWATCH ===== */
+
+@media (max-width:240px){
+
+html,body{
+overflow:hidden;
+height:100vh;
+max-height:100vh;
+}
+
+/* esconder elementos */
+
+nav,
+.menu-btn,
+.mobile-menu,
+.overlay,
+.carousel,
+.slide,
+.services,
+.reviews,
+.section,
+form,
+iframe,
+footer,
+.whatsapp,
+.ligar{
+display:none;
+}
+
+/* header */
+
+header{
+padding:6px;
+justify-content:center;
+}
+
+.logo img{
+display:none;
+}
+
+.logo h2{
+font-size:14px;
+}
+
+/* CENTRALIZAR TEXTO */
+
+.hero{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+width:100%;
+padding:0;
+}
+
+.hero h1{
+margin:0;
+}
+
+/* botões */
+
+.mobile-bar{
+display:flex;
+flex-direction:column;
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+}
+
+.mobile-bar a{
+font-size:10px;
+padding:4px 4px;
+}
+
+.mobile-bar a:nth-child(3){
+display:none;
+}
+
+}
+
 </style>
 
 </head>
@@ -540,8 +710,6 @@ display:block;
 </a>
 
 </div>
-
-<body>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
