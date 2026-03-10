@@ -3,17 +3,43 @@
 
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-<link rel="icon" href="logo.png">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="logo.png">
 
 <title>Guga Energy | Eletricista em Brasília</title>
 
 <meta name="description" content="Eletricista profissional em Brasília. Instalações elétricas, manutenção, quadros elétricos, refletores LED e segurança eletrônica.">
+<meta name="keywords" content="eletricista em Brasília, eletricista DF, instalação elétrica, manutenção elétrica, quadro elétrico, refletores LED, CFTV Brasília">
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="Guga Energy | Eletricista em Brasília">
+<meta property="og:description" content="Instalações elétricas, manutenção e segurança eletrônica em Brasília. Atendimento profissional.">
+<meta property="og:image" content="logo.png">
+<meta property="og:type" content="website">
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Electrician",
+ "name": "Guga Energy",
+ "image": "logo.png",
+ "telephone": "+5561992176914",
+ "address": {
+   "@type": "PostalAddress",
+   "addressLocality": "Brasília",
+   "addressRegion": "DF",
+   "addressCountry": "BR"
+ },
+ "areaServed": "Brasília",
+ "priceRange": "$$"
+}
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -326,7 +352,21 @@ font-size:14px;
 color:#999;
 }
 
-/* WHATSAPP */
+/* BOTÕES FIXOS */
+
+.ligar{
+position:fixed;
+bottom:80px;
+right:20px;
+background:#FFD000;
+color:black;
+padding:14px 18px;
+border-radius:30px;
+font-weight:700;
+text-decoration:none;
+box-shadow:0 0 12px rgba(0,0,0,0.4);
+z-index:9999;
+}
 
 .whatsapp{
 position:fixed;
@@ -359,9 +399,111 @@ height:150px;
 
 }
 
+/* AJUSTE BOTÕES MOBILE */
+
+@media(max-width:600px){
+
+.whatsapp{
+bottom:20px;
+right:15px;
+padding:12px 14px;
+font-size:14px;
+}
+
+.ligar{
+bottom:70px;
+right:15px;
+padding:12px 14px;
+font-size:14px;
+}
+
+footer{
+padding-bottom:120px;
+}
+
+}
+
+/* BARRA MOBILE PROFISSIONAL */
+
+.mobile-bar{
+display:none;
+}
+
+@media(max-width:700px){
+
+.mobile-bar{
+display:flex;
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#111;
+border-top:2px solid #FFD000;
+z-index:9999;
+}
+
+.mobile-bar a{
+flex:1;
+text-align:center;
+padding:14px 5px;
+text-decoration:none;
+font-weight:600;
+color:white;
+font-size:14px;
+}
+
+.mobile-bar a:nth-child(1){
+background:#FFD000;
+color:black;
+}
+
+.mobile-bar a:nth-child(2){
+background:#25D366;
+}
+
+.mobile-bar a:nth-child(3){
+background:#333;
+}
+
+body{
+padding-bottom:60px;
+}
+
+}
+
+/* ESCONDER BOTÕES ANTIGOS NO CELULAR */
+
+@media(max-width:700px){
+
+.whatsapp{
+display:none;
+}
+
+.ligar{
+display:none;
+}
+
+}
+
 </style>
 
 </head>
+
+<div class="mobile-bar">
+
+<a href="tel:+5561992176914">
+📞 Ligar
+</a>
+
+<a href="https://wa.me/5561992176914">
+💬 WhatsApp
+</a>
+
+<a href="#agendamento">
+📅 Agendar
+</a>
+
+</div>
 
 <body>
 
@@ -405,6 +547,11 @@ height:150px;
 <section class="hero">
 <h1>Eletricista Profissional em Brasília</h1>
 <p>Instalações elétricas, manutenção e segurança eletrônica.</p>
+
+<p style="margin-top:10px;font-size:14px;color:#ccc;">
+Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasília
+</p>
+
 </section>
 
 <section class="section" id="servicos">
@@ -448,6 +595,12 @@ height:150px;
 <section class="section" id="avaliacoes">
 
 <h2>Avaliações de Clientes</h2>
+
+<p style="text-align:center;margin-bottom:20px;">
+<a href="https://share.google/6RcR1ZtKV9xGTRzKp" target="_blank" style="color:#FFD000;font-weight:700;font-size:16px;">
+⭐ Ver avaliações no Google
+</a>
+</p>
 
 <div class="reviews">
 
@@ -505,9 +658,9 @@ WhatsApp:
 
 </footer>
 
-<a class="whatsapp" href="https://wa.me/5561992176914?text=Olá,%20vim%20pelo%20site%20da%20Guga%20Energy" target="_blank">
-WhatsApp
-</a>
+<a class="whatsapp" href="https://wa.me/5561992176914?text=Olá,%20vim%20pelo%20site%20da%20Guga%20Energy" target="_blank">WhatsApp</a>
+
+<a class="ligar" href="tel:+5561992176914">📞 Ligar Agora</a>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
@@ -598,6 +751,29 @@ function(date){
 return date.getDay()===0
 }
 ]
+
+})
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+anchor.addEventListener("click", function(e){
+
+let targetId = this.getAttribute("href")
+
+if(targetId.length > 1){
+
+e.preventDefault()
+
+let target = document.querySelector(targetId)
+
+window.scrollTo({
+top: target.offsetTop - 80,
+behavior: "smooth"
+})
+
+}
+
+})
 
 })
 
