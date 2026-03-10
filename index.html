@@ -730,6 +730,8 @@ font-size:18px;
 
 </head>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDSyS6fBp_JgsBdtCTaDuBZzkfyzivFnQ"></script>
+
 <body>
 
 <div class="mobile-bar">
@@ -862,9 +864,49 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 <input type="text" id="nome" placeholder="Nome" required>
 <input type="tel" id="telefone" placeholder="Telefone" required>
 
+<select id="cidade" required>
+
+<option value="">Selecione sua região</option>
+
+<option value="80">Planaltina-DF</option>
+<option value="80">Arapoanga</option>
+<option value="80">Sobradinho II</option>
+
+<option value="100">Sobradinho</option>
+<option value="100">Fercal</option>
+<option value="100">Itapoã</option>
+<option value="100">Paranoá</option>
+
+<option value="120">Lago Norte</option>
+<option value="120">Asa Norte</option>
+<option value="120">Plano Piloto</option>
+<option value="120">Cruzeiro</option>
+
+<option value="140">Guará</option>
+<option value="140">Sudoeste</option>
+<option value="140">Octogonal</option>
+<option value="140">Lago Sul</option>
+
+<option value="160">Águas Claras</option>
+<option value="160">Taguatinga</option>
+<option value="160">Vicente Pires</option>
+
+<option value="180">Ceilândia</option>
+<option value="180">Samambaia</option>
+<option value="180">Recanto das Emas</option>
+<option value="180">Santa Maria</option>
+<option value="180">Gama</option>
+
+</select>
 <input type="text" id="dataHora" placeholder="Escolher data e horário da visita" required>
 
 <textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
+
+<div id="valorVisita" style="margin:10px 0;font-weight:600;color:#FFD000;"></div>
+
+<p style="font-size:13px;color:#bbb;">
+Valor da visita é abatido caso o serviço seja aprovado.
+</p>
 
 <button type="submit">Solicitar Visita Técnica</button>
 
@@ -879,6 +921,8 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 <iframe src="https://maps.google.com/maps?q=Brasilia&t=&z=11&ie=UTF8&iwloc=&output=embed"></iframe>
 
 </section>
+
+<button type="button" onclick="usarLocalizacao()">Usar minha localização</button>
 
 <footer>
 
@@ -958,12 +1002,15 @@ let nome=document.getElementById("nome").value
 let telefone=document.getElementById("telefone").value
 let dataHora=document.getElementById("dataHora").value
 let problema=document.getElementById("problema").value
+let cidade = document.getElementById("cidade")
+let regiao = cidade.options[cidade.selectedIndex].text
 
 let mensagem=`
 Solicitação de Visita Técnica - Guga Energy
 
 Nome: ${nome}
 Telefone: ${telefone}
+Região: ${regiao}
 Data e Hora: ${dataHora}
 
 Problema:
@@ -995,6 +1042,19 @@ return date.getDay()===0
 
 })
 
+const cidade = document.getElementById("cidade")
+const valorVisita = document.getElementById("valorVisita")
+
+cidade.addEventListener("change", function(){
+
+let valor = cidade.value
+
+if(valor !== ""){
+valorVisita.innerHTML = "Valor da visita técnica: <strong>R$ " + valor + "</strong>"
+}
+
+})
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 anchor.addEventListener("click", function(e){
@@ -1017,6 +1077,20 @@ behavior: "smooth"
 })
 
 })
+
+function usarLocalizacao(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+valorVisita.innerHTML = "Localização enviada. Valor será informado no WhatsApp."
+
+})
+
+}
+
+}
 
 </script>
 
