@@ -7,6 +7,7 @@
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
 <link rel="icon" href="logo.png">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,9 +20,7 @@
 
 <style>
 
-html{
-scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth;}
 
 *{
 margin:0;
@@ -45,7 +44,6 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 border-bottom:3px solid #FFD000;
-
 position:sticky;
 top:0;
 z-index:3000;
@@ -85,52 +83,64 @@ nav a:hover{
 color:#FFD000;
 }
 
-/* MENU BOTÃO */
+/* MENU HAMBURGUER */
 
 .menu-btn{
 display:none;
-font-size:28px;
-padding:8px 12px;
+width:30px;
+height:22px;
+position:relative;
 cursor:pointer;
-border-radius:6px;
-transition:background 0.2s ease, transform 0.15s ease;
 }
 
-.menu-btn:hover{
-background:rgba(255,208,0,0.12);
+.menu-btn span{
+position:absolute;
+width:100%;
+height:3px;
+background:#FFD000;
+left:0;
+transition:.3s;
 }
 
-.menu-btn:active{
-background:rgba(255,208,0,0.25);
-transform:scale(0.95);
+.menu-btn span:nth-child(1){top:0;}
+.menu-btn span:nth-child(2){top:9px;}
+.menu-btn span:nth-child(3){top:18px;}
+
+.menu-btn.active span:nth-child(1){
+transform:rotate(45deg);
+top:9px;
 }
 
-.menu-btn{
--webkit-tap-highlight-color: rgba(255,208,0,0.3);
+.menu-btn.active span:nth-child(2){
+opacity:0;
+}
+
+.menu-btn.active span:nth-child(3){
+transform:rotate(-45deg);
+top:9px;
 }
 
 /* MENU MOBILE */
 
 .mobile-menu{
 position:fixed;
-top:90px; /* altura do header */
-left:-260px;
-width:260px;
-height:100%;
+top:0;
+left:-100%;
+width:100%;
+height:100vh;
 background:#111;
-padding:25px;
-transition:left 0.35s ease;
-z-index:4000;
+padding:40px 25px;
+transition:left .35s ease;
+z-index:5000;
 }
 
 .mobile-menu a{
 display:block;
 color:white;
-padding:18px 10px;
+padding:20px 0;
 text-decoration:none;
-font-size:18px;
+font-size:20px;
 border-bottom:1px solid rgba(255,255,255,0.15);
-transition:all 0.25s ease;
 }
 
 .mobile-menu a:hover{
@@ -138,33 +148,30 @@ color:#FFD000;
 padding-left:10px;
 }
 
-.mobile-menu a:active{
-color:#FFD000;
-background:rgba(255,208,0,0.1);
-padding-left:10px;
+.close-menu{
+font-size:28px;
+margin-bottom:25px;
+cursor:pointer;
 }
 
-.close-menu{
-font-size:26px;
-cursor:pointer;
-margin-bottom:25px;
-}
+/* OVERLAY */
 
 .overlay{
 position:fixed;
-top:90px;
+top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.6);
 opacity:0;
 pointer-events:none;
-transition:0.3s;
+transition:.3s;
+z-index:4000;
 }
 
 .overlay.active{
 opacity:1;
-pointer-events:all;
+pointer-events:auto;
 }
 
 /* HERO */
@@ -235,7 +242,7 @@ height:220px;
 left:50%;
 top:55%;
 overflow:hidden;
-transition:transform 0.8s ease;
+transition:transform .8s ease;
 }
 
 .slide img{
@@ -333,27 +340,6 @@ text-decoration:none;
 font-weight:600;
 }
 
-/* BOTÕES SMARTWATCH */
-
-.watch-actions{
-display:none;
-max-width:500px;
-margin:20px auto;
-padding:0 20px;
-}
-
-.watch-btn{
-display:block;
-background:#FFD000;
-color:black;
-text-align:center;
-padding:14px;
-margin:10px 0;
-border-radius:6px;
-font-weight:700;
-text-decoration:none;
-}
-
 /* RESPONSIVO */
 
 @media(max-width:900px){
@@ -366,82 +352,9 @@ nav{display:none;}
 
 .logo h2{font-size:22px;}
 
-.hero h1{font-size:28px;}
-
 .slide{
 width:220px;
 height:150px;
-}
-
-}
-
-/* SMARTWATCH */
-
-@media(max-width:300px){
-
-header{
-flex-direction:column;
-text-align:center;
-}
-
-.mobile-menu{
-width:100%;
-left:-100%;
-}
-
-.mobile-menu a{
-font-size:16px;
-padding:14px 0;
-text-align:center;
-}
-
-.logo{
-flex-direction:column;
-}
-
-.logo img{
-height:45px;
-}
-
-.logo h2{
-font-size:16px;
-}
-
-.hero{
-padding:30px 10px;
-}
-
-.hero h1{
-font-size:15px;
-}
-
-.hero p{
-display:none;
-}
-
-.carousel,
-iframe,
-.reviews{
-display:none;
-}
-
-.services{
-grid-template-columns:1fr;
-}
-
-.service{
-font-size:12px;
-padding:10px;
-}
-
-.watch-actions{
-display:block;
-}
-
-.whatsapp{
-width:90%;
-right:5%;
-text-align:center;
 }
 
 }
@@ -452,16 +365,17 @@ text-align:center;
 
 <body>
 
-<div class="overlay" id="overlay" onclick="fecharMenu()"></div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
 <div class="mobile-menu" id="mobileMenu">
-<div class="close-menu" onclick="fecharMenu()">✕</div>
 
-<a href="#" onclick="fecharMenu()">Início</a>
-<a href="#servicos" onclick="fecharMenu()">Serviços</a>
-<a href="#galeria" onclick="fecharMenu()">Galeria</a>
-<a href="#avaliacoes" onclick="fecharMenu()">Avaliações</a>
-<a href="#agendamento" onclick="fecharMenu()">Agendamento</a>
+<div class="close-menu" onclick="toggleMenu()">✕</div>
+
+<a href="#" onclick="toggleMenu()">Início</a>
+<a href="#servicos" onclick="toggleMenu()">Serviços</a>
+<a href="#galeria" onclick="toggleMenu()">Galeria</a>
+<a href="#avaliacoes" onclick="toggleMenu()">Avaliações</a>
+<a href="#agendamento" onclick="toggleMenu()">Agendamento</a>
 
 </div>
 
@@ -480,24 +394,18 @@ text-align:center;
 <a href="#agendamento">Agendamento</a>
 </nav>
 
-<div class="menu-btn" onclick="abrirMenu()">☰</div>
+<div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</div>
 
 </header>
 
 <section class="hero">
-
 <h1>Eletricista Profissional em Brasília</h1>
 <p>Instalações elétricas, manutenção e segurança eletrônica.</p>
-
 </section>
-
-<div class="watch-actions">
-
-<a href="tel:+5561992176914" class="watch-btn">📞 Ligar Agora</a>
-<a href="https://wa.me/5561992176914" class="watch-btn">💬 WhatsApp</a>
-<a href="#agendamento" class="watch-btn">📅 Agendar Visita</a>
-
-</div>
 
 <section class="section" id="servicos">
 
@@ -562,10 +470,6 @@ text-align:center;
 
 <input type="text" id="dataHora" placeholder="Escolher data e horário da visita" required>
 
-<p style="font-size:13px;color:#aaa;margin-top:-5px;margin-bottom:10px;">
-Atendimento de segunda a sábado das 08:00 às 18:00.
-</p>
-
 <textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
 
 <button type="submit">Solicitar Visita Técnica</button>
@@ -610,23 +514,25 @@ WhatsApp
 
 <script>
 
-function abrirMenu(){
+function toggleMenu(){
 
-document.getElementById("mobileMenu").style.left="0"
+let menu=document.getElementById("mobileMenu")
+let btn=document.getElementById("menuBtn")
+let overlay=document.getElementById("overlay")
 
-document.getElementById("overlay").classList.add("active")
+if(menu.style.left==="0px"){
 
-}
+menu.style.left="-100%"
+overlay.classList.remove("active")
+btn.classList.remove("active")
 
-function fecharMenu(){
-
-if(window.innerWidth <= 300){
-document.getElementById("mobileMenu").style.left="-100%"
 }else{
-document.getElementById("mobileMenu").style.left="-260px"
-}
 
-document.getElementById("overlay").classList.remove("active")
+menu.style.left="0"
+overlay.classList.add("active")
+btn.classList.add("active")
+
+}
 
 }
 
@@ -698,5 +604,5 @@ return date.getDay()===0
 </script>
 
 </body>
-
-</html> 
+</html>
+```
