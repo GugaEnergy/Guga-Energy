@@ -1035,10 +1035,19 @@ A visita técnica é abatida caso o serviço seja aprovado.
 📨 *Solicitação enviada pelo site da Guga Energy*
 `
 let url="https://wa.me/5561992176914?text="+encodeURIComponent(mensagem)
+let inicio = dataHora.replace(" ", "T")
+let fim = inicio
+
+let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
++"&text=Visita Técnica - " + nome + " - Guga Energy"
++ "&details=Cliente: " + nome + " | Telefone: " + telefone + " | Problema: " + problema
++ "&location=" + regiao
 
 window.open(url)
 
 }
+
+window.open(agenda)
 
 flatpickr("#dataHora",{
 
