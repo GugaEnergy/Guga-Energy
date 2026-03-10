@@ -920,7 +920,7 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 </select>
 
-<input type="date" id="data" required>
+<input type="text" id="data" placeholder="Escolha a data" required>
 
 <select id="hora" required>
 <option value="">Escolha um horário</option>
@@ -1206,6 +1206,15 @@ behavior: "smooth"
 })
 
 })
+
+flatpickr("#data", {
+locale: "pt",
+dateFormat: "Y-m-d",
+minDate: "today",
+disableMobile: true
+});
+
+enableTime:false
 
 </script>
 
