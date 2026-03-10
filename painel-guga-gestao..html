@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Painel de Atendimentos | Guga Energy</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0b0b0b;
+color:white;
+padding:40px;
+}
+
+h1{
+color:#FFD000;
+margin-bottom:10px;
+}
+
+.stats{
+margin-bottom:20px;
+font-size:18px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #333;
+text-align:left;
+}
+
+th{
+background:#111;
+color:#FFD000;
+}
+
+tr:hover{
+background:#151515;
+}
+
+.btn{
+padding:8px 12px;
+background:#FFD000;
+color:black;
+text-decoration:none;
+border-radius:4px;
+font-weight:bold;
+margin-right:6px;
+}
+
+.maps{
+background:#25D366;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Painel de Atendimentos</h1>
+
+<div class="stats">
+Total de agendamentos: <strong id="total">0</strong>
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Cliente</th>
+<th>Telefone</th>
+<th>Região</th>
+<th>Data</th>
+<th>Problema</th>
+<th>Ações</th>
+</tr>
+
+</thead>
+
+<tbody id="tabela">
+
+</tbody>
+
+</table>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+
+import {
+getFirestore,
+collection,
+getDocs,
+query,
+orderBy
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
+authDomain: "guga-energy-agendamentos-778f1.firebaseapp.com",
+projectId: "guga-energy-agendamentos-778f1",
+storageBucket: "guga-energy-agendamentos-778f1.firebasestorage.app",
+messagingSenderId: "384265745174",
+appId: "1:384265745174:web:a9284d4036f4a787bf5637"
+
+}
+
+const app = initializeApp(firebaseConfig)
+
+const db = getFirestore(app)
+
+const tabela = document.getElementById("tabela")
+
+const total = document.getElementById("total")
+
+async function carregar(){
+
+const q = query(collection(db,"agendamentos"), orderBy("dataCriacao","desc"))
+
+const snapshot = await getDocs(q)
+
+let contador = 0
+
+snapshot.forEach((doc)=>{
+
+let dados = doc.data()
+
+contador++
+
+let linha = `
+<tr>
+
+<td>${dados.nome}</td>
+
+<td>${dados.telefone}</td>
+
+<td>${dados.regiao}</td>
+
+<td>${dados.dataHora}</td>
+
+<td>${dados.problema}</td>
+
+<td>
+
+<a class="btn"
+href="https://wa.me/55${dados.telefone}"
+target="_blank">
+WhatsApp
+</a>
+
+<a class="btn maps"
+href="https://www.google.com/maps/search/${dados.regiao}"
+target="_blank">
+Mapa
+</a>
+
+</td>
+
+</tr>
+`
+
+tabela.innerHTML += linha
+
+})
+
+total.innerHTML = contador
+
+}
+
+carregar()
+
+</script>
+
+</body>
+
+</html>
