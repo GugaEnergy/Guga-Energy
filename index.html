@@ -764,6 +764,67 @@ input, select, textarea{
 font-size:16px;
 }
 
+/* CALENDÁRIO PROFISSIONAL */
+
+.flatpickr-calendar{
+background:#111;
+color:#fff;
+border:2px solid #FFD000;
+}
+
+.flatpickr-day.selected{
+background:#FFD000;
+color:#000;
+}
+
+.flatpickr-day:hover{
+background:#FFD000;
+color:#000;
+}
+
+.flatpickr-month{
+color:#FFD000;
+}
+
+.flatpickr-current-month{
+color:#FFD000;
+}
+
+.flatpickr-weekday{
+color:#FFD000;
+font-weight:600;
+}
+
+/* CORRIGIR VISIBILIDADE DOS DIAS */
+
+.flatpickr-day{
+color:#fff;
+font-weight:600;
+}
+
+.flatpickr-day.today{
+border-color:#FFD000;
+color:#FFD000;
+}
+
+.flatpickr-day.flatpickr-disabled{
+color:#555 !important;
+opacity:0.5;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay{
+color:#777;
+}
+
+.flatpickr-weekdays{
+background:#111;
+}
+
+.flatpickr-months .flatpickr-month{
+background:#111;
+}
+
 </style>
 
 </head>
@@ -938,7 +999,7 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 </select>
 
-<input type="text" id="data" placeholder="Escolha a data" inputmode="numeric" autocomplete="off" required>
+<input type="text" id="data" placeholder="Escolha a data" readonly required inputmode="none">
 
 <select id="hora" required>
 <option value="">Escolha um horário</option>
@@ -1227,15 +1288,37 @@ behavior: "smooth"
 
 flatpickr("#data", {
 locale: "pt",
-dateFormat: "Y-m-d",
+dateFormat: "d/m/Y",
 minDate: "today",
 disableMobile: true,
-allowInput: true,
-onReady: function(selectedDates, dateStr, instance) {
-instance.input.readOnly = false;
+allowInput: false,
+clickOpens: true,
+
+disable: [
+function(date){
+return date.getDay() === 0;
+}
+],
+
+onOpen: function(selectedDates, dateStr, instance){
+instance._input.blur();
+},
+
+onClose: function(selectedDates, dateStr, instance){
+instance._input.blur();
+},
+
+onReady: function(selectedDates, dateStr, instance){
+
+instance._input.setAttribute("readonly","readonly");
+instance._input.setAttribute("inputmode","none");
+
+instance.calendarContainer.style.boxShadow="0 10px 25px rgba(0,0,0,0.4)";
+instance.calendarContainer.style.border="2px solid #FFD000";
+instance.calendarContainer.style.borderRadius="10px";
+
 }
 });
-
 
 </script>
 
