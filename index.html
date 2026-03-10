@@ -920,7 +920,7 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 </select>
 
-<input type="text" id="data" placeholder="Escolha a data" required>
+<input type="text" id="data" placeholder="Escolha a data" inputmode="numeric" autocomplete="off" required>
 
 <select id="hora" required>
 <option value="">Escolha um horário</option>
@@ -1213,11 +1213,13 @@ dateFormat: "Y-m-d",
 minDate: "today",
 disableMobile: true,
 allowInput: true,
-enableTime:false
+onReady: function(selectedDates, dateStr, instance) {
+instance.input.readOnly = false;
+}
 });
+
 
 </script>
 
 </body>
 </html>
-    
