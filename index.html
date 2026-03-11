@@ -179,10 +179,7 @@ z-index:9000;
 
 /* quando menu estiver aberto */
 
-.menu-btn.active{
-position:fixed;
-right:20px;
-top:20px;
+.menu-btn.hidden{
 opacity:0;
 pointer-events:none;
 }
@@ -381,11 +378,14 @@ transform-style:preserve-3d;
 }
 
 .slide{
+backface-visibility:hidden;
 position:absolute;
 width:340px;
 height:220px;
 left:50%;
 top:55%;
+width:220px;
+height:150px;
 overflow:hidden;
 transition:transform .8s;
 }
@@ -533,10 +533,6 @@ nav{display:none;}
 
 .logo h2{font-size:22px;}
 
-.slide{
-width:220px;
-height:150px;
-}
 
 }
 
@@ -857,17 +853,17 @@ Instalações conforme NBR 5410 • Profissional NR10
 
 <h2>Avaliações de Clientes</h2>
 
-<p class="avaliacoes-google">
-<a href="https://share.google/6RcR1ZtKV9xGTRzKp" target="_blank">
-⭐ Ver avaliações no Google
-</a>
-</p>
-
 <div class="reviews">
 
 <div class="review">⭐⭐⭐⭐⭐ Serviço excelente e profissional.</div>
 <div class="review">⭐⭐⭐⭐⭐ Atendimento rápido e seguro.</div>
 <div class="review">⭐⭐⭐⭐⭐ Profissionais pontuais e caprichosos.</div>
+
+<p class="avaliacoes-google">
+<a href="https://share.google/6RcR1ZtKV9xGTRzKp" target="_blank">
+⭐ Ver avaliações no Google
+</a>
+</p>
 
 </div>
 
@@ -991,7 +987,7 @@ const btn = document.getElementById("menuBtn")
 sidebar.classList.toggle("active")
 overlay.classList.toggle("active")
 body.classList.toggle("menu-open")
-btn.style.display = sidebar.classList.contains("active") ? "none" : "block"
+btn.classList.toggle("hidden")
 
 }
 
@@ -1007,7 +1003,7 @@ document.getElementById("sidebar").classList.remove("active")
 document.getElementById("menu-overlay").classList.remove("active")
 document.body.classList.remove("menu-open")
 
-document.getElementById("menuBtn").style.display = "block"
+document.getElementById("menuBtn").classList.remove("hidden")
 
 })
 
@@ -1018,7 +1014,7 @@ document.getElementById("menu-overlay").addEventListener("click", function(){
 document.getElementById("sidebar").classList.remove("active")
 document.getElementById("menu-overlay").classList.remove("active")
 document.body.classList.remove("menu-open")
-document.getElementById("menuBtn").style.display = "block"
+document.getElementById("menuBtn").classList.remove("hidden")
 
 })
 
@@ -1040,7 +1036,11 @@ menu.style.display = "block"
 let slides
 let angle = 0
 const step = 72
-const radius = window.innerWidth < 700 ? 220 : 380
+let radius
+
+function atualizarRadius(){
+radius = window.innerWidth < 700 ? 220 : 380
+}
 
 function update(){
 
@@ -1059,9 +1059,17 @@ window.addEventListener("load", function(){
 
 slides = document.querySelectorAll(".slide")
 
+atualizarRadius()
 update()
 
 setInterval(rotate,3500)
+
+})
+
+window.addEventListener("resize", function(){
+
+atualizarRadius()
+update()
 
 })
 
