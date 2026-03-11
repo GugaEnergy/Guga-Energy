@@ -66,6 +66,7 @@ scroll-behavior:smooth;
 }
 
 body{
+-webkit-text-size-adjust:100%;
 background:#0b0b0b;
 color:#fff;
 overflow-x:hidden;
@@ -575,11 +576,6 @@ border-top:2px solid #FFD000;
 z-index:9999;
 }
 
-@media(max-width:768px){
-.mobile-bar{
-display:flex;
-}
-}
 
 .mobile-bar a{
 flex:1;
@@ -720,6 +716,34 @@ text-decoration:none !important;
 -webkit-text-fill-color:#fff;
 }
 
+.mobile-bar{
+display:none;
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#111;
+border-top:2px solid #FFD000;
+z-index:9999;
+}
+
+@media(max-width:768px){
+
+.mobile-bar{
+display:flex;
+}
+
+.whatsapp,
+.ligar{
+display:none;
+}
+
+body{
+padding-bottom:60px;
+}
+
+}
+
 </style>
 
 </head>
@@ -731,7 +755,7 @@ text-decoration:none !important;
 <!-- BARRA MOBILE -->
 
 <div class="mobile-bar">
-<a href="tel:+5561992176914">📞 Ligar</a>
+<a href="tel:(61) 9 9217-6914">📞 Ligar</a>
 <a href="https://wa.me/5561992176914" target="_blank">💬 WhatsApp</a>
 <a href="#agendamento">📅 Agendar</a>
 </div>
