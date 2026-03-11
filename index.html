@@ -169,9 +169,6 @@ height:45px;
 position:relative;
 cursor:pointer;
 padding:10px;
-}
-
-.menu-btn{
 display:none;
 width:45px;
 height:45px;
@@ -179,6 +176,8 @@ position:relative;
 cursor:pointer;
 padding:10px;
 z-index:7000;
+background:none;
+border:none;
 }
 
 /* quando menu estiver aberto */
@@ -187,6 +186,7 @@ z-index:7000;
 position:fixed;
 right:20px;
 top:20px;
+display:none;
 }
 
 .menu-btn span{
@@ -196,15 +196,26 @@ height:3px;
 background:#FFD000;
 left:9px;
 transition:.3s;
+position:absolute;
+width:26px;
+height:3px;
+background:#FFD000;
+left:9px;
+top:50%;
+transform:translateY(-50%);
+transition:.3s;
 }
 
-.menu-btn span:nth-child(1){top:12px;}
-.menu-btn span:nth-child(2){top:20px;}
-.menu-btn span:nth-child(3){top:28px;}
+.menu-btn span:nth-child(1){
+transform:translateY(-8px);
+}
+
+.menu-btn span:nth-child(3){
+transform:translateY(8px);
+}
 
 .menu-btn.active span:nth-child(1){
 transform:rotate(45deg);
-top:20px;
 }
 
 .menu-btn.active span:nth-child(2){
@@ -213,7 +224,6 @@ opacity:0;
 
 .menu-btn.active span:nth-child(3){
 transform:rotate(-45deg);
-top:20px;
 }
 
 /* MENU MOBILE */
@@ -676,8 +686,10 @@ color:#FFD000;
 }
 
 .close-btn{
-font-size:30px;
-margin-bottom:25px;
+position:absolute;
+top:20px;
+right:20px;
+font-size:32px;
 cursor:pointer;
 color:#FFD000;
 }
