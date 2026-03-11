@@ -169,12 +169,6 @@ height:45px;
 position:relative;
 cursor:pointer;
 padding:10px;
-display:none;
-width:45px;
-height:45px;
-position:relative;
-cursor:pointer;
-padding:10px;
 z-index:7000;
 background:none;
 border:none;
@@ -186,7 +180,6 @@ border:none;
 position:fixed;
 right:20px;
 top:20px;
-display:none;
 }
 
 .menu-btn span{
@@ -663,7 +656,7 @@ padding:40px 25px;
 transition:transform .35s cubic-bezier(.4,0,.2,1);
 z-index:6000;
 overflow-y:auto;
-
+will-change: transform;
 transform:translateX(-100%);
 }
 
