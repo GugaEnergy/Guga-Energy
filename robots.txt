@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gugaenergy.com.br/sitemap.xml
