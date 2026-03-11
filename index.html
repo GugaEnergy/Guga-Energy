@@ -4,46 +4,40 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
-<link rel="shortcut icon" href="favicon.png">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 
 <title>Guga Energy | Eletricista em Brasília</title>
 
 <meta name="description" content="Eletricista profissional em Brasília. Instalações elétricas, manutenção, quadros elétricos, refletores LED e segurança eletrônica.">
-<meta name="keywords" content="eletricista em Brasília, eletricista DF, instalação elétrica, manutenção elétrica, quadro elétrico, refletores LED, CFTV Brasília">
 <meta name="robots" content="index, follow">
 
 <meta property="og:title" content="Guga Energy | Eletricista em Brasília">
-<meta property="og:description" content="Instalações elétricas, manutenção e segurança eletrônica em Brasília. Atendimento profissional.">
-<meta property="og:image" content="logo.png">
+<meta property="og:description" content="Instalações elétricas, manutenção e segurança eletrônica em Brasília.">
+<meta property="og:image" content="https://gugaenergy.com/logo.png">
 <meta property="og:type" content="website">
 
+<link rel="icon" href="favicon.png">
+
 <script type="application/ld+json">
-
-    {
- "@context": "https://schema.org",
- "@type": "Electrician",
- "name": "Guga Energy",
- "image": "logo.png",
- "telephone": "+5561992176914",
- "address": {
-   "@type": "PostalAddress",
-   "addressLocality": "Distrito Federal",
-   "addressRegion": "DF",
-   "addressCountry": "BR"
- },
- "areaServed": "Distrito Federal",
- "priceRange": "$$"
+{
+"@context":"https://schema.org",
+"@type":"Electrician",
+"name":"Guga Energy",
+"telephone":"+5561992176914",
+"areaServed":"Distrito Federal",
+"priceRange":"$$",
+"address":{
+"@type":"PostalAddress",
+"addressLocality":"Brasília",
+"addressRegion":"DF",
+"addressCountry":"BR"
 }
-
+}
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -51,32 +45,41 @@
 
 <style>
 
-html, body{
-width:100%;
-overflow-x:hidden;
-}
-
-html{scroll-behavior:smooth;}
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Montserrat',sans-serif;
+font-family:'Montserrat', Arial, Helvetica, sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
 background:#0b0b0b;
-color:white;
+color:#fff;
 overflow-x:hidden;
 max-width:100vw;
 padding-top:110px;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+}
+
+img,video,iframe{
+max-width:100%;
+height:auto;
+display:block;
+}
+
+section{
+width:100%;
 }
 
 /* HEADER */
 
 header{
-background:black;
+background:#000;
 padding:15px 25px;
 display:flex;
 align-items:center;
@@ -95,13 +98,13 @@ align-items:center;
 gap:15px;
 }
 
+.logo img{
+height:120px;
+}
+
 .logo h2{
 font-size:34px;
 letter-spacing:2px;
-}
-
-.logo img{
-height:120px;
 }
 
 .logo span{
@@ -114,13 +117,47 @@ gap:25px;
 }
 
 nav a{
-color:white;
+color:#fff;
 text-decoration:none;
 font-weight:600;
 }
 
 nav a:hover{
 color:#FFD000;
+}
+
+.menu-servicos{
+position:relative;
+}
+
+.menu-open{
+overflow:hidden;
+}
+
+.dropdown-servicos{
+position:absolute;
+top:100%;
+left:0;
+background:#111;
+display:none;
+flex-direction:column;
+min-width:220px;
+border:1px solid rgba(255,255,255,.1);
+}
+
+.dropdown-servicos a{
+padding:12px 15px;
+border-bottom:1px solid rgba(255,255,255,.1);
+font-size:14px;
+}
+
+.dropdown-servicos a:hover{
+background:#FFD000;
+color:#000;
+}
+
+.menu-servicos:hover .dropdown-servicos{
+display:flex;
 }
 
 /* MENU HAMBURGUER */
@@ -132,7 +169,24 @@ height:45px;
 position:relative;
 cursor:pointer;
 padding:10px;
-touch-action:manipulation;
+}
+
+.menu-btn{
+display:none;
+width:45px;
+height:45px;
+position:relative;
+cursor:pointer;
+padding:10px;
+z-index:7000;
+}
+
+/* quando menu estiver aberto */
+
+.menu-btn.active{
+position:fixed;
+right:20px;
+top:20px;
 }
 
 .menu-btn span{
@@ -150,7 +204,7 @@ transition:.3s;
 
 .menu-btn.active span:nth-child(1){
 transform:rotate(45deg);
-top:9px;
+top:20px;
 }
 
 .menu-btn.active span:nth-child(2){
@@ -159,7 +213,7 @@ opacity:0;
 
 .menu-btn.active span:nth-child(3){
 transform:rotate(-45deg);
-top:9px;
+top:20px;
 }
 
 /* MENU MOBILE */
@@ -169,20 +223,21 @@ position:fixed;
 top:0;
 left:-100%;
 width:100%;
-height:100vh;
+height:100%;
 background:#111;
 padding:40px 25px;
-transition:left .35s ease;
+transition:.35s;
 z-index:5000;
+overflow-y:auto;
 }
 
 .mobile-menu a{
 display:block;
-color:white;
+color:#fff;
 padding:20px 0;
 text-decoration:none;
 font-size:20px;
-border-bottom:1px solid rgba(255,255,255,0.15);
+border-bottom:1px solid rgba(255,255,255,.15);
 }
 
 .mobile-menu a:hover{
@@ -190,10 +245,23 @@ color:#FFD000;
 padding-left:10px;
 }
 
+.submenu-servicos{
+display:none;
+padding-left:15px;
+}
+
+.submenu-servicos a{
+font-size:16px;
+padding:12px 0;
+border:none;
+color:#ccc;
+}
+
 .close-menu{
-font-size:28px;
+font-size:32px;
 margin-bottom:25px;
 cursor:pointer;
+color:#FFD000;
 }
 
 /* OVERLAY */
@@ -204,7 +272,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,.6);
 opacity:0;
 pointer-events:none;
 transition:.3s;
@@ -220,31 +288,40 @@ pointer-events:auto;
 
 .hero{
 text-align:center;
-padding:50px 20px;
-background:linear-gradient(rgba(0,0,0,0.70),rgba(0,0,0,0.70)),
+padding:150px 20px 80px;
+background:
+linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
 url("equipe.jpg");
 background-size:cover;
-background-position:center 20%;
-background-repeat:no-repeat;
+background-position:center;
+}
+
+.hero-content{
+max-width:900px;
+margin:auto;
 }
 
 .hero h1{
-font-size:40px;
+font-size:44px;
 color:#FFD000;
+margin-bottom:15px;
+text-shadow:0 4px 15px rgba(0,0,0,.9);
+}
+
+.hero-sub{
+font-size:20px;
 margin-bottom:10px;
-text-shadow:0 4px 15px rgba(0,0,0,0.9);
 }
 
-/* AJUSTE HERO SOMENTE PARA PC */
-
-@media(min-width:1100px){
-
-.hero{
-min-height:420px;
-padding-top:140px;
-padding-bottom:60px;
+.hero-destaque{
+color:#FFD000;
+font-weight:700;
+margin-bottom:10px;
 }
 
+.hero-info{
+font-size:14px;
+color:#ccc;
 }
 
 /* SEÇÕES */
@@ -265,7 +342,7 @@ color:#FFD000;
 
 .services{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:20px;
 }
 
@@ -273,22 +350,34 @@ gap:20px;
 background:#151515;
 padding:25px;
 border-left:4px solid #FFD000;
+border-radius:6px;
+min-height:90px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-weight:600;
+transition:.3s;
+}
+
+.service:hover{
+background:#1c1c1c;
+transform:translateY(-3px);
+box-shadow:0 6px 15px rgba(0,0,0,.4);
 }
 
 /* CARROSSEL */
-
-.carousel{
-overflow:hidden;
-}
 
 .carousel{
 position:relative;
 width:100%;
 height:300px;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 perspective:1200px;
+overflow:hidden;
+margin-top:20px;
 }
 
 .carousel-track{
@@ -305,7 +394,7 @@ height:220px;
 left:50%;
 top:55%;
 overflow:hidden;
-transition:transform .8s ease;
+transition:transform .8s;
 }
 
 .slide img{
@@ -326,6 +415,28 @@ gap:20px;
 background:#151515;
 padding:20px;
 border-left:4px solid #FFD000;
+}
+
+.avaliacoes-google{
+text-align:center;
+margin-bottom:20px;
+}
+
+.avaliacoes-google a{
+display:inline-block;
+background:#FFD000;
+color:#000;
+padding:12px 22px;
+border-radius:30px;
+font-weight:700;
+text-decoration:none;
+transition:.3s;
+}
+
+.avaliacoes-google a:hover{
+background:#fff;
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,.4);
 }
 
 /* FORM */
@@ -367,7 +478,7 @@ border:none;
 /* FOOTER */
 
 footer{
-background:black;
+background:#000;
 text-align:center;
 padding:40px 20px;
 border-top:3px solid #FFD000;
@@ -397,12 +508,11 @@ position:fixed;
 bottom:80px;
 right:20px;
 background:#FFD000;
-color:black;
+color:#000;
 padding:14px 18px;
 border-radius:30px;
 font-weight:700;
 text-decoration:none;
-box-shadow:0 0 12px rgba(0,0,0,0.4);
 z-index:9999;
 }
 
@@ -413,12 +523,12 @@ right:20px;
 background:#25D366;
 padding:14px 18px;
 border-radius:30px;
-color:white;
+color:#fff;
 text-decoration:none;
 font-weight:600;
 }
 
-/* RESPONSIVO */
+/* MOBILE */
 
 @media(max-width:900px){
 
@@ -437,34 +547,28 @@ height:150px;
 
 }
 
-/* AJUSTE BOTÕES MOBILE */
+@media(max-width:700px){
 
-@media(max-width:600px){
-
-.whatsapp{
-bottom:20px;
-right:15px;
-padding:12px 14px;
-font-size:14px;
+.hero{
+padding:100px 20px 60px;
 }
 
+.hero h1{
+font-size:28px;
+}
+
+.hero-sub{
+font-size:16px;
+}
+
+.hero-destaque{
+font-size:15px;
+}
+
+.whatsapp,
 .ligar{
-bottom:70px;
-right:15px;
-padding:12px 14px;
-font-size:14px;
-}
-
-}
-
-
-/* BARRA MOBILE PROFISSIONAL */
-
-.mobile-bar{
 display:none;
 }
-
-@media(max-width:700px){
 
 .mobile-bar{
 display:flex;
@@ -481,17 +585,15 @@ z-index:9999;
 flex:1;
 text-align:center;
 padding:18px 5px;
-font-size:15px;
-touch-action:manipulation;
-text-decoration:none;
-font-weight:600;
-color:white;
 font-size:14px;
+text-decoration:none;
+color:#fff;
+font-weight:600;
 }
 
 .mobile-bar a:nth-child(1){
 background:#FFD000;
-color:black;
+color:#000;
 }
 
 .mobile-bar a:nth-child(2){
@@ -508,374 +610,159 @@ padding-bottom:60px;
 
 }
 
-/* ESCONDER BOTÕES ANTIGOS NO CELULAR */
-
-@media(max-width:700px){
-
-.whatsapp,
-.ligar{
-display:none !important;
+.dropdown{
+position:relative;
 }
 
-.mobile-bar{
-height:60px;
+.dropdown-menu{
+display:none;
+position:absolute;
+top:100%;
+left:0;
+background:#111;
+flex-direction:column;
+min-width:220px;
+border:1px solid rgba(255,255,255,.1);
 }
 
-img{
-max-width:100%;
-height:auto;
+.dropdown-menu a{
+padding:12px 15px;
+border-bottom:1px solid rgba(255,255,255,.1);
+font-size:14px;
 display:block;
 }
 
-}
-@media (max-width:240px){
-
-html,body{
-overflow:hidden;
-height:100vh;
-max-height:100vh;
-}
-
-}
-
-iframe{
-width:100%;
-height:300px;
-border:none;
-max-width:100%;
-}
-
-/* MODO SMARTWATCH SIMPLES */
-
-@media (max-width:240px){
-
-/* trava a tela */
-
-html,body{
-overflow:hidden;
-height:100vh;
-max-height:100vh;
-}
-
-/* esconde tudo que não precisa */
-
-nav,
-.menu-btn,
-.mobile-menu,
-.overlay,
-.carousel,
-.slide,
-.services,
-.reviews,
-.section,
-form,
-iframe,
-footer,
-.whatsapp,
-.ligar{
-display:none;
-}
-
-/* header simples */
-
-header{
-padding:6px;
-justify-content:center;
-}
-
-.logo img{
-display:none;
-}
-
-.logo h2{
-font-size:14px;
-}
-
-/* título */
-
-.hero{
-padding:20px 10px;
-}
-
-.hero h1{
-font-size:14px;
-}
-
-.hero p{
-display:none;
-}
-
-/* botões */
-
-.mobile-bar{
-display:flex;
-flex-direction:column;
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-}
-
-.mobile-bar a{
-font-size:13px;
-padding:10px;
-}
-
-/* remove agendar */
-
-.mobile-bar a:nth-child(3){
-display:none;
-}
-
-}
-
-/* ===== TEXTO CURTO APENAS PARA SMARTWATCH ===== */
-
-@media (max-width:240px){
-
-html,body{
-overflow:hidden;
-height:100vh;
-max-height:100vh;
-}
-
-/* esconder elementos */
-
-nav,
-.menu-btn,
-.mobile-menu,
-.overlay,
-.carousel,
-.slide,
-.services,
-.reviews,
-.section,
-form,
-iframe,
-footer,
-.whatsapp,
-.ligar{
-display:none;
-}
-
-/* header */
-
-header{
-padding:6px;
-justify-content:center;
-}
-
-.logo img{
-display:none;
-}
-
-.logo h2{
-font-size:14px;
-}
-
-/* CENTRALIZAR TEXTO */
-
-.hero{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-text-align:center;
-width:100%;
-padding:0;
-}
-
-.hero h1{
-margin:0;
-}
-
-/* botões */
-
-.mobile-bar{
-display:flex;
-flex-direction:column;
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-}
-
-.mobile-bar a{
-font-size:10px;
-padding:4px 4px;
-}
-
-.mobile-bar a:nth-child(3){
-display:none;
-}
-
-}
-
-/* AJUSTE HERO SOMENTE PARA PC */
-
-@media(min-width:1100px){
-
-.hero{
-min-height:650px;
-padding-top:220px;
-padding-bottom:120px;
-}
-
-.hero h1{
-font-size:48px;
-}
-
-.hero p{
-font-size:18px;
-}
-
-}
-
-a,button{
--webkit-tap-highlight-color: transparent;
-}
-
-
-input[type="date"]::-webkit-datetime-edit{
-font-size:16px;
-}
-
-form input:not([type="date"]),
-form select,
-form textarea{
-height:48px;
-}
-
-/* impedir zoom no iPhone ao abrir calendário */
-
-#data{
-font-size:16px;
-}
-
-.flatpickr-input{
-font-size:16px !important;
-}
-
-.flatpickr-calendar{
-font-size:16px;
-}
-
-input, select, textarea{
-font-size:16px;
-}
-
-/* CALENDÁRIO PROFISSIONAL */
-
-.flatpickr-calendar{
-background:#111;
-color:#fff;
-border:2px solid #FFD000;
-}
-
-.flatpickr-day.selected{
+.dropdown-menu a:hover{
 background:#FFD000;
 color:#000;
 }
 
-.flatpickr-day:hover{
-background:#FFD000;
-color:#000;
+.dropdown:hover .dropdown-menu{
+display:flex;
 }
 
-.flatpickr-month{
-color:#FFD000;
+.sidebar{
+position:fixed;
+box-shadow:0 0 25px rgba(0,0,0,.8);
+top:0;
+left:0;
+width:280px;
+height:100%;
+background:#111;
+padding:40px 25px;
+transition:transform .35s cubic-bezier(.4,0,.2,1);
+z-index:6000;
+overflow-y:auto;
+
+transform:translateX(-100%);
 }
 
-.flatpickr-current-month{
-color:#FFD000;
+.sidebar.active{
+transform:translateX(0);
 }
 
-.flatpickr-weekday{
-color:#FFD000;
+.sidebar a{
+display:block;
 font-weight:600;
-}
-
-/* CORRIGIR VISIBILIDADE DOS DIAS */
-
-.flatpickr-day{
+padding:18px 0;
 color:#fff;
-font-weight:600;
+transition:.2s;
+text-decoration:none;
+border-bottom:1px solid rgba(255,255,255,.1);
 }
 
-.flatpickr-day.today{
-border-color:#FFD000;
+.sidebar a:hover{
 color:#FFD000;
 }
 
-.flatpickr-day.flatpickr-disabled{
-color:#555 !important;
-opacity:0.5;
-}
-
-.flatpickr-day.prevMonthDay,
-.flatpickr-day.nextMonthDay{
-color:#777;
-}
-
-.flatpickr-weekdays{
-background:#111;
-}
-
-.flatpickr-months .flatpickr-month{
-background:#111;
+.close-btn{
+font-size:30px;
+margin-bottom:25px;
+cursor:pointer;
+color:#FFD000;
 }
 
 </style>
 
 </head>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDSyS6fBp_JgsBdtCTaDuBZzkfyzivFnQ"></script>
+<body id="topo">
 
-<body>
+<div class="overlay" id="menu-overlay"></div>
+
+<!-- BARRA MOBILE -->
 
 <div class="mobile-bar">
+<a href="tel:+5561992176914">📞 Ligar</a>
+<a href="https://wa.me/5561992176914" target="_blank">💬 WhatsApp</a>
+<a href="#agendamento">📅 Agendar</a>
+</div>
 
-<a href="tel:61992176914">
-📞 Ligar
-</a>
+<!-- MENU MOBILE -->
 
-<a href="https://api.whatsapp.com/send?phone=5561992176914&text=Olá%20vim%20pelo%20site%20da%20Guga%20Energy" target="_blank">
-💬 WhatsApp
-</a>
+<div class="sidebar" id="sidebar">
 
-<a href="#agendamento">
-📅 Agendar
-</a>
+<div class="close-btn" onclick="toggleMenu()">✕</div>
+
+<a href="#topo">Início</a>
+
+<a href="javascript:void(0)" onclick="toggleServicos()">Serviços ▾</a>
+
+<div id="submenuServicos" style="display:none;padding-left:10px;">
+
+<a href="instalacoes-eletricas.html">Instalações elétricas</a>
+<a href="manutencao-eletrica.html">Manutenção elétrica</a>
+<a href="quadros-eletricos.html">Quadros elétricos</a>
+<a href="refletores-led.html">Refletores LED</a>
+<a href="automacao-residencial.html">Automação residencial</a>
+<a href="perfil-led.html">Perfil LED</a>
+<a href="cftv.html">CFTV</a>
+<a href="infraestrutura-eletrica.html">Infraestrutura</a>
 
 </div>
 
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<div class="mobile-menu" id="mobileMenu">
-
-<div class="close-menu" onclick="toggleMenu()">✕</div>
-
-<a href="#" onclick="toggleMenu()">Início</a>
-<a href="#servicos" onclick="toggleMenu()">Serviços</a>
-<a href="#galeria" onclick="toggleMenu()">Galeria</a>
-<a href="#avaliacoes" onclick="toggleMenu()">Avaliações</a>
-<a href="#agendamento" onclick="toggleMenu()">Agendamento</a>
+<a href="#galeria">Galeria</a>
+<a href="#avaliacoes">Avaliações</a>
+<a href="#agendamento">Agendamento</a>
 
 </div>
+
+<!-- HEADER -->
 
 <header>
 
 <div class="logo">
-<img src="logo.png">
+<img src="logo.png" alt="Logo Guga Energy">
 <h2>GUGA <span>ENERGY</span></h2>
 </div>
 
 <nav>
-<a href="#">Início</a>
-<a href="#servicos">Serviços</a>
+
+<a href="#topo">Início</a>
+
+<div class="dropdown">
+
+<a href="#">Serviços ▾</a>
+
+<div class="dropdown-menu">
+
+<a href="instalacoes-eletricas.html">Instalações elétricas</a>
+<a href="manutencao-eletrica.html">Manutenção elétrica</a>
+<a href="quadros-eletricos.html">Quadros elétricos</a>
+<a href="refletores-led.html">Refletores LED</a>
+<a href="automacao-residencial.html">Automação residencial</a>
+<a href="perfil-led.html">Perfil LED</a>
+<a href="cftv.html">CFTV e segurança</a>
+<a href="infraestrutura-eletrica.html">Infraestrutura elétrica</a>
+
+</div>
+
+</div>
+
 <a href="#galeria">Galeria</a>
 <a href="#avaliacoes">Avaliações</a>
 <a href="#agendamento">Agendamento</a>
+
 </nav>
 
 <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
@@ -886,15 +773,33 @@ background:#111;
 
 </header>
 
-<section class="hero">
-<h1>Eletricista Profissional em Brasília</h1>
-<p>Instalações elétricas, manutenção e segurança eletrônica.</p>
+<main>
 
-<p style="margin-top:10px;font-size:14px;color:#ccc;">
-Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasília
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>Eletricista Profissional em Brasília</h1>
+
+<p class="hero-sub">
+Instalações elétricas, manutenção e segurança eletrônica.
 </p>
 
+<p class="hero-destaque">
+⭐ Atendimento em todo DF • Mais de 1.000 atendimentos realizados
+</p>
+
+<p class="hero-info">
+Instalações conforme NBR 5410 • Profissional NR10
+</p>
+
+</div>
+
 </section>
+
+<!-- SERVIÇOS -->
 
 <section class="section" id="servicos">
 
@@ -902,18 +807,20 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 <div class="services">
 
-<div class="service">Instalações elétricas residenciais</div>
-<div class="service">Manutenção elétrica predial</div>
-<div class="service">Quadros elétricos</div>
-<div class="service">Refletores LED</div>
-<div class="service">Automatização residencial</div>
-<div class="service">Perfil LED</div>
-<div class="service">CFTV e segurança eletrônica</div>
-<div class="service">Infraestrutura elétrica</div>
+<div class="service">⚡ Instalações elétricas residenciais</div>
+<div class="service">🔧 Manutenção elétrica predial</div>
+<div class="service">🧰 Montagem de quadros elétricos</div>
+<div class="service">💡 Instalação de refletores LED</div>
+<div class="service">🏠 Automação residencial</div>
+<div class="service">✨ Perfil LED decorativo</div>
+<div class="service">📹 CFTV e segurança eletrônica</div>
+<div class="service">🔩 Infraestrutura elétrica</div>
 
 </div>
 
 </section>
+
+<!-- GALERIA -->
 
 <section class="section" id="galeria">
 
@@ -923,11 +830,25 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 <div class="carousel-track" id="track">
 
-<div class="slide"><img src="servico1.jpg"></div>
-<div class="slide"><img src="servico2.jpg"></div>
-<div class="slide"><img src="servico3.jpg"></div>
-<div class="slide"><img src="servico4.jpg"></div>
-<div class="slide"><img src="servico5.jpg"></div>
+<div class="slide">
+<img src="servico1.jpg" alt="Instalação elétrica residencial" loading="lazy">
+</div>
+
+<div class="slide">
+<img src="servico2.jpg" alt="Montagem de quadro elétrico" loading="lazy">
+</div>
+
+<div class="slide">
+<img src="servico3.jpg" alt="Instalação de refletores LED" loading="lazy">
+</div>
+
+<div class="slide">
+<img src="servico4.jpg" alt="Infraestrutura elétrica" loading="lazy">
+</div>
+
+<div class="slide">
+<img src="servico5.jpg" alt="Serviço elétrico profissional" loading="lazy">
+</div>
 
 </div>
 
@@ -935,12 +856,14 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 </section>
 
+<!-- AVALIAÇÕES -->
+
 <section class="section" id="avaliacoes">
 
 <h2>Avaliações de Clientes</h2>
 
-<p style="text-align:center;margin-bottom:20px;">
-<a href="https://share.google/6RcR1ZtKV9xGTRzKp" target="_blank" style="color:#FFD000;font-weight:700;font-size:16px;">
+<p class="avaliacoes-google">
+<a href="https://share.google/6RcR1ZtKV9xGTRzKp" target="_blank">
 ⭐ Ver avaliações no Google
 </a>
 </p>
@@ -955,51 +878,28 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 </section>
 
+<!-- AGENDAMENTO -->
+
 <section class="section" id="agendamento">
 
 <h2>Agendar Visita Técnica</h2>
 
-<form onsubmit="agendar(event)">
+<form onsubmit="agendar(event)" autocomplete="on">
 
-<input type="text" id="nome" placeholder="Nome" required>
-<input type="tel" id="telefone" placeholder="Telefone" required>
+<input type="text" id="nome" name="nome" placeholder="Nome" required>
+<input type="tel" id="telefone" name="telefone" placeholder="Telefone" required>
 
 <select id="cidade" required>
-
 <option value="">Selecione sua região</option>
-
 <option value="80">Planaltina-DF</option>
-<option value="80">Arapoanga</option>
-<option value="80">Sobradinho II</option>
-
 <option value="100">Sobradinho</option>
-<option value="100">Fercal</option>
-<option value="100">Itapoã</option>
-<option value="100">Paranoá</option>
-
-<option value="120">Lago Norte</option>
-<option value="120">Asa Norte</option>
 <option value="120">Plano Piloto</option>
-<option value="120">Cruzeiro</option>
-
 <option value="140">Guará</option>
-<option value="140">Sudoeste</option>
-<option value="140">Octogonal</option>
-<option value="140">Lago Sul</option>
-
 <option value="160">Águas Claras</option>
-<option value="160">Taguatinga</option>
-<option value="160">Vicente Pires</option>
-
 <option value="180">Ceilândia</option>
-<option value="180">Samambaia</option>
-<option value="180">Recanto das Emas</option>
-<option value="180">Santa Maria</option>
-<option value="180">Gama</option>
-
 </select>
 
-<input type="text" id="data" placeholder="Escolha a data" readonly required inputmode="none">
+<input type="text" id="data" placeholder="Escolha a data" readonly required>
 
 <select id="hora" required>
 <option value="">Escolha um horário</option>
@@ -1011,11 +911,7 @@ Instalações conforme NBR 5410 • Profissional NR10 • Atendimento em Brasíl
 
 <textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
 
-<div id="valorVisita" style="margin:10px 0;font-weight:600;color:#FFD000;"></div>
-
-<p style="font-size:13px;color:#bbb;">
-Valor da visita é abatido caso o serviço seja aprovado.
-</p>
+<div id="valorVisita"></div>
 
 <button type="submit">Solicitar Visita Técnica</button>
 
@@ -1023,13 +919,22 @@ Valor da visita é abatido caso o serviço seja aprovado.
 
 </section>
 
+<!-- MAPA -->
+
 <section class="section">
 
 <h2>Área de Atendimento no Distrito Federal</h2>
 
-<iframe src="https://maps.google.com/maps?q=Distrito%20Federal&t=&z=10&ie=UTF8&iwloc=&output=embed"></iframe>
+<iframe
+src="https://maps.google.com/maps?q=Distrito%20Federal&z=10&output=embed"
+loading="lazy">
+</iframe>
 
 </section>
+
+</main>
+
+<!-- FOOTER -->
 
 <footer>
 
@@ -1041,25 +946,17 @@ Valor da visita é abatido caso o serviço seja aprovado.
 
 <p>
 WhatsApp:
-<a href="https://api.whatsapp.com/send?phone=5561992176914" target="_blank">(61) 99217-6914</a>
+<a href="https://wa.me/5561992176914">(61) 99217-6914</a>
 </p>
 
 <p class="footer-copy">
-© 2024 – 2026 Guga Energy. Todos os direitos reservados.
+© 2024 – 2026 Guga Energy
 </p>
-
-<a href="painel-guga-gestao.html" 
-style="font-size:10px;color:#444;text-decoration:none;">
-admin
-</a>
 
 </footer>
 
-<a class="whatsapp" href="https://api.whatsapp.com/send?phone=5561992176914" target="_blank">
-💬 WhatsApp
-</a>
-
-<a class="ligar" href="tel:61992176914">📞 Ligar Agora</a>
+<a class="whatsapp" href="https://wa.me/5561992176914">💬 WhatsApp</a>
+<a class="ligar" href="tel:+5561992176914">📞 Ligar Agora</a>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
@@ -1091,46 +988,91 @@ window.collection = collection
 
 function toggleMenu(){
 
-const menu = document.getElementById("mobileMenu")
+const sidebar = document.getElementById("sidebar")
+const overlay = document.getElementById("menu-overlay")
+const body = document.body
 const btn = document.getElementById("menuBtn")
-const overlay = document.getElementById("overlay")
 
-if(menu.style.left === "0px" || menu.style.left === "0%"){
+sidebar.classList.toggle("active")
+overlay.classList.toggle("active")
+body.classList.toggle("menu-open")
+btn.classList.toggle("active")
 
-menu.style.left = "-100%"
-overlay.classList.remove("active")
-btn.classList.remove("active")
+}
 
+document.querySelectorAll(".sidebar a").forEach(link=>{
+
+link.addEventListener("click", function(e){
+
+// não fecha quando clicar no botão que abre o submenu
+if(this.getAttribute("onclick") === "toggleServicos()"){
+return
+}
+
+document.getElementById("sidebar").classList.remove("active")
+document.getElementById("menu-overlay").classList.remove("active")
+document.body.classList.remove("menu-open")
+
+})
+
+})
+
+
+document.getElementById("menu-overlay").addEventListener("click", function(){
+toggleMenu()
+})
+
+function toggleServicos(){
+
+const menu = document.getElementById("submenuServicos")
+
+if(menu.style.display === "block"){
+menu.style.display = "none"
 }else{
-
-menu.style.left = "0%"
-overlay.classList.add("active")
-btn.classList.add("active")
-
+menu.style.display = "block"
 }
 
 }
 
 
-const slides=document.querySelectorAll(".slide")
-let angle=0
-const step=72
-const radius=380
+/* CARROSSEL */
+
+let slides
+let angle = 0
+const step = 72
+const radius = window.innerWidth < 700 ? 220 : 380
 
 function update(){
+
 slides.forEach((slide,i)=>{
-let rotate=i*step+angle
-slide.style.transform=`translate(-50%, -50%) rotateY(${rotate}deg) translateZ(${radius}px)`
+
+let rotate = i * step + angle
+
+slide.style.transform =
+`translate(-50%, -50%) rotateY(${rotate}deg) translateZ(${radius}px)`
+
 })
+
 }
 
-function rotate(){
-angle-=step
+window.addEventListener("load", function(){
+
+slides = document.querySelectorAll(".slide")
+
 update()
-}
 
 setInterval(rotate,3500)
+
+})
+
+function rotate(){
+
+angle -= step
 update()
+
+}
+
+/* IDENTIFICAR ZONA */
 
 function identificarZona(regiao){
 
@@ -1159,34 +1101,37 @@ return "SUL DF"
 }
 
 return "DF"
+
 }
+
+/* AGENDAMENTO */
 
 async function agendar(event){
 
 event.preventDefault()
 
-let nome=document.getElementById("nome").value
-let telefone=document.getElementById("telefone").value
-let data=document.getElementById("data").value
-let hora=document.getElementById("hora").value
-let problema=document.getElementById("problema").value
-
-let dataHora = data + " às " + hora
+let nome = document.getElementById("nome").value
+let telefone = document.getElementById("telefone").value
+let data = document.getElementById("data").value
+let hora = document.getElementById("hora").value
+let problema = document.getElementById("problema").value
 
 let cidade = document.getElementById("cidade")
 let regiao = cidade.options[cidade.selectedIndex].text
-
+let valor = cidade.value
 let zona = identificarZona(regiao)
+
+let dataHora = data + " às " + hora
 
 try{
 
 await addDoc(collection(db, "agendamentos"), {
 
-nome: nome,
-telefone: telefone,
-regiao: regiao,
-dataHora: dataHora,
-problema: problema,
+nome,
+telefone,
+regiao,
+dataHora,
+problema,
 dataCriacao: new Date()
 
 })
@@ -1197,41 +1142,35 @@ console.log("Erro ao salvar no Firebase")
 
 }
 
-let mensagem=`
-⚡ *GUGA ENERGY – SOLUÇÕES ELÉTRICAS*
+/* WHATSAPP */
 
-━━━━━━━━━━━━━━━━━━
+let mensagem = `⚡ *GUGA ENERGY – SOLUÇÕES ELÉTRICAS*
 
 📋 *SOLICITAÇÃO DE VISITA TÉCNICA*
 
-👤 *Cliente:* ${nome}
-📞 *Telefone:* ${telefone}
+👤 Cliente: ${nome}
+📞 Telefone: ${telefone}
+📍 Região: ${regiao}
+🗺️ Zona: ${zona}
 
-📍 *Região:* ${regiao}
-🗺️ *Zona de atendimento:* ${zona}
+📅 Data: ${dataHora}
+💰 Valor da visita: R$ ${valor}
 
-📅 *Data e horário:* ${dataHora}
-
-━━━━━━━━━━━━━━━━━━
-
-🔧 *Problema informado:*
+🔧 Problema:
 ${problema}
 
-━━━━━━━━━━━━━━━━━━
-
-🚗 Atendimento em todo DF
 ⚡ Instalações conforme NBR 5410
-
-📨 Solicitação enviada pelo site
 `
 
-let url="https://api.whatsapp.com/send?phone=5561992176914&text="+encodeURIComponent(mensagem)
+let url = "https://api.whatsapp.com/send?phone=5561992176914&text=" + encodeURIComponent(mensagem)
 
 window.open(url)
 
-let inicio = data + "T" + hora
+/* GOOGLE CALENDAR */
 
+let inicio = data + "T" + hora
 let fim = new Date(inicio)
+
 fim.setHours(fim.getHours()+1)
 
 let inicioFormatado = inicio.replace(/[-:]/g,"")
@@ -1239,16 +1178,21 @@ let fimFormatado = fim.toISOString().replace(/[-:]/g,"").split(".")[0]
 
 let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
 + "&text=Visita Técnica - " + nome
-+ "&details=Cliente: " + nome + " | Telefone: " + telefone + " | Problema: " + problema
++ "&details=Cliente: " + nome + " | Telefone: " + telefone
 + "&location=" + regiao
 + "&dates=" + inicioFormatado + "/" + fimFormatado
 
 window.open(agenda)
 
+alert("Solicitação enviada!")
+
 document.querySelector("form").reset()
+
 valorVisita.innerHTML=""
 
 }
+
+/* VALOR DA VISITA */
 
 const cidade = document.getElementById("cidade")
 const valorVisita = document.getElementById("valorVisita")
@@ -1263,6 +1207,8 @@ valorVisita.innerHTML = "Valor da visita técnica: <strong>R$ " + valor + "</str
 
 })
 
+/* SCROLL SUAVE */
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 anchor.addEventListener("click", function(e){
@@ -1276,8 +1222,10 @@ e.preventDefault()
 let target = document.querySelector(targetId)
 
 window.scrollTo({
+
 top: target.offsetTop - 80,
 behavior: "smooth"
+
 })
 
 }
@@ -1286,41 +1234,28 @@ behavior: "smooth"
 
 })
 
-flatpickr("#data", {
-locale: "pt",
-dateFormat: "d/m/Y",
-minDate: "today",
-disableMobile: true,
-allowInput: false,
-clickOpens: true,
+/* CALENDÁRIO */
 
-disable: [
+flatpickr("#data", {
+
+locale:"pt",
+dateFormat:"d/m/Y",
+minDate:"today",
+disableMobile:true,
+
+disable:[
 function(date){
-return date.getDay() === 0;
+return date.getDay() === 0
 }
 ],
 
-onOpen: function(selectedDates, dateStr, instance){
-instance._input.blur();
-},
+onOpen:(s,d,i)=>i._input.blur(),
+onClose:(s,d,i)=>i._input.blur()
 
-onClose: function(selectedDates, dateStr, instance){
-instance._input.blur();
-},
-
-onReady: function(selectedDates, dateStr, instance){
-
-instance._input.setAttribute("readonly","readonly");
-instance._input.setAttribute("inputmode","none");
-
-instance.calendarContainer.style.boxShadow="0 10px 25px rgba(0,0,0,0.4)";
-instance.calendarContainer.style.border="2px solid #FFD000";
-instance.calendarContainer.style.borderRadius="10px";
-
-}
 })
 
 </script>
 
 </body>
+
 </html>
