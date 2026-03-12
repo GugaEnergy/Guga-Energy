@@ -1144,7 +1144,16 @@ WhatsApp:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { 
+getFirestore, 
+collection, 
+addDoc, 
+getDocs, 
+query, 
+where,
+serverTimestamp
+
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"; from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -1313,14 +1322,20 @@ let tempoEntrada = Date.now()
 let ultimoEnvio = 0
 
 async function agendar(event){
-    
+
 event.preventDefault()
 
+let nome = document.getElementById("nome").value
+let telefone = document.getElementById("telefone").value
+let data = document.getElementById("data").value
+let hora = document.getElementById("hora").value
+let dataHora = data + " às " + hora
+let problema = document.getElementById("problema").value
+
+let cidade = document.getElementById("cidade")
+let regiao = cidade.options[cidade.selectedIndex].text
 if(!tabelaValores[regiao]){
 alert("Valor da visita não encontrado para esta região.")
-return
-}
-if(document.getElementById("site").value !== ""){
 return
 }
 let agoraEnvio = Date.now()
@@ -1358,6 +1373,7 @@ return
 
 let data = document.getElementById("data").value
 let hora = document.getElementById("hora").value
+let dataHora = data + " às " + hora 
 let problema = document.getElementById("problema").value
 
 let cidade = document.getElementById("cidade")
