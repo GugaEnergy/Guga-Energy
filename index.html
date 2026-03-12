@@ -106,15 +106,47 @@ z-index:3000;
 display:flex;
 align-items:center;
 gap:15px;
+text-decoration:none;
+color:#fff;
 }
 
 .logo img{
 height:120px;
+cursor:pointer;
+transition:transform .25s;
+}
+
+.logo:hover{
+transform:scale(1.05);
 }
 
 .logo h2{
 font-size:34px;
 letter-spacing:2px;
+position:relative;
+overflow:hidden;
+}
+
+.logo h2::after{
+content:"";
+position:absolute;
+top:0;
+left:-150%;
+width:120%;
+height:100%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,208,0,.6),
+transparent
+);
+opacity:0;
+transition:left 1.6s ease, opacity .3s ease;
+}
+
+.logo:hover h2::after{
+left:150%;
+opacity:1;
 }
 
 .logo span{
@@ -418,7 +450,7 @@ border-left:4px solid #FFD000;
 
 .avaliacoes-google{
 text-align:center;
-margin-bottom:20px;
+margin-bottom:5px;
 }
 
 .avaliacoes-google a{
@@ -744,6 +776,14 @@ padding-bottom:60px;
 
 }
 
+#avaliacoes{
+padding-bottom:15px;
+}
+
+#agendamento{
+padding-top:25px;
+}
+
 </style>
 
 </head>
@@ -793,10 +833,10 @@ padding-bottom:60px;
 
 <header>
 
-<div class="logo">
+<a href="#topo" class="logo">
 <img src="logo.png" alt="Logo Guga Energy">
 <h2>GUGA <span>ENERGY</span></h2>
-</div>
+</a>
 
 <nav>
 
@@ -932,7 +972,7 @@ Instalações conforme NBR 5410 • Profissional NR10
 
 <p class="avaliacoes-google">
 <a href="https://share.google/6RcR1ZtKV9xGTRzKp" target="_blank">
-⭐ Ver avaliações no Google
+★ Ver avaliações no Google
 </a>
 </p>
 
@@ -949,16 +989,53 @@ Instalações conforme NBR 5410 • Profissional NR10
 <form onsubmit="agendar(event)" autocomplete="on">
 
 <input type="text" id="nome" name="nome" placeholder="Nome" required>
-<input type="tel" id="telefone" name="telefone" placeholder="Telefone" required>
+<input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required maxlength="15">
 
 <select id="cidade" required>
+
 <option value="">Selecione sua região</option>
-<option value="80">Planaltina-DF</option>
-<option value="100">Sobradinho</option>
+
 <option value="120">Plano Piloto</option>
-<option value="140">Guará</option>
+<option value="120">Asa Norte</option>
+<option value="120">Asa Sul</option>
+<option value="130">Lago Norte</option>
+<option value="130">Lago Sul</option>
+
+<option value="140">Cruzeiro</option>
+<option value="140">Sudoeste</option>
+<option value="140">Octogonal</option>
+
+<option value="150">Guará</option>
 <option value="160">Águas Claras</option>
+<option value="160">Vicente Pires</option>
+<option value="160">Taguatinga</option>
+
+<option value="170">Samambaia</option>
+<option value="170">Recanto das Emas</option>
+
 <option value="180">Ceilândia</option>
+
+<option value="180">Riacho Fundo</option>
+<option value="180">Riacho Fundo II</option>
+
+<option value="180">Candangolândia</option>
+<option value="180">Núcleo Bandeirante</option>
+<option value="180">Park Way</option>
+
+<option value="190">Santa Maria</option>
+<option value="190">Gama</option>
+
+<option value="200">Sobradinho</option>
+<option value="200">Sobradinho II</option>
+
+<option value="200">Paranoá</option>
+<option value="200">Itapoã</option>
+
+<option value="220">Planaltina</option>
+<option value="220">Arapoanga</option>
+
+<option value="230">Fercal</option>
+
 </select>
 
 <input type="text" id="data" placeholder="Escolha a data" readonly required>
@@ -1276,12 +1353,30 @@ valorVisita.innerHTML=""
 const cidade = document.getElementById("cidade")
 const valorVisita = document.getElementById("valorVisita")
 
+let tabelaValores = {}
+
+fetch("valores_deslocamento.json")
+.then(res => res.json())
+.then(data => {
+tabelaValores = data
+})
+
 cidade.addEventListener("change", function(){
 
-let valor = cidade.value
+let regiao = cidade.options[cidade.selectedIndex].text.trim()
 
-if(valor !== ""){
-valorVisita.innerHTML = "Valor da visita técnica: <strong>R$ " + valor + "</strong>"
+if(tabelaValores[regiao] !== undefined){
+
+let valor = tabelaValores[regiao]
+
+valorVisita.innerHTML =
+"Valor da visita técnica (deslocamento incluso): <strong>R$ " + valor + "</strong>"
+
+}else{
+
+valorVisita.innerHTML =
+"Valor da visita não encontrado."
+
 }
 
 })
@@ -1330,6 +1425,26 @@ return date.getDay() === 0
 
 onOpen:(s,d,i)=>i._input.blur(),
 onClose:(s,d,i)=>i._input.blur()
+
+})
+
+const telefone = document.getElementById("telefone")
+
+telefone.addEventListener("input", function(e){
+
+let valor = e.target.value.replace(/\D/g,"")
+
+if(valor.length > 11) valor = valor.slice(0,11)
+
+if(valor.length <= 10){
+valor = valor.replace(/(\d{2})(\d)/,"($1) $2")
+valor = valor.replace(/(\d{4})(\d)/,"$1-$2")
+}else{
+valor = valor.replace(/(\d{2})(\d)/,"($1) $2")
+valor = valor.replace(/(\d{5})(\d)/,"$1-$2")
+}
+
+e.target.value = valor
 
 })
 
