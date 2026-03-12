@@ -14,131 +14,104 @@ body{
 margin:0;
 font-family:Arial;
 background:#020202;
-color:white;
+color:#fff;
+padding-top:90px;
 }
 
-/* TOPO */
+/* HEADER */
 
-.topo{
-position:sticky;
-top:0;
-z-index:999;
+header{
 background:#000;
-border-bottom:3px solid #FFD000;
-display:none;
+padding:12px 20px;
+display:flex;
 align-items:center;
 justify-content:space-between;
-padding:12px 20px;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-size:18px;
-font-weight:bold;
-color:#FFD000;
-}
-
-.logo img{
-height:40px;
-width:auto;
-display:block;
-}
-
-.logo span{
-color:white;
-}
-
-.menu{
-display:flex;
-gap:20px;
-align-items:center;
-}
-
-.menu a{
-color:white;
-text-decoration:none;
-font-size:14px;
-transition:0.2s;
-}
-
-.menu a:hover{
-color:#FFD000;
-}
-
-#menu-overlay{
+border-bottom:3px solid #FFD000;
 position:fixed;
 top:0;
 left:0;
 width:100%;
-height:100%;
-background:rgba(0,0,0,.6);
-opacity:0;
-pointer-events:none;
-transition:.3s;
-z-index:5000;
+z-index:3000;
+box-sizing:border-box;
 }
 
-#menu-overlay.active{
-opacity:1;
-pointer-events:auto;
+/* LOGO */
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+text-decoration:none;
+color:#fff;
 }
 
-.status{
+.logo img{
+height:50px;
+}
+
+.logo h2{
+font-size:22px;
+margin:0;
+}
+
+.logo span{
+color:#FFD000;
+}
+
+/* BOTÃO SAIR */
+
+.sair-btn{
 background:#FFD000;
-color:black;
-padding:6px 12px;
+color:#000;
+border:none;
 border-radius:4px;
+padding:8px 16px;
 font-weight:bold;
+cursor:pointer;
+font-size:13px;
 }
+
+.sair-btn:hover{
+background:#ffe44d;
+}
+
+/* BOTÕES GERAIS */
 
 .btn{
 background:#FFD000;
-padding:8px 12px;
-color:black;
+color:#000;
 border:none;
 border-radius:4px;
+padding:8px 12px;
 font-weight:bold;
 cursor:pointer;
 font-size:13px;
 min-width:90px;
-text-align:center;
-display:inline-block;
 }
 
 .btn.verde{
 background:#28a745;
-color:white;
+color:#fff;
 }
 
 .btn.vermelho{
 background:#dc3545;
-color:white;
+color:#fff;
 }
 
-.acoes{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-}
-
-/* LOGIN AREA */
+/* LOGIN */
 
 .login{
 display:flex;
 align-items:center;
 justify-content:center;
 height:100vh;
-width:100%;
 background:#020202;
 }
 
-/* CAIXA LOGIN */
-
 .login-box{
 background:rgba(8,8,8,0.92);
-padding:45px;
+padding:40px;
 border-radius:12px;
 width:340px;
 max-width:90%;
@@ -146,35 +119,6 @@ text-align:center;
 border:1px solid #1a1a1a;
 border-top:3px solid #FFD000;
 box-shadow:0 10px 40px rgba(0,0,0,0.9);
-backdrop-filter:blur(6px);
--webkit-backdrop-filter:blur(6px);
-animation:fade 0.6s ease;
-}
-
-/* LOGO */
-
-.login-box .logo img{
-width:90px;
-height:auto;
-}
-
-/* SUBTITULO */
-
-.login-sub{
-font-size:13px;
-color:#9c9c9c;
-margin-bottom:20px;
-}
-
-/* INPUTS */
-
-.login-box .logo{
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:10px;
-margin-bottom:20px;
 }
 
 .login-box input{
@@ -185,17 +129,8 @@ border-radius:5px;
 border:1px solid #1f1f1f;
 background:#111;
 color:white;
-outline:none;
 font-size:14px;
-transition:0.2s;
 }
-
-.login-box input:focus{
-border:1px solid #FFD000;
-background:#151515;
-}
-
-/* BOTÕES */
 
 .login-box button{
 width:100%;
@@ -206,18 +141,48 @@ border:none;
 border-radius:5px;
 font-weight:bold;
 cursor:pointer;
-transition:0.2s;
 }
 
-.login-box button:hover{
-background:#ffea00;
-transform:translateY(-2px);
-box-shadow:0 4px 10px rgba(255,208,0,0.2);
+/* SUBTEXTO LOGIN */
+
+.login-sub{
+font-size:13px;
+color:#9c9c9c;
+margin-bottom:20px;
 }
 
-@keyframes fade{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
+/* CAMPOS */
+
+.usuario-box,
+.senha-box{
+position:relative;
+width:92%;
+}
+
+/* INPUTS */
+
+.login-box input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:5px;
+border:1px solid #1f1f1f;
+background:#111;
+color:white;
+font-size:14px;
+outline:none;
+}
+
+/* OLHO DA SENHA */
+
+.ver-senha{
+position:absolute;
+right:12px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+color:#FFD000;
+font-size:18px;
 }
 
 /* PAINEL */
@@ -228,6 +193,8 @@ padding:30px;
 max-width:1200px;
 margin:auto;
 }
+
+/* CARDS */
 
 .cards{
 display:grid;
@@ -241,13 +208,10 @@ background:#151515;
 padding:25px;
 border-left:4px solid #FFD000;
 border-radius:6px;
-font-size:15px;
-line-height:1.6;
 }
 
 .card strong{
 color:#FFD000;
-font-size:16px;
 }
 
 /* TABELA */
@@ -263,14 +227,35 @@ overflow:hidden;
 th{
 background:#000;
 color:#FFD000;
-font-weight:600;
 }
 
 th,td{
 padding:14px;
 border-bottom:1px solid #333;
 font-size:14px;
-text-align:left;
+}
+
+/* AÇÕES */
+
+.acoes{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+/* CONTADOR */
+
+.contador-atendimentos{
+margin:20px 0;
+font-size:16px;
+background:#111;
+padding:12px 15px;
+border-left:4px solid #FFD000;
+border-radius:4px;
+}
+
+.contador-atendimentos strong{
+color:#FFD000;
 }
 
 /* MAPA */
@@ -282,11 +267,9 @@ border-radius:8px;
 border:2px solid #FFD000;
 }
 
-@media(max-width:900px){
+/* RESPONSIVO */
 
-.cards{
-grid-template-columns:1fr;
-}
+@media(max-width:900px){
 
 table{
 display:block;
@@ -296,42 +279,22 @@ white-space:nowrap;
 
 }
 
-.usuario-box{
-position:relative;
-width:90%;
-left: 1%;
+@media(max-width:600px){
+
+.logo img{
+height:40px;
 }
 
-.senha-box{
-position:relative;
-width:90%;
-left: 1%;
-}
-
-.senha-box input{
-width:100%;
-padding:12px;
-margin:center 0;
-border-radius:5px;
-border:1px solid #1f1f1f;
-background:#111;
-color:white;
-outline:none;
-}
-
-.ver-senha{
-position:absolute;
-right:12px;
-top:50%;
-transform:translateY(-50%);
-cursor:pointer;
-color:#FFD000;
+.logo h2{
 font-size:18px;
 }
 
-.login-box{
-width:340px;
-max-width:92%;
+.sair-btn{
+right:15px;
+padding:7px 12px;
+font-size:12px;
+}
+
 }
 
 </style>
@@ -352,28 +315,19 @@ window.location.href="/"
 <div id="menu-overlay"></div>
 
 <!-- TOPO -->
+ 
+<header id="topo" style="display:none">
 
-<div class="topo" id="topo">
+<a href="#" class="logo" onclick="window.location.reload()">
+<img src="logo.png">
+<h2>GUGA <span>ENERGY</span></h2>
+</a>
 
-<div class="logo">
-<img src="logo.png" alt="Guga Energy">
-<span>Guga Energy</span>
-</div>
+<button onclick="sair()" class="sair-btn">
+Sair
+</button>
 
-<div class="menu">
-
-<a href="#">Painel</a>
-<a href="index.html">Site</a>
-
-<div class="status">
-Atendimentos: <span id="total">0</span>
-</div>
-
-<button onclick="sair()" class="btn">Sair</button>
-
-</div>
-
-</div>
+</header>
 
 <!-- LOGIN -->
 
@@ -395,7 +349,7 @@ Painel de Atendimentos
 </div>
 <div class="senha-box">
 <input id="senha" type="password" placeholder="Senha">
-<span onclick="verSenha()" class="ver-senha">👁</span>
+<span class="ver-senha" onclick="verSenha()">👁</span>
 </div>
 
 <button onclick="carregar()" class="btn">Atualizar</button>
@@ -422,6 +376,13 @@ Soluções Elétricas
 <strong>Região</strong><br>
 Distrito Federal
 </div>
+
+</div>
+
+<div class="contador-atendimentos">
+
+Atendimentos registrados: 
+<strong id="total">0</strong>
 
 </div>
 
@@ -703,8 +664,6 @@ console.log(e)
 /* GOOGLE AGENDA */
 
 function abrirAgenda(nome, telefone, regiao, problema, dataHora){
-
-if(!dataHora) return
 
 if(!dataHora) return
 let partes = dataHora.split(" às ")
