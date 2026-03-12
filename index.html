@@ -1144,16 +1144,7 @@ WhatsApp:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { 
-getFirestore, 
-collection, 
-addDoc, 
-getDocs, 
-query, 
-where,
-serverTimestamp
-
-} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"; from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -1173,6 +1164,7 @@ window.collection = collection
 window.getDocs = getDocs
 window.query = query
 window.where = where
+window.serverTimestamp = serverTimestamp
 
 </script>
 
@@ -1322,20 +1314,10 @@ let tempoEntrada = Date.now()
 let ultimoEnvio = 0
 
 async function agendar(event){
-
+    
 event.preventDefault()
 
-let nome = document.getElementById("nome").value
-let telefone = document.getElementById("telefone").value
-let data = document.getElementById("data").value
-let hora = document.getElementById("hora").value
-let dataHora = data + " às " + hora
-let problema = document.getElementById("problema").value
-
-let cidade = document.getElementById("cidade")
-let regiao = cidade.options[cidade.selectedIndex].text
-if(!tabelaValores[regiao]){
-alert("Valor da visita não encontrado para esta região.")
+if(document.getElementById("site").value !== ""){
 return
 }
 let agoraEnvio = Date.now()
@@ -1373,7 +1355,7 @@ return
 
 let data = document.getElementById("data").value
 let hora = document.getElementById("hora").value
-let dataHora = data + " às " + hora 
+let dataHora = data + " às " + hora
 let problema = document.getElementById("problema").value
 
 let cidade = document.getElementById("cidade")
@@ -1432,7 +1414,8 @@ window.location.href = url
 
 /* GOOGLE CALENDAR */
 
-let inicio = data + "T" + hora
+let [dia,mes,ano] = data.split("/")
+let inicio = `${ano}-${mes}-${dia}T${hora}`
 let fim = new Date(inicio)
 
 fim.setHours(fim.getHours()+1)
@@ -1478,14 +1461,14 @@ if(tabelaValores[regiao] !== undefined){
 
 let valor = tabelaValores[regiao]
 
-valorVisita.innerHTML =
+document.getElementById("valorVisita").innerHTML =
 "Valor da visita técnica (deslocamento incluso): <strong>R$ " + valor + "</strong>"
 
 infoVisita.style.display = "block"
 
 }else{
 
-valorVisita.innerHTML =
+document.getElementById("valorVisita").innerHTML =
 "Valor da visita não encontrado."
 
 infoVisita.style.display = "none"
