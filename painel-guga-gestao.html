@@ -10,19 +10,30 @@
 
 <style>
 
-body{
+/* RESET */
+
+*{
+box-sizing:border-box;
 margin:0;
-font-family:Arial;
+padding:0;
+}
+
+/* BASE */
+
+body{
+font-family:Arial, Helvetica, sans-serif;
 background:#020202;
 color:#fff;
-padding-top:90px;
+padding-top:70px;
+min-height:100vh;
 }
 
 /* HEADER */
 
 header{
 background:#000;
-padding:12px 20px;
+height:70px;
+padding:0 18px;
 display:flex;
 align-items:center;
 justify-content:space-between;
@@ -32,7 +43,6 @@ top:0;
 left:0;
 width:100%;
 z-index:3000;
-box-sizing:border-box;
 }
 
 /* LOGO */
@@ -40,18 +50,17 @@ box-sizing:border-box;
 .logo{
 display:flex;
 align-items:center;
-gap:12px;
+gap:8px;
 text-decoration:none;
 color:#fff;
 }
 
 .logo img{
-height:50px;
+height:40px;
 }
 
 .logo h2{
-font-size:22px;
-margin:0;
+font-size:18px;
 }
 
 .logo span{
@@ -64,29 +73,30 @@ color:#FFD000;
 background:#FFD000;
 color:#000;
 border:none;
-border-radius:4px;
-padding:8px 16px;
+border-radius:6px;
+padding:8px 14px;
 font-weight:bold;
-cursor:pointer;
 font-size:13px;
+cursor:pointer;
 }
 
-.sair-btn:hover{
-background:#ffe44d;
-}
-
-/* BOTÕES GERAIS */
+/* BOTÕES */
 
 .btn{
+display:flex;
+align-items:center;
+justify-content:center;
 background:#FFD000;
 color:#000;
 border:none;
-border-radius:4px;
-padding:8px 12px;
+border-radius:8px;
 font-weight:bold;
 cursor:pointer;
-font-size:13px;
-min-width:90px;
+transition:.2s;
+}
+
+.btn:hover{
+opacity:.9;
 }
 
 .btn.verde{
@@ -106,17 +116,16 @@ display:flex;
 align-items:center;
 justify-content:center;
 height:100vh;
-background:#020202;
+padding:20px;
 }
 
 .login-box{
-background:rgba(8,8,8,0.92);
-padding:40px;
+background:#0a0a0a;
+padding:30px;
 border-radius:12px;
 width:340px;
-max-width:90%;
+max-width:100%;
 text-align:center;
-border:1px solid #1a1a1a;
 border-top:3px solid #FFD000;
 box-shadow:0 10px 40px rgba(0,0,0,0.9);
 }
@@ -125,25 +134,11 @@ box-shadow:0 10px 40px rgba(0,0,0,0.9);
 width:100%;
 padding:12px;
 margin:8px 0;
-border-radius:5px;
+border-radius:6px;
 border:1px solid #1f1f1f;
 background:#111;
-color:white;
-font-size:14px;
+color:#fff;
 }
-
-.login-box button{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#FFD000;
-border:none;
-border-radius:5px;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* SUBTEXTO LOGIN */
 
 .login-sub{
 font-size:13px;
@@ -151,95 +146,84 @@ color:#9c9c9c;
 margin-bottom:20px;
 }
 
-/* CAMPOS */
-
-.usuario-box,
-.senha-box{
-position:relative;
-width:92%;
-}
-
-/* INPUTS */
-
-.login-box input{
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:5px;
-border:1px solid #1f1f1f;
-background:#111;
-color:white;
-font-size:14px;
-outline:none;
-}
-
-/* OLHO DA SENHA */
-
-.ver-senha{
-position:absolute;
-right:12px;
-top:50%;
-transform:translateY(-50%);
-cursor:pointer;
-color:#FFD000;
-font-size:18px;
-}
-
 /* PAINEL */
 
 .painel{
 display:none;
-padding:30px;
-max-width:1200px;
+padding:20px 15px;
+max-width:1400px;
 margin:auto;
 }
 
-/* CONTAINER DOS CARDS */
+/* CARDS */
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:25px;
-margin-bottom:30px;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:12px;
+margin-bottom:20px;
 }
-
-/* CARD */
 
 .card{
 background:#151515;
-padding:28px;
+padding:16px;
 border-left:4px solid #FFD000;
-border-radius:8px;
-display:flex;
-flex-direction:column;
-gap:8px;
-box-shadow:0 8px 25px rgba(0,0,0,0.6);
-transition:all .3s ease;
-cursor:pointer;
-}
-
-.card:hover{
-transform:translateY(-6px);
-background:#1c1c1c;
-box-shadow:0 14px 35px rgba(0,0,0,0.8);
-}
-.card::after{
-content:"";
-position:absolute;
-left:0;
-bottom:0;
-width:0%;
-height:2px;
-background:#FFD000;
-transition:.3s;
-}
-
-.card:hover::after{
-width:100%;
+border-radius:10px;
+box-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
 
 .card strong{
 color:#FFD000;
+}
+
+/* BUSCA */
+
+.busca-box{
+margin-bottom:18px;
+}
+
+#buscaCliente{
+width:100%;
+padding:14px;
+border-radius:8px;
+border:none;
+background:#111;
+color:#fff;
+font-size:15px;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:10px;
+margin-bottom:20px;
+}
+
+.dash-card{
+background:#111;
+padding:12px;
+border-left:4px solid #FFD000;
+border-radius:8px;
+text-align:center;
+}
+
+.dash-card strong{
+display:block;
+font-size:18px;
+color:#FFD000;
+margin-top:4px;
+}
+
+/* CONTADOR */
+
+.contador-atendimentos{
+margin:18px 0;
+background:#111;
+padding:12px;
+border-left:4px solid #FFD000;
+border-radius:6px;
 }
 
 /* TABELA */
@@ -258,80 +242,42 @@ color:#FFD000;
 }
 
 th,td{
-padding:14px;
+padding:12px;
 border-bottom:1px solid #333;
 font-size:14px;
+word-break:break-word;
 }
 
 /* AÇÕES */
 
 .acoes{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:8px;
 }
 
-/* CONTADOR */
-
-.contador-atendimentos{
-margin:20px 0;
-font-size:16px;
-background:#111;
-padding:12px 15px;
-border-left:4px solid #FFD000;
-border-radius:4px;
+.btn{
+padding:10px;
+font-size:13px;
 }
 
-.contador-atendimentos strong{
-color:#FFD000;
+/* SCROLL */
+
+::-webkit-scrollbar{
+width:8px;
 }
 
-/* RESPONSIVO */
-
-@media(max-width:900px){
-
-table{
-display:block;
-overflow-x:auto;
-white-space:nowrap;
+::-webkit-scrollbar-thumb{
+background:#FFD000;
 }
 
-}
-
-@media(max-width:600px){
-
-.logo img{
-height:40px;
-}
-
-.logo h2{
-font-size:18px;
-}
-
-.sair-btn{
-right:15px;
-padding:7px 12px;
-font-size:12px;
-}
-
-}
-
-.empresa-nome{
-font-size:18px;
-font-weight:bold;
-color:#fff;
-}
-
-.empresa-nome span{
-color:#FFD000;
-}
-
-.empresa-desc{
-font-size:14px;
-color:#bdbdbd;
-}
+/* ========================= */
+/* MOBILE RESPONSIVO */
+/* ========================= */
 
 @media(max-width:768px){
+
+/* tabela vira cards */
 
 table,
 thead,
@@ -349,32 +295,27 @@ display:none;
 
 tr{
 background:#111;
-border-radius:10px;
-margin-bottom:20px;
+border-radius:12px;
+margin-bottom:16px;
 padding:16px;
 border-left:4px solid #FFD000;
-box-shadow:0 6px 18px rgba(0,0,0,0.6);
+box-shadow:0 4px 14px rgba(0,0,0,0.5);
 }
 
 td{
 border:none;
-padding:8px 0;
-font-size:14px;
+padding:6px 0;
 display:flex;
 flex-direction:column;
-gap:3px;
+gap:4px;
+font-size:14px;
 }
 
 td::before{
 font-weight:bold;
 color:#FFD000;
 font-size:12px;
-opacity:0.8;
-}
-
-td:nth-child(6){
-line-height:1.4;
-color:#ddd;
+opacity:.9;
 }
 
 /* nomes das colunas */
@@ -387,86 +328,40 @@ td:nth-child(5)::before{content:"Status";}
 td:nth-child(6)::before{content:"Problema";}
 td:nth-child(7)::before{content:"Ações";}
 
-.acoes{
-margin-top:8px;
-flex-wrap:wrap;
-}
-
-.btn{
-flex:1;
-min-width:80px;
-}
-}
-
-@media(max-width:768px){
-
-.acoes{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin-top:12px;
-}
+/* botões maiores */
 
 .btn{
 width:100%;
-text-align:center;
-}
-
-}
-
-td{
-word-break:break-word;
-text-align:right;
-}
-
-td::before{
-text-align:left;
-}
-
-.busca-box{
-margin-bottom:15px;
-}
-
-#buscaCliente{
-width:100%;
-padding:12px;
-border-radius:6px;
-border:none;
-background:#111;
-color:white;
+min-height:42px;
 font-size:14px;
-outline:none;
 }
 
-#buscaCliente::placeholder{
-color:#888;
+/* ações organizadas */
+
+.acoes{
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:8px;
 }
+
+}
+
+/* CELULAR PEQUENO */
+
+@media(max-width:420px){
 
 .dashboard{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:15px;
-margin-bottom:25px;
+grid-template-columns:1fr 1fr;
 }
 
-.dash-card{
-background:#111;
-padding:15px;
-border-left:4px solid #FFD000;
-border-radius:6px;
-text-align:center;
+.logo h2{
+font-size:16px;
 }
 
-.dash-card span{
-font-size:12px;
-color:#aaa;
+.btn{
+font-size:13px;
 }
 
-.dash-card strong{
-display:block;
-font-size:22px;
-color:#FFD000;
-margin-top:5px;
 }
 
 </style>
@@ -475,23 +370,16 @@ margin-top:5px;
 
 <body>
 
-<!-- aqui vem sua lista de agendamentos -->
-
-<script>
-function sair(){
-localStorage.removeItem("adminLogado")
-window.location.href="/"
-}
-</script>
+<!-- OVERLAY -->
 
 <div id="menu-overlay"></div>
 
-<!-- TOPO -->
- 
+<!-- HEADER -->
+
 <header id="topo" style="display:none">
 
-<a href="#" class="logo" onclick="window.location.reload()">
-<img src="logo.png">
+<a href="#" class="logo" onclick="location.reload()">
+<img src="logo.png" alt="Logo Guga Energy">
 <h2>GUGA <span>ENERGY</span></h2>
 </a>
 
@@ -508,8 +396,8 @@ Sair
 <div class="login-box">
 
 <div class="logo">
-<img src="logo.png" alt="Guga Energy">
-<span>Guga Energy</span>
+<img src="logo.png" alt="Logo Guga Energy">
+<h2>GUGA <span>ENERGY</span></h2>
 </div>
 
 <div class="login-sub">
@@ -517,16 +405,25 @@ Painel de Atendimentos
 </div>
 
 <div class="usuario-box">
-<input id="usuario" placeholder="Usuário">
+<input id="usuario" placeholder="Usuário" autocomplete="username">
 </div>
+
 <div class="senha-box">
-<input id="senha" type="password" placeholder="Senha">
+<input id="senha" type="password" placeholder="Senha" autocomplete="current-password">
 <span class="ver-senha" onclick="verSenha()">👁</span>
 </div>
 
-<button onclick="carregar()" class="btn">Atualizar</button>
-<button onclick="entrar()" class="btn">Entrar no Painel</button>
-<button onclick="voltarSite()" class="btn">Sair</button>
+<button onclick="entrar()" class="btn">
+Entrar no Painel
+</button>
+
+<button onclick="location.reload()" class="btn">
+Atualizar
+</button>
+
+<button onclick="voltarSite()" class="btn">
+Voltar ao Site
+</button>
 
 </div>
 
@@ -551,14 +448,19 @@ Painel de Atendimentos
 
 </div>
 
+<!-- BUSCA -->
+
 <div class="busca-box">
 
 <input 
-type="text" 
-id="buscaCliente" 
+type="text"
+id="buscaCliente"
 placeholder="🔎 Buscar cliente ou telefone"
 >
+
 </div>
+
+<!-- DASHBOARD -->
 
 <div class="dashboard">
 
@@ -584,12 +486,16 @@ placeholder="🔎 Buscar cliente ou telefone"
 
 </div>
 
+<!-- CONTADOR -->
+
 <div class="contador-atendimentos">
 
-Atendimentos registrados: 
+Atendimentos registrados:
 <strong id="total">0</strong>
 
 </div>
+
+<!-- TABELA -->
 
 <table>
 
@@ -616,21 +522,15 @@ Atendimentos registrados:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
-import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from
-"https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
-window.deleteDoc = deleteDoc
-window.updateDoc = updateDoc
-window.doc = doc
+import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 const firebaseConfig = {
-
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
 authDomain: "guga-energy-agendamentos-778f1.firebaseapp.com",
 projectId: "guga-energy-agendamentos-778f1",
 storageBucket: "guga-energy-agendamentos-778f1.firebasestorage.app",
 messagingSenderId: "384265745174",
 appId: "1:384265745174:web:a9284d4036f4a787bf5637"
-
 }
 
 const app = initializeApp(firebaseConfig)
@@ -639,10 +539,13 @@ const db = getFirestore(app)
 window.db = db
 window.getDocs = getDocs
 window.collection = collection
+window.deleteDoc = deleteDoc
+window.updateDoc = updateDoc
+window.doc = doc
 
 </script>
 
-<!-- GOOGLE MAPS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 
@@ -694,25 +597,44 @@ setTimeout(carregar,500)
 return
 }
 
-let tabela = document.getElementById("tabela")
-tabela.innerHTML=""
+const tabela = document.getElementById("tabela")
 
 let total = 0
 let pendentes = 0
 let concluidos = 0
 let arquivados = 0
 
+let hoje = new Date().toLocaleDateString()
+let atendHoje = 0
+
+let linhas = ""
+
 try{
 
-let snapshot = await getDocs(collection(db,"agendamentos"))
+const snapshot = await getDocs(collection(db,"agendamentos"))
 
-snapshot.forEach(documento=>{
+snapshot.forEach((documento)=>{
 
-let dados = documento.data()
-let id = documento.id
+const dadosDoc = documento.data()
+const id = documento.id
 
-let telefoneLimpo = (dados.telefone || "").replace(/\D/g,'')
-let status = dados.status || "Pendente"
+/* DATA HOJE */
+
+if(dadosDoc.dataHora){
+
+let data = dadosDoc.dataHora.split(" às ")[0]
+
+if(data === hoje){
+atendHoje++
+}
+
+}
+
+/* TELEFONE LIMPO */
+
+const telefoneLimpo = String(dadosDoc.telefone || "").replace(/\D/g,'')
+
+const status = dadosDoc.status || "Pendente"
 
 /* CONTADORES */
 
@@ -722,15 +644,15 @@ concluidos++
 pendentes++
 }
 
-/* FILTRO DE ARQUIVADOS */
+/* ARQUIVADOS */
 
-if(dados.arquivado){
+if(dadosDoc.arquivado){
 
 arquivados++
 
-let trintaDias = 30 * 24 * 60 * 60 * 1000
+const trintaDias = 30 * 24 * 60 * 60 * 1000
 
-if(Date.now() - dados.dataArquivado > trintaDias){
+if(Date.now() - dadosDoc.dataArquivado > trintaDias){
 deleteDoc(doc(db,"agendamentos",id))
 }
 
@@ -739,15 +661,17 @@ return
 
 total++
 
-let linha = `
+/* LINHA TABELA */
+
+linhas += `
 <tr>
 
-<td>${dados.nome}</td>
-<td>${dados.telefone}</td>
-<td>${dados.regiao}</td>
-<td>${dados.dataHora || "-"}</td>
+<td>${dadosDoc.nome || "-"}</td>
+<td>${dadosDoc.telefone || "-"}</td>
+<td>${dadosDoc.regiao || "-"}</td>
+<td>${dadosDoc.dataHora || "-"}</td>
 <td>${status}</td>
-<td>${dados.problema}</td>
+<td>${dadosDoc.problema || "-"}</td>
 
 <td>
 
@@ -765,13 +689,18 @@ Ligar
 </a>
 
 <a class="btn"
-href="https://www.google.com/maps/search/?api=1&query=${dados.regiao}+Brasilia+DF"
+href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((dadosDoc.regiao || '') + ' Brasilia DF')}"
 target="_blank">
 Mapa
 </a>
 
 <button class="btn"
-onclick="abrirAgenda('${dados.nome}','${telefoneLimpo}','${dados.regiao}','${dados.problema}','${dados.dataHora}')">
+onclick="gerarOrcamento('${dadosDoc.nome}','${dadosDoc.problema}')">
+Orçamento
+</button>
+
+<button class="btn"
+onclick="abrirAgenda('${dadosDoc.nome}','${telefoneLimpo}','${dadosDoc.regiao}','${dadosDoc.problema}','${dadosDoc.dataHora}')">
 Agenda
 </button>
 
@@ -792,17 +721,19 @@ Arquivar
 </tr>
 `
 
-tabela.innerHTML += linha
-
 })
 
-/* ATUALIZA DASHBOARD */
+/* ATUALIZA TABELA */
+
+tabela.innerHTML = linhas
+
+/* DASHBOARD */
 
 document.getElementById("total").innerText = total
 document.getElementById("pendentes").innerText = pendentes
 document.getElementById("concluidos").innerText = concluidos
 document.getElementById("arquivados").innerText = arquivados
-document.getElementById("hoje").innerText = total
+document.getElementById("hoje").innerText = atendHoje
 
 }catch(e){
 
@@ -818,12 +749,14 @@ console.log(e)
 function abrirAgenda(nome, telefone, regiao, problema, dataHora){
 
 if(!dataHora) return
+
 let partes = dataHora.split(" às ")
 
 let data = partes[0]
 let hora = partes[1]
 
 let [dia,mes,ano] = data.split("/")
+
 let inicio = `${ano}-${mes}-${dia}T${hora}`
 
 let fim = new Date(inicio)
@@ -832,7 +765,8 @@ fim.setHours(fim.getHours()+1)
 let inicioFormatado = inicio.replace(/[-:]/g,"")
 let fimFormatado = fim.toISOString().replace(/[-:]/g,"").split(".")[0]
 
-let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+let agenda =
+"https://calendar.google.com/calendar/render?action=TEMPLATE"
 + "&text=Visita Técnica - " + nome
 + "&details=Cliente: " + nome + " | Telefone: " + telefone + " | Problema: " + problema
 + "&location=" + regiao
@@ -843,22 +777,20 @@ window.open(agenda)
 }
 
 function voltarSite(){
-
 window.location.href="index.html"
-
 }
+
+/* VER SENHA */
 
 function verSenha(){
 
 let campo = document.getElementById("senha")
 
-if(campo.type === "password"){
-campo.type = "text"
-}else{
-campo.type = "password"
-}
+campo.type = campo.type === "password" ? "text" : "password"
 
 }
+
+/* CONCLUIR */
 
 async function concluir(id){
 
@@ -881,38 +813,49 @@ alert("Erro ao concluir atendimento.")
 
 }
 
-async function excluir(id){
+/* GERAR ORÇAMENTO */
 
-if(!confirm("Deseja realmente excluir este agendamento?")) return
+function gerarOrcamento(cliente, problema){
 
-try{
+const { jsPDF } = window.jspdf
 
-await deleteDoc(doc(db,"agendamentos",id))
+let doc = new jsPDF()
 
-carregar()
+let data = new Date().toLocaleDateString()
 
-}catch(e){
+cliente = cliente || "Cliente"
+problema = problema || "Não informado"
 
-alert("Erro ao excluir atendimento.")
-console.log(e)
+let textoProblema = doc.splitTextToSize(problema,170)
+
+doc.setFont("helvetica","bold")
+doc.setFontSize(18)
+doc.text("GUGA ENERGY",20,20)
+
+doc.setFontSize(12)
+doc.setFont("helvetica","normal")
+
+doc.text(`Data: ${data}`,20,35)
+doc.text(`Cliente: ${cliente}`,20,45)
+
+doc.text("Serviço solicitado:",20,60)
+
+doc.setFont("helvetica","italic")
+doc.text(textoProblema,20,70)
+
+doc.setFont("helvetica","normal")
+
+doc.text("O orçamento detalhado será apresentado após análise técnica no local.",20,100,{maxWidth:170})
+
+doc.text("Execução conforme NBR 5410",20,120)
+doc.text("Profissional habilitado NR10",20,130)
+doc.text("Garantia do serviço.",20,140)
+
+doc.save(`orcamento-${cliente.replace(/[^a-z0-9]/gi,"_")}.pdf`)
 
 }
 
-}
-
-window.addEventListener("load", function(){
-
-if(localStorage.getItem("painelLogado")==="sim"){
-
-document.getElementById("login").style.display="none"
-document.getElementById("painel").style.display="block"
-document.getElementById("topo").style.display="flex"
-
-carregar()
-
-}
-
-})
+/* ARQUIVAR */
 
 async function arquivar(id){
 
@@ -936,7 +879,13 @@ console.log(e)
 
 }
 
-document.getElementById("buscaCliente").addEventListener("keyup", function(){
+/* BUSCA */
+
+let campoBusca = document.getElementById("buscaCliente")
+
+if(campoBusca){
+
+campoBusca.addEventListener("keyup", function(){
 
 let filtro = this.value.toLowerCase()
 
@@ -946,15 +895,25 @@ linhas.forEach(function(linha){
 
 let texto = linha.innerText.toLowerCase()
 
-if(texto.includes(filtro)){
-linha.style.display = ""
-}else{
-linha.style.display = "none"
+linha.style.display = texto.includes(filtro) ? "" : "none"
+
+})
+
+})
+
 }
 
-})
+/* AUTO LOGIN */
 
-})
+if(localStorage.getItem("painelLogado") === "sim"){
+
+document.getElementById("login").style.display="none"
+document.getElementById("painel").style.display="block"
+document.getElementById("topo").style.display="flex"
+
+setTimeout(carregar,200)
+
+}
 
 </script>
 
