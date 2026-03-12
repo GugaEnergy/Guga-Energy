@@ -480,12 +480,14 @@ window.collection = collection
 
 <!-- GOOGLE MAPS -->
 
-<script async
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDSyS6fBp_JgsBdtCTaDuBZzkfyzivFnQ&callback=iniciarMapa">
+<script
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDSyS6fBp_JgsBdtCTaDuBZzkfyzivFnQ">
 </script>
 
 <script>
 
+let mapa
+let markers = []
 const coordenadas = {
 
 "Plano Piloto": {lat:-15.793889,lng:-47.882778},
@@ -576,23 +578,27 @@ document.getElementById("senha").value=""
 
 async function carregar(){
 
-if(typeof google === "undefined") return
+if(typeof db === "undefined"){
+setTimeout(carregar,500)
+return
+}
+
+if(typeof google === "undefined"){
+setTimeout(carregar,500)
+return
+}
 
 let tabela=document.getElementById("tabela")
 tabela.innerHTML=""
+
+markers.forEach(m => m.setMap(null))
+markers=[]
 
 let total=0
 
 let mapaContainer = document.getElementById("mapa")
 
 if(!mapaContainer) return
-
-let mapa = new google.maps.Map(mapaContainer,{
-zoom:10,
-center:{lat:-15.78,lng:-47.93},
-mapTypeId:"roadmap",
-gestureHandling:"auto"
-})
 
 mapa.setCenter({lat:-15.78,lng:-47.93})
 
@@ -609,7 +615,7 @@ let id=documento.id
 
 total++
 
-let telefoneLimpo = dados.telefone.replace(/\D/g,'')
+let telefoneLimpo = (dados.telefone || "").replace(/\D/g,'')
 
 let status = dados.status || "Pendente"
 
@@ -620,7 +626,7 @@ let linha=`
 <td>${dados.nome}</td>
 <td>${dados.telefone}</td>
 <td>${dados.regiao}</td>
-<td>${dados.dataHora}</td>
+<td>${dados.dataHora || "-"}</td>
 <td>${status}</td>
 <td>${dados.problema}</td>
 
@@ -659,9 +665,9 @@ Excluir
 
 tabela.innerHTML += linha
 
-let pos = coordenadas[dados.regiao] || {lat:-15.78,lng:-47.93}
+let pos = coordenadas[dados.regiao] ?? {lat:-15.78,lng:-47.93}
 
-new google.maps.Marker({
+let marker = new google.maps.Marker({
 position:pos,
 map:mapa,
 title:dados.regiao,
@@ -670,6 +676,8 @@ icon:{
 url:"https://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
 }
 })
+
+markers.push(marker)
 
 bounds.extend(pos)
 
@@ -696,12 +704,16 @@ console.log(e)
 
 function abrirAgenda(nome, telefone, regiao, problema, dataHora){
 
+if(!dataHora) return
+
+if(!dataHora) return
 let partes = dataHora.split(" às ")
 
 let data = partes[0]
 let hora = partes[1]
 
-let inicio = data + "T" + hora
+let [dia,mes,ano] = data.split("/")
+let inicio = `${ano}-${mes}-${dia}T${hora}`
 
 let fim = new Date(inicio)
 fim.setHours(fim.getHours()+1)
@@ -739,6 +751,8 @@ campo.type = "password"
 
 async function concluir(id){
 
+if(!id) return
+
 try{
 
 await updateDoc(doc(db,"agendamentos",id),{
@@ -749,6 +763,7 @@ carregar()
 
 }catch(e){
 
+console.log(e)
 alert("Erro ao concluir atendimento.")
 
 }
@@ -757,9 +772,32 @@ alert("Erro ao concluir atendimento.")
 
 function iniciarMapa(){
 
-if(localStorage.getItem("painelLogado")==="sim"){
+let mapaContainer = document.getElementById("mapa")
+
+if(!mapaContainer) return
+
+mapa = new google.maps.Map(mapaContainer,{
+zoom:10,
+center:{lat:-15.78,lng:-47.93},
+mapTypeId:"roadmap"
+})
+
+}
+
+async function excluir(id){
+
+if(!confirm("Deseja realmente excluir este agendamento?")) return
+
+try{
+
+await deleteDoc(doc(db,"agendamentos",id))
 
 carregar()
+
+}catch(e){
+
+alert("Erro ao excluir atendimento.")
+console.log(e)
 
 }
 
@@ -767,11 +805,15 @@ carregar()
 
 window.addEventListener("load", function(){
 
+iniciarMapa()
+
 if(localStorage.getItem("painelLogado")==="sim"){
 
 document.getElementById("login").style.display="none"
 document.getElementById("painel").style.display="block"
 document.getElementById("topo").style.display="flex"
+
+carregar()
 
 }
 
