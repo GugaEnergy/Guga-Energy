@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
-
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="X-XSS-Protection" content="1; mode=block">
@@ -810,6 +809,17 @@ padding:14px;
 
 }
 
+#admin-login{
+position:fixed;
+bottom:10px;
+left:10px;
+width:50px;
+height:50px;
+opacity:0;
+cursor:pointer;
+z-index:9999;
+}
+
 </style>
 
 </head>
@@ -821,7 +831,7 @@ padding:14px;
 <!-- BARRA MOBILE -->
 
 <div class="mobile-bar">
-<a href="tel:(61) 9 9217-6914">📞 Ligar</a>
+<a href="tel:+5561992176914">📞 Ligar</a>
 <a href="https://wa.me/5561992176914" target="_blank">💬 WhatsApp</a>
 <a href="#agendamento">📅 Agendar</a>
 </div>
@@ -1015,7 +1025,11 @@ Instalações conforme NBR 5410 • Profissional NR10
 <form onsubmit="agendar(event)" autocomplete="on">
 
 <input type="text" id="nome" name="nome" placeholder="Nome" required>
+
 <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required maxlength="15">
+
+<input type="text" id="site" style="display:none">
+
 <div id="avisoTelefone" style="display:none;color:#FFD000;font-size:13px;margin:5px 0 10px 0;text-align:center;width:100%;">
 ⚠ Número inválido. Verifique se o telefone possui DDD e 9 dígitos.
 </div>
@@ -1024,46 +1038,35 @@ Instalações conforme NBR 5410 • Profissional NR10
 
 <option value="">Selecione sua região</option>
 
-<option value="120">Plano Piloto</option>
 <option value="120">Asa Norte</option>
 <option value="120">Asa Sul</option>
-<option value="130">Lago Norte</option>
-<option value="130">Lago Sul</option>
-
+<option value="220">Arapoanga</option>
+<option value="180">Candangolândia</option>
+<option value="180">Ceilândia</option>
 <option value="140">Cruzeiro</option>
-<option value="140">Sudoeste</option>
-<option value="140">Octogonal</option>
-
+<option value="230">Fercal</option>
+<option value="190">Gama</option>
 <option value="150">Guará</option>
 <option value="160">Águas Claras</option>
-<option value="160">Vicente Pires</option>
-<option value="160">Taguatinga</option>
-
-<option value="170">Samambaia</option>
+<option value="200">Itapoã</option>
+<option value="130">Lago Norte</option>
+<option value="130">Lago Sul</option>
+<option value="180">Núcleo Bandeirante</option>
+<option value="140">Octogonal</option>
+<option value="200">Paranoá</option>
+<option value="180">Park Way</option>
+<option value="120">Plano Piloto</option>
+<option value="220">Planaltina-DF</option>
 <option value="170">Recanto das Emas</option>
-
-<option value="180">Ceilândia</option>
-
 <option value="180">Riacho Fundo</option>
 <option value="180">Riacho Fundo II</option>
-
-<option value="180">Candangolândia</option>
-<option value="180">Núcleo Bandeirante</option>
-<option value="180">Park Way</option>
-
+<option value="170">Samambaia</option>
 <option value="190">Santa Maria</option>
-<option value="190">Gama</option>
-
 <option value="200">Sobradinho</option>
 <option value="200">Sobradinho II</option>
-
-<option value="200">Paranoá</option>
-<option value="200">Itapoã</option>
-
-<option value="220">Planaltina</option>
-<option value="220">Arapoanga</option>
-
-<option value="230">Fercal</option>
+<option value="140">Sudoeste</option>
+<option value="160">Taguatinga</option>
+<option value="160">Vicente Pires</option>
 
 </select>
 
@@ -1114,6 +1117,7 @@ loading="lazy">
 
 </main>
 
+<div id="admin-login" onclick="abrirPainel()"></div>
 <!-- FOOTER -->
 
 <footer>
@@ -1144,7 +1148,7 @@ WhatsApp:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -1168,6 +1172,10 @@ window.where = where
 </script>
 
 <script>
+
+window.onerror = function(msg, url, line){
+console.log("Erro:", msg, "Linha:", line)
+}
 
 function toggleMenu(){
 
@@ -1221,7 +1229,6 @@ menu.style.display = "block"
 }
 
 }
-
 
 /* CARROSSEL */
 
@@ -1306,9 +1313,31 @@ return "DF"
 
 /* AGENDAMENTO */
 
-async function agendar(event){
+let tempoEntrada = Date.now()
+let ultimoEnvio = 0
 
+async function agendar(event){
+    
 event.preventDefault()
+
+if(!tabelaValores[regiao]){
+alert("Valor da visita não encontrado para esta região.")
+return
+}
+if(document.getElementById("site").value !== ""){
+return
+}
+let agoraEnvio = Date.now()
+
+if(agoraEnvio - ultimoEnvio < 60000){
+
+alert("Aguarde 1 minuto antes de enviar novamente.")
+
+return
+
+}
+
+ultimoEnvio = agoraEnvio
 
 let nome = document.getElementById("nome").value
 let telefone = document.getElementById("telefone").value
@@ -1321,15 +1350,24 @@ return
 
 }
 
+let tempoAtual = Date.now()
+
+if(tempoAtual - tempoEntrada < 4000){
+
+alert("Envio muito rápido. Aguarde alguns segundos.")
+
+return
+
+}
+
 let data = document.getElementById("data").value
 let hora = document.getElementById("hora").value
 let problema = document.getElementById("problema").value
 
 let cidade = document.getElementById("cidade")
 let regiao = cidade.options[cidade.selectedIndex].text
-let valor = cidade.value
+let valor = tabelaValores[regiao] || "Consultar"
 let zona = identificarZona(regiao)
-
 let dataHora = data + " às " + hora
 
 try{
@@ -1341,7 +1379,7 @@ telefone,
 regiao,
 dataHora,
 problema,
-dataCriacao: new Date()
+dataCriacao: serverTimestamp()
 
 })
 
@@ -1585,7 +1623,8 @@ let [dia,mes,ano] = dataSelecionada.split("/")
 let dataHoraEscolhida = new Date(`${ano}-${mes}-${dia}T${selectHora.value}:00`)
 
 let agora = new Date()
-agora.setMinutes(agora.getMinutes() + 30)
+
+agora.setMinutes(agora.getMinutes() + 60)
 
 if(dataHoraEscolhida <= agora){
 
@@ -1621,6 +1660,28 @@ avisoDuplicado.style.display = "none"
 }
 
 })
+
+function abrirPainel(){
+
+let senha = prompt("Área administrativa")
+
+if(!senha) return
+
+senha = senha.trim()
+
+if(senha === "Energy2024"){
+
+localStorage.setItem("adminLogado","true")
+
+window.location.href = "painel-guga-gestao.html"
+
+}else{
+
+alert("Acesso não autorizado")
+
+}
+
+}
 
 </script>
 
