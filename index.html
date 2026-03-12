@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -480,13 +480,17 @@ margin:auto;
 border-radius:6px;
 }
 
-textarea,input,select{
+textarea,
+input,
+select{
 width:100%;
 padding:12px;
 margin-bottom:12px;
 border:none;
 border-radius:4px;
 font-size:16px;
+appearance:none;
+-webkit-appearance:none;
 }
 
 button{
@@ -784,6 +788,28 @@ padding-bottom:15px;
 padding-top:25px;
 }
 
+.info-visita{
+background:#111;
+border-left:4px solid #FFD000;
+padding:10px 12px;
+margin-top:10px;
+font-size:13px;
+color:#ccc;
+border-radius:4px;
+display:none;
+}
+
+@media(max-width:768px){
+
+input,
+select,
+textarea{
+font-size:16px;
+padding:14px;
+}
+
+}
+
 </style>
 
 </head>
@@ -1051,6 +1077,10 @@ Instalações conforme NBR 5410 • Profissional NR10
 <textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
 
 <div id="valorVisita"></div>
+
+<div class="info-visita" id="infoVisita">
+💡 O valor da visita técnica é abatido no orçamento caso o cliente aprove o serviço no local.
+</div>
 
 <button type="submit">Solicitar Visita Técnica</button>
 
@@ -1352,6 +1382,7 @@ valorVisita.innerHTML=""
 
 const cidade = document.getElementById("cidade")
 const valorVisita = document.getElementById("valorVisita")
+const infoVisita = document.getElementById("infoVisita")
 
 let tabelaValores = {}
 
@@ -1372,10 +1403,14 @@ let valor = tabelaValores[regiao]
 valorVisita.innerHTML =
 "Valor da visita técnica (deslocamento incluso): <strong>R$ " + valor + "</strong>"
 
+infoVisita.style.display = "block"
+
 }else{
 
 valorVisita.innerHTML =
 "Valor da visita não encontrado."
+
+infoVisita.style.display = "none"
 
 }
 
