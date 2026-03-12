@@ -809,15 +809,12 @@ padding:14px;
 
 }
 
+/* esconder no celular */
+
+@media(max-width:768px){
 #admin-login{
-position:fixed;
-top:0;
-right:0;
-width:80px;
-height:80px;
-opacity:0;
-cursor:pointer;
-z-index:9999;
+display:none;
+}
 }
 
 </style>
@@ -1117,7 +1114,6 @@ loading="lazy">
 
 </main>
 
-<div id="admin-login" onclick="abrirPainel()"></div>
 <!-- FOOTER -->
 
 <footer>
@@ -1687,6 +1683,31 @@ alert("Acesso não autorizado")
 }
 
 }
+
+let cliquesAdmin = 0
+let tempoClique = null
+
+document.querySelector(".logo").addEventListener("click", function(){
+
+if(!tempoClique){
+tempoClique = setTimeout(()=>{
+cliquesAdmin = 0
+tempoClique = null
+},2000)
+}
+
+cliquesAdmin++
+
+if(cliquesAdmin >= 5){
+
+abrirPainel()
+cliquesAdmin = 0
+clearTimeout(tempoClique)
+tempoClique = null
+
+}
+
+})
 
 </script>
 
