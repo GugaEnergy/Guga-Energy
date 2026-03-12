@@ -811,10 +811,10 @@ padding:14px;
 
 #admin-login{
 position:fixed;
-bottom:10px;
-left:10px;
-width:50px;
-height:50px;
+top:0;
+right:0;
+width:80px;
+height:80px;
 opacity:0;
 cursor:pointer;
 z-index:9999;
@@ -1038,35 +1038,35 @@ Instalações conforme NBR 5410 • Profissional NR10
 
 <option value="">Selecione sua região</option>
 
-<option value="120">Asa Norte</option>
-<option value="120">Asa Sul</option>
-<option value="220">Arapoanga</option>
-<option value="180">Candangolândia</option>
-<option value="180">Ceilândia</option>
-<option value="140">Cruzeiro</option>
-<option value="230">Fercal</option>
-<option value="190">Gama</option>
-<option value="150">Guará</option>
-<option value="160">Águas Claras</option>
-<option value="200">Itapoã</option>
-<option value="130">Lago Norte</option>
-<option value="130">Lago Sul</option>
-<option value="180">Núcleo Bandeirante</option>
-<option value="140">Octogonal</option>
-<option value="200">Paranoá</option>
-<option value="180">Park Way</option>
-<option value="120">Plano Piloto</option>
-<option value="220">Planaltina-DF</option>
-<option value="170">Recanto das Emas</option>
-<option value="180">Riacho Fundo</option>
-<option value="180">Riacho Fundo II</option>
-<option value="170">Samambaia</option>
-<option value="190">Santa Maria</option>
-<option value="200">Sobradinho</option>
-<option value="200">Sobradinho II</option>
-<option value="140">Sudoeste</option>
-<option value="160">Taguatinga</option>
-<option value="160">Vicente Pires</option>
+<option>Asa Norte</option>
+<option>Asa Sul</option>
+<option>Arapoanga</option>
+<option>Candangolândia</option>
+<option>Ceilândia</option>
+<option>Cruzeiro</option>
+<option>Fercal</option>
+<option>Gama</option>
+<option>Guará</option>
+<option>Águas Claras</option>
+<option>Itapoã</option>
+<option>Lago Norte</option>
+<option>Lago Sul</option>
+<option>Núcleo Bandeirante</option>
+<option>Octogonal</option>
+<option>Paranoá</option>
+<option>Park Way</option>
+<option>Plano Piloto</option>
+<option>Planaltina-DF</option>
+<option>Recanto das Emas</option>
+<option>Riacho Fundo</option>
+<option>Riacho Fundo II</option>
+<option>Samambaia</option>
+<option>Santa Maria</option>
+<option>Sobradinho</option>
+<option>Sobradinho II</option>
+<option>Sudoeste</option>
+<option>Taguatinga</option>
+<option>Vicente Pires</option>
 
 </select>
 
@@ -1366,9 +1366,14 @@ let problema = document.getElementById("problema").value
 
 let cidade = document.getElementById("cidade")
 let regiao = cidade.options[cidade.selectedIndex].text
-let valor = tabelaValores[regiao] || "Consultar"
+
+if(!tabelaValores[regiao]){
+alert("Valor da visita não encontrado para esta região.")
+return
+}
+
+let valor = tabelaValores[regiao]
 let zona = identificarZona(regiao)
-let dataHora = data + " às " + hora
 
 try{
 
