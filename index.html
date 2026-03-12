@@ -1016,6 +1016,9 @@ Instalações conforme NBR 5410 • Profissional NR10
 
 <input type="text" id="nome" name="nome" placeholder="Nome" required>
 <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required maxlength="15">
+<div id="avisoTelefone" style="display:none;color:#FFD000;font-size:13px;margin:5px 0 10px 0;text-align:center;width:100%;">
+⚠ Número inválido. Verifique se o telefone possui DDD e 9 dígitos.
+</div>
 
 <select id="cidade" required>
 
@@ -1073,6 +1076,14 @@ Instalações conforme NBR 5410 • Profissional NR10
 <option value="14:00">14:00</option>
 <option value="16:00">16:00</option>
 </select>
+
+<div id="avisoHorario" style="display:none;color:#FFD000;font-size:13px;margin:8px 0;text-align:center;width:100%;">
+⚠ Este horário não está disponível devido ao tempo mínimo de deslocamento (30 minutos).
+</div>
+
+<div id="avisoDuplicado" style="display:none;color:#FFD000;font-size:13px;margin:8px 0;text-align:center;width:100%;">
+⚠ Já existe um atendimento agendado neste horário.
+</div>
 
 <textarea id="problema" placeholder="Descreva o problema elétrico"></textarea>
 
@@ -1133,7 +1144,7 @@ WhatsApp:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -1150,6 +1161,9 @@ const db = getFirestore(app);
 window.db = db
 window.addDoc = addDoc
 window.collection = collection
+window.getDocs = getDocs
+window.query = query
+window.where = where
 
 </script>
 
@@ -1298,6 +1312,15 @@ event.preventDefault()
 
 let nome = document.getElementById("nome").value
 let telefone = document.getElementById("telefone").value
+let numeroLimpo = telefone.replace(/\D/g,"")
+
+if(numeroLimpo.length !== 11 || numeroLimpo[2] !== "9"){
+
+alert("Telefone inválido. Verifique o número.")
+return
+
+}
+
 let data = document.getElementById("data").value
 let hora = document.getElementById("hora").value
 let problema = document.getElementById("problema").value
@@ -1458,28 +1481,144 @@ return date.getDay() === 0
 }
 ],
 
+onChange:function(){
+
+/* limpar hora ao mudar data */
+
+document.getElementById("hora").value=""
+
+document.getElementById("avisoHorario").style.display="none"
+document.getElementById("avisoDuplicado").style.display="none"
+
+},
+
 onOpen:(s,d,i)=>i._input.blur(),
 onClose:(s,d,i)=>i._input.blur()
 
 })
 
 const telefone = document.getElementById("telefone")
+const avisoTelefone = document.getElementById("avisoTelefone")
 
-telefone.addEventListener("input", function(e){
+telefone.addEventListener("input", function(){
 
-let valor = e.target.value.replace(/\D/g,"")
+let numero = telefone.value.replace(/\D/g,"")
 
-if(valor.length > 11) valor = valor.slice(0,11)
+// limitar a 11 números
+numero = numero.substring(0,11)
 
-if(valor.length <= 10){
-valor = valor.replace(/(\d{2})(\d)/,"($1) $2")
-valor = valor.replace(/(\d{4})(\d)/,"$1-$2")
-}else{
-valor = valor.replace(/(\d{2})(\d)/,"($1) $2")
-valor = valor.replace(/(\d{5})(\d)/,"$1-$2")
+if(numero.length > 0){
+
+numero = numero.replace(/^(\d{2})(\d)/g,"($1) $2")
+
 }
 
-e.target.value = valor
+if(numero.length > 10){
+
+numero = numero.replace(/(\d{5})(\d{4})$/,"$1-$2")
+
+}else if(numero.length > 6){
+
+numero = numero.replace(/(\d{4})(\d{0,4})$/,"$1-$2")
+
+}
+
+telefone.value = numero
+
+})
+
+telefone.addEventListener("input", function(){
+
+let numero = telefone.value.replace(/\D/g,"")
+
+const dddsValidos = [
+11,12,13,14,15,16,17,18,19,
+21,22,24,
+27,28,
+31,32,33,34,35,37,38,
+41,42,43,44,45,46,
+47,48,49,
+51,53,54,55,
+61,62,63,64,65,66,67,
+68,69,
+71,73,74,75,77,79,
+81,82,83,84,85,86,87,88,89,
+91,92,93,94,95,96,97,98,99
+]
+
+let ddd = parseInt(numero.substring(0,2))
+let primeiroDigito = numero.substring(2,3)
+
+if(
+numero.length !== 11 ||
+!dddsValidos.includes(ddd) ||
+primeiroDigito !== "9"
+){
+
+avisoTelefone.style.display="block"
+telefone.style.border="1px solid red"
+
+}else{
+
+avisoTelefone.style.display="none"
+telefone.style.border="none"
+
+}
+
+})
+
+const selectHora = document.getElementById("hora")
+const avisoHorario = document.getElementById("avisoHorario")
+const avisoDuplicado = document.getElementById("avisoDuplicado")
+
+selectHora.addEventListener("change", async function(){
+
+let dataSelecionada = document.getElementById("data").value
+if(!dataSelecionada) return
+
+let dataHora = dataSelecionada + " às " + selectHora.value
+
+/* verificar se horário já passou */
+
+let [dia,mes,ano] = dataSelecionada.split("/")
+
+let dataHoraEscolhida = new Date(`${ano}-${mes}-${dia}T${selectHora.value}:00`)
+
+let agora = new Date()
+agora.setMinutes(agora.getMinutes() + 30)
+
+if(dataHoraEscolhida <= agora){
+
+avisoHorario.style.display = "block"
+avisoDuplicado.style.display = "none"
+selectHora.value = ""
+return
+
+}else{
+
+avisoHorario.style.display = "none"
+
+}
+
+/* verificar no firebase */
+
+let q = query(
+collection(db,"agendamentos"),
+where("dataHora","==",dataHora)
+)
+
+let snapshot = await getDocs(q)
+
+if(!snapshot.empty){
+
+avisoDuplicado.style.display = "block"
+selectHora.value = ""
+
+}else{
+
+avisoDuplicado.style.display = "none"
+
+}
 
 })
 
@@ -1488,4 +1627,3 @@ e.target.value = valor
 </body>
 
 </html>
-
