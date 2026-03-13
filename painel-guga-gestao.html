@@ -526,7 +526,22 @@ Atendimentos registrados:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
-import { getFirestore, collection, onSnapshot, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+import { 
+getFirestore,
+collection,
+onSnapshot,
+deleteDoc,
+doc,
+updateDoc
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -538,14 +553,21 @@ appId: "1:384265745174:web:a9284d4036f4a787bf5637"
 }
 
 const app = initializeApp(firebaseConfig)
+
 const db = getFirestore(app)
+const auth = getAuth(app)
 
 window.db = db
+window.auth = auth
 window.collection = collection
 window.onSnapshot = onSnapshot
 window.deleteDoc = deleteDoc
 window.updateDoc = updateDoc
 window.doc = doc
+
+window.signInWithEmailAndPassword = signInWithEmailAndPassword
+window.signOut = signOut
+window.onAuthStateChanged = onAuthStateChanged
 
 </script>
 
@@ -557,22 +579,20 @@ let ultimoTotal = 0
 
 async function entrar(){
 
-let user = document.getElementById("usuario").value.trim().toLowerCase()
-let pass = document.getElementById("senha").value.trim()
+let email = document.getElementById("usuario").value.trim()
+let senha = document.getElementById("senha").value.trim()
 
-let hash = await gerarHash(pass)
+try{
 
-if(user === "guga" && hash === "e7b7e2d7a5c1c94c95f3c2c1b75e61fd"){
-
-localStorage.setItem("painelLogado","sim")
+await signInWithEmailAndPassword(auth,email,senha)
 
 document.getElementById("login").style.display="none"
 document.getElementById("painel").style.display="block"
 document.getElementById("topo").style.display="flex"
 
-setTimeout(carregar,200)
+carregar()
 
-}else{
+}catch(e){
 
 alert("Usuário ou senha incorretos.")
 
@@ -582,9 +602,9 @@ alert("Usuário ou senha incorretos.")
 
 /* SAIR */
 
-function sair(){
+async function sair(){
 
-localStorage.removeItem("painelLogado")
+await signOut(auth)
 
 document.getElementById("painel").style.display="none"
 document.getElementById("topo").style.display="none"
@@ -901,6 +921,20 @@ Data: ${data}`
 alert(texto)
 
 }
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById("login").style.display="none"
+document.getElementById("painel").style.display="block"
+document.getElementById("topo").style.display="flex"
+
+carregar()
+
+}
+
+})
 
 </script>
 
