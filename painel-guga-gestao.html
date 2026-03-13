@@ -18,6 +18,11 @@ margin:0;
 padding:0;
 }
 
+a{
+text-decoration:none;
+color:inherit;
+}
+
 /* BASE */
 
 body{
@@ -26,6 +31,7 @@ background:#020202;
 color:#fff;
 padding-top:70px;
 min-height:100vh;
+line-height:1.4;
 }
 
 /* HEADER */
@@ -33,7 +39,7 @@ min-height:100vh;
 header{
 background:#000;
 height:70px;
-padding:0 18px;
+padding:0 20px;
 display:flex;
 align-items:center;
 justify-content:space-between;
@@ -50,9 +56,7 @@ z-index:3000;
 .logo{
 display:flex;
 align-items:center;
-gap:8px;
-text-decoration:none;
-color:#fff;
+gap:10px;
 }
 
 .logo img{
@@ -60,7 +64,7 @@ height:40px;
 }
 
 .logo h2{
-font-size:18px;
+font-size:20px;
 }
 
 .logo span{
@@ -74,9 +78,9 @@ background:#FFD000;
 color:#000;
 border:none;
 border-radius:6px;
-padding:8px 14px;
+padding:10px 14px;
 font-weight:bold;
-font-size:13px;
+font-size:14px;
 cursor:pointer;
 }
 
@@ -89,9 +93,12 @@ justify-content:center;
 background:#FFD000;
 color:#000;
 border:none;
-border-radius:8px;
+border-radius:6px;
 font-weight:bold;
 cursor:pointer;
+padding:10px 12px;
+font-size:14px;
+min-height:40px;
 transition:.2s;
 }
 
@@ -121,27 +128,28 @@ padding:20px;
 
 .login-box{
 background:#0a0a0a;
-padding:30px;
+padding:36px;
 border-radius:12px;
-width:340px;
-max-width:100%;
+width:360px;
+max-width:95%;
 text-align:center;
 border-top:3px solid #FFD000;
-box-shadow:0 10px 40px rgba(0,0,0,0.9);
+box-shadow:0 8px 30px rgba(0,0,0,0.8);
 }
 
 .login-box input{
 width:100%;
-padding:12px;
-margin:8px 0;
+padding:14px;
+margin:10px 0;
 border-radius:6px;
 border:1px solid #1f1f1f;
 background:#111;
 color:#fff;
+font-size:14px;
 }
 
 .login-sub{
-font-size:13px;
+font-size:14px;
 color:#9c9c9c;
 margin-bottom:20px;
 }
@@ -150,36 +158,32 @@ margin-bottom:20px;
 
 .painel{
 display:none;
-padding:20px 15px;
-max-width:1400px;
+padding:30px 20px;
+max-width:1500px;
 margin:auto;
 }
 
-/* CARDS */
+/* CARDS SUPERIORES */
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:12px;
-margin-bottom:20px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:16px;
+margin-bottom:22px;
 }
 
 .card{
 background:#151515;
-padding:16px;
+padding:20px;
 border-left:4px solid #FFD000;
 border-radius:10px;
-box-shadow:0 6px 18px rgba(0,0,0,0.5);
-}
-
-.card strong{
-color:#FFD000;
+font-size:15px;
 }
 
 /* BUSCA */
 
 .busca-box{
-margin-bottom:18px;
+margin-bottom:20px;
 }
 
 #buscaCliente{
@@ -196,56 +200,93 @@ font-size:15px;
 
 .dashboard{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:10px;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:14px;
 margin-bottom:20px;
 }
 
 .dash-card{
 background:#111;
-padding:12px;
+padding:16px;
 border-left:4px solid #FFD000;
 border-radius:8px;
 text-align:center;
 }
 
+.dash-card span{
+font-size:13px;
+color:#aaa;
+}
+
 .dash-card strong{
 display:block;
-font-size:18px;
+font-size:22px;
 color:#FFD000;
-margin-top:4px;
+margin-top:5px;
 }
 
 /* CONTADOR */
 
 .contador-atendimentos{
-margin:18px 0;
+margin:20px 0;
 background:#111;
-padding:12px;
+padding:14px;
 border-left:4px solid #FFD000;
 border-radius:6px;
+font-size:15px;
 }
 
-/* TABELA */
+/* LISTA CLIENTES */
 
-table{
-width:100%;
-border-collapse:collapse;
+.clientes{
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+/* CARD CLIENTE */
+
+.cliente-card{
 background:#111;
-border-radius:6px;
+border-left:4px solid #FFD000;
+border-radius:10px;
 overflow:hidden;
 }
 
-th{
-background:#000;
-color:#FFD000;
+/* TOPO CARD */
+
+.cliente-topo{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+cursor:pointer;
+background:#151515;
 }
 
-th,td{
-padding:12px;
-border-bottom:1px solid #333;
-font-size:14px;
-word-break:break-word;
+.cliente-nome{
+font-weight:bold;
+font-size:16px;
+}
+
+.cliente-status{
+font-size:12px;
+background:#333;
+padding:5px 10px;
+border-radius:6px;
+}
+
+/* INFO CARD */
+
+.cliente-info{
+display:none;
+padding:16px;
+border-top:1px solid #333;
+}
+
+.cliente-info p{
+margin-bottom:8px;
+font-size:15px;
 }
 
 /* AÇÕES */
@@ -253,115 +294,76 @@ word-break:break-word;
 .acoes{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:8px;
-}
-
-.btn{
-padding:10px;
-font-size:13px;
-}
-
-/* SCROLL */
-
-::-webkit-scrollbar{
-width:8px;
-}
-
-::-webkit-scrollbar-thumb{
-background:#FFD000;
-}
-
-/* ========================= */
-/* MOBILE RESPONSIVO */
-/* ========================= */
-
-@media(max-width:768px){
-
-/* tabela vira cards */
-
-table,
-thead,
-tbody,
-th,
-td,
-tr{
-display:block;
-width:100%;
-}
-
-thead{
-display:none;
-}
-
-tr{
-background:#111;
-border-radius:12px;
-margin-bottom:16px;
-padding:16px;
-border-left:4px solid #FFD000;
-box-shadow:0 4px 14px rgba(0,0,0,0.5);
-}
-
-td{
-border:none;
-padding:6px 0;
-display:flex;
-flex-direction:column;
-gap:4px;
-font-size:14px;
-}
-
-td::before{
-font-weight:bold;
-color:#FFD000;
-font-size:12px;
-opacity:.9;
-}
-
-/* nomes das colunas */
-
-td:nth-child(1)::before{content:"Cliente";}
-td:nth-child(2)::before{content:"Telefone";}
-td:nth-child(3)::before{content:"Região";}
-td:nth-child(4)::before{content:"Data";}
-td:nth-child(5)::before{content:"Status";}
-td:nth-child(6)::before{content:"Problema";}
-td:nth-child(7)::before{content:"Ações";}
-
-/* botões maiores */
-
-.btn{
-width:100%;
-min-height:42px;
-font-size:14px;
-}
-
-/* ações organizadas */
-
-.acoes{
-grid-template-columns:1fr 1fr;
 gap:10px;
-margin-top:8px;
+margin-top:12px;
 }
 
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+.painel{
+padding:20px 14px;
 }
 
-/* CELULAR PEQUENO */
-
-@media(max-width:420px){
+.logo h2{
+font-size:17px;
+}
 
 .dashboard{
 grid-template-columns:1fr 1fr;
 }
 
-.logo h2{
-font-size:16px;
+.cards{
+grid-template-columns:1fr;
 }
 
 .btn{
 font-size:13px;
+min-height:36px;
 }
 
+.cliente-nome{
+font-size:15px;
+}
+
+}
+
+/* ÁREA DOS BOTÕES DO LOGIN */
+
+.login-box .btn{
+width:100%;
+margin-top:12px;
+min-height:44px;
+font-size:15px;
+}
+
+.login-box .btn:first-of-type{
+margin-top:22px;
+}
+
+/* CAMPO SENHA */
+
+.senha-box{
+position:relative;
+}
+
+/* ÍCONE OLHO */
+
+.ver-senha{
+position:absolute;
+right:14px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+color:#FFD000;
+font-size:18px;
+}
+
+/* AJUSTE INPUT SENHA */
+
+.senha-box input{
+padding-right:45px;
 }
 
 </style>
@@ -433,6 +435,8 @@ Voltar ao Site
 
 <div class="painel" id="painel">
 
+<!-- CARDS SUPERIORES -->
+
 <div class="cards">
 
 <div class="card">
@@ -495,25 +499,9 @@ Atendimentos registrados:
 
 </div>
 
-<!-- TABELA -->
+<!-- LISTA DE CLIENTES (CARDS) -->
 
-<table>
-
-<thead>
-<tr>
-<th>Cliente</th>
-<th>Telefone</th>
-<th>Região</th>
-<th>Data</th>
-<th>Status</th>
-<th>Problema</th>
-<th>Ações</th>
-</tr>
-</thead>
-
-<tbody id="tabela"></tbody>
-
-</table>
+<div id="listaClientes" class="clientes"></div>
 
 </div>
 
@@ -545,7 +533,7 @@ window.doc = doc
 
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- SISTEMA -->
 
 <script>
 
@@ -583,8 +571,6 @@ localStorage.removeItem("painelLogado")
 document.getElementById("painel").style.display="none"
 document.getElementById("topo").style.display="none"
 document.getElementById("login").style.display="flex"
-document.getElementById("usuario").value=""
-document.getElementById("senha").value=""
 
 }
 
@@ -597,7 +583,7 @@ setTimeout(carregar,500)
 return
 }
 
-const tabela = document.getElementById("tabela")
+const lista = document.getElementById("listaClientes")
 
 let total = 0
 let pendentes = 0
@@ -607,7 +593,7 @@ let arquivados = 0
 let hoje = new Date().toLocaleDateString()
 let atendHoje = 0
 
-let linhas = ""
+let cards = ""
 
 try{
 
@@ -617,8 +603,6 @@ snapshot.forEach((documento)=>{
 
 const dadosDoc = documento.data()
 const id = documento.id
-
-/* DATA HOJE */
 
 if(dadosDoc.dataHora){
 
@@ -630,21 +614,14 @@ atendHoje++
 
 }
 
-/* TELEFONE LIMPO */
-
 const telefoneLimpo = String(dadosDoc.telefone || "").replace(/\D/g,'')
-
 const status = dadosDoc.status || "Pendente"
-
-/* CONTADORES */
 
 if(status === "Concluído"){
 concluidos++
 }else{
 pendentes++
 }
-
-/* ARQUIVADOS */
 
 if(dadosDoc.arquivado){
 
@@ -661,30 +638,36 @@ return
 
 total++
 
-/* LINHA TABELA */
+cards += `
 
-linhas += `
-<tr>
+<div class="cliente-card">
 
-<td>${dadosDoc.nome || "-"}</td>
-<td>${dadosDoc.telefone || "-"}</td>
-<td>${dadosDoc.regiao || "-"}</td>
-<td>${dadosDoc.dataHora || "-"}</td>
-<td>${status}</td>
-<td>${dadosDoc.problema || "-"}</td>
+<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
 
-<td>
+<div class="cliente-nome">
+${dadosDoc.nome || "-"}
+</div>
+
+<div class="cliente-status">
+${status}
+</div>
+
+</div>
+
+<div class="cliente-info">
+
+<p><strong>Telefone:</strong> ${dadosDoc.telefone || "-"}</p>
+<p><strong>Região:</strong> ${dadosDoc.regiao || "-"}</p>
+<p><strong>Data:</strong> ${dadosDoc.dataHora || "-"}</p>
+<p><strong>Problema:</strong> ${dadosDoc.problema || "-"}</p>
 
 <div class="acoes">
 
-<a class="btn"
-href="https://wa.me/55${telefoneLimpo}"
-target="_blank">
+<a class="btn" href="https://wa.me/55${telefoneLimpo}" target="_blank">
 WhatsApp
 </a>
 
-<a class="btn"
-href="tel:${telefoneLimpo}">
+<a class="btn" href="tel:${telefoneLimpo}">
 Ligar
 </a>
 
@@ -693,11 +676,6 @@ href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((dado
 target="_blank">
 Mapa
 </a>
-
-<button class="btn"
-onclick="gerarOrcamento('${dadosDoc.nome}','${dadosDoc.problema}')">
-Orçamento
-</button>
 
 <button class="btn"
 onclick="abrirAgenda('${dadosDoc.nome}','${telefoneLimpo}','${dadosDoc.regiao}','${dadosDoc.problema}','${dadosDoc.dataHora}')">
@@ -716,18 +694,15 @@ Arquivar
 
 </div>
 
-</td>
+</div>
 
-</tr>
+</div>
+
 `
 
 })
 
-/* ATUALIZA TABELA */
-
-tabela.innerHTML = linhas
-
-/* DASHBOARD */
+lista.innerHTML = cards
 
 document.getElementById("total").innerText = total
 document.getElementById("pendentes").innerText = pendentes
@@ -744,49 +719,17 @@ console.log(e)
 
 }
 
-/* GOOGLE AGENDA */
+/* ABRIR CARD */
 
-function abrirAgenda(nome, telefone, regiao, problema, dataHora){
+function toggleCard(card){
 
-if(!dataHora) return
+let info = card.querySelector(".cliente-info")
 
-let partes = dataHora.split(" às ")
-
-let data = partes[0]
-let hora = partes[1]
-
-let [dia,mes,ano] = data.split("/")
-
-let inicio = `${ano}-${mes}-${dia}T${hora}`
-
-let fim = new Date(inicio)
-fim.setHours(fim.getHours()+1)
-
-let inicioFormatado = inicio.replace(/[-:]/g,"")
-let fimFormatado = fim.toISOString().replace(/[-:]/g,"").split(".")[0]
-
-let agenda =
-"https://calendar.google.com/calendar/render?action=TEMPLATE"
-+ "&text=Visita Técnica - " + nome
-+ "&details=Cliente: " + nome + " | Telefone: " + telefone + " | Problema: " + problema
-+ "&location=" + regiao
-+ "&dates=" + inicioFormatado + "/" + fimFormatado
-
-window.open(agenda)
-
+if(info.style.display === "block"){
+info.style.display = "none"
+}else{
+info.style.display = "block"
 }
-
-function voltarSite(){
-window.location.href="index.html"
-}
-
-/* VER SENHA */
-
-function verSenha(){
-
-let campo = document.getElementById("senha")
-
-campo.type = campo.type === "password" ? "text" : "password"
 
 }
 
@@ -794,64 +737,11 @@ campo.type = campo.type === "password" ? "text" : "password"
 
 async function concluir(id){
 
-if(!id) return
-
-try{
-
 await updateDoc(doc(db,"agendamentos",id),{
 status:"Concluído"
 })
 
 carregar()
-
-}catch(e){
-
-console.log(e)
-alert("Erro ao concluir atendimento.")
-
-}
-
-}
-
-/* GERAR ORÇAMENTO */
-
-function gerarOrcamento(cliente, problema){
-
-const { jsPDF } = window.jspdf
-
-let doc = new jsPDF()
-
-let data = new Date().toLocaleDateString()
-
-cliente = cliente || "Cliente"
-problema = problema || "Não informado"
-
-let textoProblema = doc.splitTextToSize(problema,170)
-
-doc.setFont("helvetica","bold")
-doc.setFontSize(18)
-doc.text("GUGA ENERGY",20,20)
-
-doc.setFontSize(12)
-doc.setFont("helvetica","normal")
-
-doc.text(`Data: ${data}`,20,35)
-doc.text(`Cliente: ${cliente}`,20,45)
-
-doc.text("Serviço solicitado:",20,60)
-
-doc.setFont("helvetica","italic")
-doc.text(textoProblema,20,70)
-
-doc.setFont("helvetica","normal")
-
-doc.text("O orçamento detalhado será apresentado após análise técnica no local.",20,100,{maxWidth:170})
-
-doc.text("Execução conforme NBR 5410",20,120)
-doc.text("Profissional habilitado NR10",20,130)
-doc.text("Garantia do serviço.",20,140)
-
-doc.save(`orcamento-${cliente.replace(/[^a-z0-9]/gi,"_")}.pdf`)
 
 }
 
@@ -861,8 +751,6 @@ async function arquivar(id){
 
 if(!confirm("Mover atendimento para lixeira por 30 dias?")) return
 
-try{
-
 await updateDoc(doc(db,"agendamentos",id),{
 arquivado:true,
 dataArquivado:Date.now()
@@ -870,38 +758,25 @@ dataArquivado:Date.now()
 
 carregar()
 
-}catch(e){
-
-alert("Erro ao arquivar atendimento.")
-console.log(e)
-
-}
-
 }
 
 /* BUSCA */
 
-let campoBusca = document.getElementById("buscaCliente")
-
-if(campoBusca){
-
-campoBusca.addEventListener("keyup", function(){
+document.getElementById("buscaCliente").addEventListener("keyup", function(){
 
 let filtro = this.value.toLowerCase()
 
-let linhas = document.querySelectorAll("#tabela tr")
+let cards = document.querySelectorAll(".cliente-card")
 
-linhas.forEach(function(linha){
+cards.forEach(function(card){
 
-let texto = linha.innerText.toLowerCase()
+let texto = card.innerText.toLowerCase()
 
-linha.style.display = texto.includes(filtro) ? "" : "none"
-
-})
+card.style.display = texto.includes(filtro) ? "" : "none"
 
 })
 
-}
+})
 
 /* AUTO LOGIN */
 
@@ -912,6 +787,24 @@ document.getElementById("painel").style.display="block"
 document.getElementById("topo").style.display="flex"
 
 setTimeout(carregar,200)
+
+}
+
+/* MOSTRAR / OCULTAR SENHA */
+
+function verSenha(){
+
+let campo = document.getElementById("senha")
+
+if(campo.type === "password"){
+
+campo.type = "text"
+
+}else{
+
+campo.type = "password"
+
+}
 
 }
 
