@@ -526,7 +526,7 @@ Atendimentos registrados:
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
-import { getFirestore, collection, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+import { getFirestore, collection, onSnapshot, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -541,28 +541,28 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
 window.db = db
-window.getDocs = getDocs
 window.collection = collection
+window.onSnapshot = onSnapshot
 window.deleteDoc = deleteDoc
 window.updateDoc = updateDoc
 window.doc = doc
 
 </script>
 
-<!-- FIREBASE -->
-
 <script>
+    
+/* LOGIN */
 
 let ultimoTotal = 0
 
-/* LOGIN */
+async function entrar(){
 
-function entrar(){
+let user = document.getElementById("usuario").value.trim().toLowerCase()
+let pass = document.getElementById("senha").value.trim()
 
-let user=document.getElementById("usuario").value.trim().toLowerCase()
-let pass=document.getElementById("senha").value.trim()
+let hash = await gerarHash(pass)
 
-if(user==="guga" && pass==="Energy2024"){
+if(user === "guga" && hash === "e7b7e2d7a5c1c94c95f3c2c1b75e61fd"){
 
 localStorage.setItem("painelLogado","sim")
 
@@ -594,7 +594,7 @@ document.getElementById("login").style.display="flex"
 
 /* CARREGAR DADOS */
 
-async function carregar(){
+function carregar(){
 
 if(typeof db === "undefined"){
 setTimeout(carregar,500)
@@ -602,6 +602,8 @@ return
 }
 
 const lista = document.getElementById("listaClientes")
+
+onSnapshot(collection(db,"agendamentos"),(snapshot)=>{
 
 let total = 0
 let pendentes = 0
@@ -612,15 +614,14 @@ let hoje = new Date().toLocaleDateString()
 let atendHoje = 0
 
 let cards = ""
-
-try{
-
-const snapshot = await getDocs(collection(db,"agendamentos"))
+let ultimoCliente = null
 
 snapshot.forEach((documento)=>{
 
 const dadosDoc = documento.data()
 const id = documento.id
+
+ultimoCliente = dadosDoc
 
 if(dadosDoc.dataHora){
 
@@ -695,11 +696,6 @@ target="_blank">
 Mapa
 </a>
 
-<button class="btn"
-onclick="abrirAgenda('${dadosDoc.nome}','${telefoneLimpo}','${dadosDoc.regiao}','${dadosDoc.problema}','${dadosDoc.dataHora}')">
-Agenda
-</button>
-
 <button class="btn verde"
 onclick="concluir('${id}')">
 Concluir
@@ -729,8 +725,6 @@ document.getElementById("arquivados").innerText = arquivados
 document.getElementById("hoje").innerText = atendHoje
 
 
-/* ALERTA DE NOVO ATENDIMENTO */
-
 if(total > ultimoTotal && ultimoTotal !== 0){
 
 mostrarNotificacao("🔔 Novo atendimento recebido")
@@ -741,25 +735,11 @@ if(som){
 som.play().catch(()=>{})
 }
 
-// envia alerta WhatsApp
-enviarAlertaWhatsApp(
-dadosDoc.nome,
-dadosDoc.telefone,
-dadosDoc.regiao,
-dadosDoc.problema
-)
-
 }
 
 ultimoTotal = total
 
-
-}catch(e){
-
-alert("Erro ao carregar agendamentos.")
-console.log(e)
-
-}
+})
 
 }
 
@@ -806,7 +786,7 @@ carregar()
 
 /* BUSCA */
 
-document.getElementById("buscaCliente").addEventListener("keyup", function(){
+document.getElementById("buscaCliente").addEventListener("keyup",function(){
 
 let filtro = this.value.toLowerCase()
 
@@ -834,7 +814,7 @@ setTimeout(carregar,200)
 
 }
 
-/* MOSTRAR / OCULTAR SENHA */
+/* MOSTRAR SENHA */
 
 function verSenha(){
 
@@ -848,13 +828,9 @@ campo.type = "password"
 
 }
 
-setInterval(function(){
+/* ATUALIZAÇÃO AUTOMÁTICA */
 
-if(document.getElementById("painel").style.display === "block"){
-carregar()
-}
-
-},5000)
+/* NOTIFICAÇÃO */
 
 function mostrarNotificacao(texto){
 
@@ -869,9 +845,11 @@ box.style.display="none"
 
 }
 
+/* ALERTA WHATSAPP */
+
 function enviarAlertaWhatsApp(nome,telefone,regiao,problema){
 
-let numero = "5561992176914" // coloque seu número
+let numero = "5561992176914"
 
 let mensagem =
 `🔔 Novo atendimento solicitado
@@ -886,6 +864,36 @@ ${problema}`
 let url = "https://wa.me/"+numero+"?text="+encodeURIComponent(mensagem)
 
 window.open(url,"_blank")
+
+}
+
+/* HASH SENHA */
+
+async function gerarHash(texto){
+
+const encoder = new TextEncoder()
+const data = encoder.encode(texto)
+
+const hashBuffer = await crypto.subtle.digest("SHA-256", data)
+
+const hashArray = Array.from(new Uint8Array(hashBuffer))
+
+const hashHex = hashArray.map(b => b.toString(16).padStart(2,"0")).join("")
+
+return hashHex
+
+}
+
+function abrirAgenda(nome,telefone,regiao,problema,data){
+
+let texto =
+`Cliente: ${nome}
+Telefone: ${telefone}
+Região: ${regiao}
+Problema: ${problema}
+Data: ${data}`
+
+alert(texto)
 
 }
 
