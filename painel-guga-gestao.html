@@ -372,6 +372,22 @@ padding-right:45px;
 
 <body>
 
+<div id="notificacao" style="
+position:fixed;
+bottom:25px;
+right:25px;
+background:#FFD000;
+color:#000;
+padding:16px 20px;
+border-radius:8px;
+font-weight:bold;
+display:none;
+z-index:9999;
+box-shadow:0 5px 20px rgba(0,0,0,0.5);
+">
+Novo atendimento recebido
+</div>
+
 <!-- OVERLAY -->
 
 <div id="menu-overlay"></div>
@@ -493,10 +509,8 @@ placeholder="🔎 Buscar cliente ou telefone"
 <!-- CONTADOR -->
 
 <div class="contador-atendimentos">
-
 Atendimentos registrados:
 <strong id="total">0</strong>
-
 </div>
 
 <!-- LISTA DE CLIENTES (CARDS) -->
@@ -505,7 +519,9 @@ Atendimentos registrados:
 
 </div>
 
-<!-- FIREBASE -->
+<audio id="somNovo">
+<source src="https://actions.google.com/sounds/v1/alarms/notification.ogg" type="audio/ogg">
+</audio>
 
 <script type="module">
 
@@ -533,9 +549,11 @@ window.doc = doc
 
 </script>
 
-<!-- SISTEMA -->
+<!-- FIREBASE -->
 
 <script>
+
+let ultimoTotal = 0
 
 /* LOGIN */
 
@@ -710,6 +728,32 @@ document.getElementById("concluidos").innerText = concluidos
 document.getElementById("arquivados").innerText = arquivados
 document.getElementById("hoje").innerText = atendHoje
 
+
+/* ALERTA DE NOVO ATENDIMENTO */
+
+if(total > ultimoTotal && ultimoTotal !== 0){
+
+mostrarNotificacao("🔔 Novo atendimento recebido")
+
+let som = document.getElementById("somNovo")
+
+if(som){
+som.play().catch(()=>{})
+}
+
+// envia alerta WhatsApp
+enviarAlertaWhatsApp(
+dadosDoc.nome,
+dadosDoc.telefone,
+dadosDoc.regiao,
+dadosDoc.problema
+)
+
+}
+
+ultimoTotal = total
+
+
 }catch(e){
 
 alert("Erro ao carregar agendamentos.")
@@ -797,14 +841,51 @@ function verSenha(){
 let campo = document.getElementById("senha")
 
 if(campo.type === "password"){
-
 campo.type = "text"
-
 }else{
-
 campo.type = "password"
+}
 
 }
+
+setInterval(function(){
+
+if(document.getElementById("painel").style.display === "block"){
+carregar()
+}
+
+},5000)
+
+function mostrarNotificacao(texto){
+
+let box = document.getElementById("notificacao")
+
+box.innerText = texto
+box.style.display = "block"
+
+setTimeout(()=>{
+box.style.display="none"
+},4000)
+
+}
+
+function enviarAlertaWhatsApp(nome,telefone,regiao,problema){
+
+let numero = "5561992176914" // coloque seu número
+
+let mensagem =
+`🔔 Novo atendimento solicitado
+
+Cliente: ${nome}
+Telefone: ${telefone}
+Região: ${regiao}
+
+Problema:
+${problema}`
+
+let url = "https://wa.me/"+numero+"?text="+encodeURIComponent(mensagem)
+
+window.open(url,"_blank")
 
 }
 
