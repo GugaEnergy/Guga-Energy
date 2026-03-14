@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Área do Cliente | Guga Energy</title>
+
+<style>
+
+/* BASE */
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:#020202;
+color:#fff;
+margin:0;
+padding-top:70px;
+}
+
+/* HEADER */
+
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:70px;
+background:#000;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:3px solid #FFD000;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo img{
+height:40px;
+}
+
+.logo span{
+color:#FFD000;
+}
+
+.sair{
+background:#FFD000;
+border:none;
+padding:10px 14px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+/* CARDS */
+
+.card{
+background:#111;
+border-left:4px solid #FFD000;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+/* LISTA SERVIÇOS */
+
+.servico{
+background:#151515;
+padding:12px;
+margin-bottom:10px;
+border-radius:6px;
+}
+
+/* NOTAS */
+
+.nota{
+background:#151515;
+padding:12px;
+margin-bottom:10px;
+border-radius:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<img src="logo.png">
+<h2>GUGA <span>ENERGY</span></h2>
+</div>
+
+<button class="sair" onclick="sair()">Sair</button>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h3>Dados do Cliente</h3>
+
+<p><strong>Nome:</strong> <span id="nome">...</span></p>
+<p><strong>Telefone:</strong> <span id="telefone">...</span></p>
+
+</div>
+
+<div class="card">
+
+<h3>Histórico de Serviços</h3>
+
+<div id="servicos"></div>
+
+</div>
+
+<div class="card">
+
+<h3>Notas Técnicas</h3>
+
+<div id="notas"></div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+
+import {
+getFirestore,
+doc,
+getDoc,
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
+
+const firebaseConfig = {
+apiKey:"AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
+authDomain:"guga-energy-agendamentos-778f1.firebaseapp.com",
+projectId:"guga-energy-agendamentos-778f1"
+}
+
+const app = initializeApp(firebaseConfig)
+
+const db = getFirestore(app)
+const auth = getAuth(app)
+
+/* VERIFICAR LOGIN */
+
+onAuthStateChanged(auth, async (user)=>{
+
+if(!user){
+
+window.location.href="login.html"
+return
+
+}
+
+/* DADOS DO CLIENTE */
+
+const docRef = doc(db,"clientes",user.uid)
+const docSnap = await getDoc(docRef)
+
+if(docSnap.exists()){
+
+const dados = docSnap.data()
+
+document.getElementById("nome").innerText = dados.nome || "-"
+document.getElementById("telefone").innerText = dados.telefone || "-"
+
+}
+
+/* SERVIÇOS */
+
+const servicosRef = collection(db,"clientes",user.uid,"servicos")
+const servicosSnap = await getDocs(servicosRef)
+
+let htmlServicos = ""
+
+servicosSnap.forEach(doc=>{
+
+const s = doc.data()
+
+htmlServicos += `
+<div class="servico">
+<strong>${s.titulo || "Serviço"}</strong><br>
+${s.descricao || ""}
+</div>
+`
+
+})
+
+document.getElementById("servicos").innerHTML = htmlServicos
+
+/* NOTAS */
+
+const notasRef = collection(db,"clientes",user.uid,"notas")
+const notasSnap = await getDocs(notasRef)
+
+let htmlNotas = ""
+
+notasSnap.forEach(doc=>{
+
+const n = doc.data()
+
+htmlNotas += `
+<div class="nota">
+${n.texto || ""}
+</div>
+`
+
+})
+
+document.getElementById("notas").innerHTML = htmlNotas
+
+})
+
+/* SAIR */
+
+window.sair = async function(){
+
+await signOut(auth)
+
+window.location.href="index.html"
+
+}
+
+</script>
+
+</body>
+</html>
