@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
@@ -62,9 +62,13 @@ font-family:'Montserrat', Arial, Helvetica, sans-serif;
 
 html{
 scroll-behavior:smooth;
+overflow-x:hidden;
+touch-action:manipulation;
 }
 
 body{
+overflow-x:hidden;
+touch-action:manipulation;
 -webkit-text-size-adjust:100%;
 background:#0b0b0b;
 color:#fff;
@@ -73,6 +77,16 @@ max-width:100vw;
 padding-top:110px;
 -webkit-font-smoothing:antialiased;
 -moz-osx-font-smoothing:grayscale;
+}
+
+/* ajuste mobile */
+
+@media(max-width:768px){
+
+body{
+padding-top:85px;
+}
+
 }
 
 img,video,iframe{
@@ -483,7 +497,7 @@ textarea,
 input,
 select{
 width:100%;
-padding:12px;
+padding:14px;
 margin-bottom:12px;
 border:none;
 border-radius:4px;
@@ -825,7 +839,6 @@ display:none;
 
 <div class="overlay" id="menu-overlay"></div>
 
-<a href="login.html">Login</a>
 <!-- BARRA MOBILE -->
 
 <div class="mobile-bar">
@@ -1665,6 +1678,21 @@ avisoDuplicado.style.display = "none"
 function abrirPainel(){
 window.location.href = "login.html"
 }
+
+document.addEventListener("click",function(e){
+
+const sidebar = document.getElementById("sidebar")
+const overlay = document.getElementById("menu-overlay")
+
+if(e.target === overlay){
+
+sidebar.classList.remove("active")
+overlay.classList.remove("active")
+document.body.classList.remove("menu-open")
+
+}
+
+})
 
 </script>
 
