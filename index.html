@@ -825,6 +825,7 @@ display:none;
 
 <div class="overlay" id="menu-overlay"></div>
 
+<a href="login.html">Login</a>
 <!-- BARRA MOBILE -->
 
 <div class="mobile-bar">
@@ -839,7 +840,7 @@ display:none;
 
 <div class="close-btn" onclick="toggleMenu()">✕</div>
 
-<a href="#topo">Início</a>
+<a href="painel.html">Login</a>
 
 <a href="javascript:void(0)" onclick="toggleServicos()">Serviços ▾</a>
 
@@ -873,7 +874,7 @@ display:none;
 
 <nav>
 
-<a href="#topo">Início</a>
+<a href="painel.html">Login</a>
 
 <div class="dropdown">
 
@@ -1662,51 +1663,8 @@ avisoDuplicado.style.display = "none"
 })
 
 function abrirPainel(){
-
-let senha = prompt("Área administrativa")
-
-if(!senha) return
-
-senha = senha.trim()
-
-if(senha === "Energy2024"){
-
-localStorage.setItem("adminLogado","true")
-
-window.location.href = "painel-guga-gestao.html"
-
-}else{
-
-alert("Acesso não autorizado")
-
+window.location.href = "login.html"
 }
-
-}
-
-let cliquesAdmin = 0
-let tempoClique = null
-
-document.querySelector(".logo").addEventListener("click", function(){
-
-if(!tempoClique){
-tempoClique = setTimeout(()=>{
-cliquesAdmin = 0
-tempoClique = null
-},2000)
-}
-
-cliquesAdmin++
-
-if(cliquesAdmin >= 5){
-
-abrirPainel()
-cliquesAdmin = 0
-clearTimeout(tempoClique)
-tempoClique = null
-
-}
-
-})
 
 </script>
 
