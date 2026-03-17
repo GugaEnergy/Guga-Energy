@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Painel Guga Energy</title>
+
+<style>
+
+/* RESET */
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+/* BASE */
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:#020202;
+color:#fff;
+padding-top:70px;
+min-height:100vh;
+line-height:1.4;
+}
+
+/* HEADER */
+
+header{
+background:#000;
+height:70px;
+padding:0 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:3px solid #FFD000;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:3000;
+}
+
+/* LOGO */
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo img{
+height:40px;
+}
+
+.logo h2{
+font-size:20px;
+}
+
+.logo span{
+color:#FFD000;
+}
+
+/* BOTÃO SAIR */
+
+.sair-btn{
+background:#FFD000;
+color:#000;
+border:none;
+border-radius:6px;
+padding:10px 14px;
+font-weight:bold;
+font-size:14px;
+cursor:pointer;
+transition:.2s;
+}
+
+.sair-btn:hover{
+opacity:.9;
+}
+
+/* BOTÕES */
+
+.btn{
+display:flex;
+align-items:center;
+justify-content:center;
+background:#FFD000;
+color:#000;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+padding:10px 12px;
+font-size:14px;
+min-height:40px;
+transition:.2s;
+}
+
+.btn:hover{
+opacity:.9;
+}
+
+.btn.verde{
+background:#28a745;
+color:#fff;
+}
+
+.btn.vermelho{
+background:#dc3545;
+color:#fff;
+}
+
+/* PAINEL */
+
+.painel{
+display:none;
+padding:30px 20px;
+max-width:1500px;
+margin:auto;
+}
+
+/* CARDS SUPERIORES */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:16px;
+margin-bottom:22px;
+}
+
+.card{
+background:#151515;
+padding:20px;
+border-left:4px solid #FFD000;
+border-radius:10px;
+font-size:15px;
+}
+
+/* BUSCA */
+
+.busca-box{
+margin-bottom:20px;
+}
+
+#buscaCliente{
+width:100%;
+padding:14px;
+border-radius:8px;
+border:none;
+background:#111;
+color:#fff;
+font-size:15px;
+}
+
+/* DASHBOARD */
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:14px;
+margin-bottom:20px;
+}
+
+.dash-card{
+background:#111;
+padding:16px;
+border-left:4px solid #FFD000;
+border-radius:8px;
+text-align:center;
+}
+
+.dash-card span{
+font-size:13px;
+color:#aaa;
+}
+
+.dash-card strong{
+display:block;
+font-size:22px;
+color:#FFD000;
+margin-top:5px;
+}
+
+/* CONTADOR */
+
+.contador-atendimentos{
+margin:20px 0;
+background:#111;
+padding:14px;
+border-left:4px solid #FFD000;
+border-radius:6px;
+font-size:15px;
+}
+
+/* LISTA CLIENTES */
+
+.clientes{
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+/* CARD CLIENTE */
+
+.cliente-card{
+background:#111;
+border-left:4px solid #FFD000;
+border-radius:10px;
+overflow:hidden;
+}
+
+/* TOPO CARD */
+
+.cliente-topo{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+cursor:pointer;
+background:#151515;
+}
+
+.cliente-nome{
+font-weight:bold;
+font-size:16px;
+}
+
+.cliente-status{
+font-size:12px;
+background:#333;
+padding:5px 10px;
+border-radius:6px;
+}
+
+/* INFO CARD */
+
+.cliente-info{
+display:none;
+padding:16px;
+border-top:1px solid #333;
+}
+
+.cliente-info p{
+margin-bottom:8px;
+font-size:15px;
+}
+
+/* AÇÕES */
+
+.acoes{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+margin-top:12px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:700px){
+
+.painel{
+padding:20px 14px;
+}
+
+.logo h2{
+font-size:17px;
+}
+
+.dashboard{
+grid-template-columns:1fr 1fr;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.btn{
+font-size:13px;
+min-height:36px;
+}
+
+.cliente-nome{
+font-size:15px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="notificacao" style="
+position:fixed;
+bottom:25px;
+right:25px;
+background:#FFD000;
+color:#000;
+padding:16px 20px;
+border-radius:8px;
+font-weight:bold;
+display:none;
+z-index:9999;
+box-shadow:0 5px 20px rgba(0,0,0,0.5);
+">
+Novo atendimento recebido
+</div>
+
+<!-- OVERLAY -->
+
+<div id="menu-overlay"></div>
+
+<!-- HEADER -->
+
+<header id="topo" style="display:none">
+
+<a href="#" class="logo" onclick="location.reload()">
+<img src="logo.png" alt="Logo Guga Energy">
+<h2>GUGA <span>ENERGY</span></h2>
+</a>
+
+<button onclick="sair()" class="sair-btn">
+Sair
+</button>
+
+</header>
+
+<!-- PAINEL -->
+
+<div class="painel" id="painel">
+
+<!-- CARDS SUPERIORES -->
+
+<div class="cards">
+
+<div class="card">
+<strong>Empresa</strong>
+<div class="empresa-nome">GUGA <span>ENERGY</span></div>
+<div class="empresa-desc">Soluções Elétricas</div>
+</div>
+
+<div class="card">
+<strong>Região de Atendimento</strong>
+<div class="empresa-desc">Distrito Federal</div>
+</div>
+
+</div>
+
+<!-- BUSCA -->
+
+<div class="busca-box">
+
+<input 
+type="text"
+id="buscaCliente"
+placeholder="🔎 Buscar cliente ou telefone"
+>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<div class="dashboard">
+
+<div class="dash-card">
+<span>Pendentes</span>
+<strong id="pendentes">0</strong>
+</div>
+
+<div class="dash-card">
+<span>Concluídos</span>
+<strong id="concluidos">0</strong>
+</div>
+
+<div class="dash-card">
+<span>Arquivados</span>
+<strong id="arquivados">0</strong>
+</div>
+
+<div class="dash-card">
+<span>Hoje</span>
+<strong id="hoje">0</strong>
+</div>
+
+</div>
+
+<!-- CONTADOR -->
+
+<div class="contador-atendimentos">
+Atendimentos registrados:
+<strong id="total">0</strong>
+</div>
+
+<!-- LISTA DE CLIENTES (CARDS) -->
+
+<div id="listaClientes" class="clientes"></div>
+
+</div>
+
+<audio id="somNovo">
+<source src="https://actions.google.com/sounds/v1/alarms/notification.ogg" type="audio/ogg">
+</audio>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+
+import {
+getFirestore,
+collection,
+onSnapshot,
+deleteDoc,
+doc,
+updateDoc
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+import {
+getAuth,
+signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
+
+const firebaseConfig = {
+apiKey:"AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
+authDomain:"guga-energy-agendamentos-778f1.firebaseapp.com",
+projectId:"guga-energy-agendamentos-778f1",
+storageBucket:"guga-energy-agendamentos-778f1.firebasestorage.app",
+messagingSenderId:"384265745174",
+appId:"1:384265745174:web:a9284d4036f4a787bf5637"
+}
+
+const app = initializeApp(firebaseConfig)
+
+const db = getFirestore(app)
+const auth = getAuth(app)
+
+/* SAIR */
+
+window.sair = async function(){
+
+if(!confirm("Deseja sair do painel?")) return
+
+await signOut(auth)
+
+window.location.href="index.html"
+
+}
+
+/* LOGIN */
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href="login.html"
+return
+
+}
+
+document.getElementById("painel").style.display="block"
+document.getElementById("topo").style.display="flex"
+
+carregar()
+
+})
+
+/* CARREGAR DADOS */
+
+function carregar(){
+
+const lista = document.getElementById("listaClientes")
+
+if(!lista){
+console.error("Elemento listaClientes não encontrado")
+return
+}
+
+onSnapshot(collection(db,"agendamentos"),(snapshot)=>{
+
+console.log("Documentos encontrados:", snapshot.size)
+
+let cards = ""
+
+snapshot.forEach((documento)=>{
+
+const dados = documento.data()
+const id = documento.id
+
+const telefone = String(dados.telefone || "").replace(/\D/g,'')
+
+cards += `
+
+<div class="cliente-card">
+
+<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+
+<div class="cliente-nome">
+${dados.nome || "-"}
+</div>
+
+<div class="cliente-status">
+${dados.status || "Pendente"}
+</div>
+
+</div>
+
+<div class="cliente-info">
+
+<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
+<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
+<p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
+<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
+
+<div class="acoes">
+
+<a class="btn" href="https://wa.me/55${telefone}" target="_blank">
+WhatsApp
+</a>
+
+<a class="btn" href="tel:${telefone}">
+Ligar
+</a>
+
+<a class="btn"
+href="https://www.google.com/maps?q=${encodeURIComponent((dados.regiao || '') + ' Brasilia DF')}"
+target="_blank">
+Mapa
+</a>
+
+<button class="btn"
+onclick="abrirAgenda('${dados.nome}','${telefone}','${dados.regiao}','${dados.problema}','${dados.dataHora}')">
+Agenda
+</button>
+
+<button class="btn verde" onclick="concluir('${id}')">
+Concluir
+</button>
+
+<button class="btn vermelho" onclick="arquivar('${id}')">
+Arquivar
+</button>
+
+</div>
+
+</div>
+
+</div>
+    
+`
+
+})
+
+lista.innerHTML = cards
+
+})
+
+}
+
+/* ABRIR CARD */
+
+window.toggleCard = function(card){
+
+let info = card.querySelector(".cliente-info")
+
+info.style.display =
+info.style.display === "block" ? "none" : "block"
+
+}
+
+/* CONCLUIR */
+
+window.concluir = async function(id){
+
+await updateDoc(doc(db,"agendamentos",id),{
+status:"Concluído"
+})
+
+}
+
+/* ARQUIVAR */
+
+window.arquivar = async function(id){
+
+if(!confirm("Mover atendimento para lixeira por 30 dias?")) return
+
+await updateDoc(doc(db,"agendamentos",id),{
+arquivado:true,
+dataArquivado:Date.now()
+})
+
+}
+
+
+
+</script>
+
+</body>
+</html>

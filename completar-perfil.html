@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Completar Perfil</title>
+
+<style>
+
+body{
+background:#020202;
+color:white;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+background:#0a0a0a;
+padding:30px;
+width:350px;
+border-top:3px solid #FFD000;
+border-radius:8px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+border:none;
+background:#111;
+color:white;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#FFD000;
+border:none;
+font-weight:bold;
+}
+
+.box h2{
+margin-bottom:15px;
+color:#FFD000;
+}
+
+input{
+border-radius:6px;
+}
+
+button{
+border-radius:6px;
+cursor:pointer;
+transition:.2s;
+}
+
+button:hover{
+opacity:.9;
+}
+
+@media(max-width:500px){
+
+.box{
+width:90%;
+}
+
+}
+
+.voltar{
+position:fixed;
+top:20px;
+left:20px;
+width:45px;
+height:45px;
+background:#FFD000;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+box-shadow:0 6px 18px rgba(0,0,0,.6);
+transition:.25s;
+z-index:9999;
+}
+
+.voltar:hover{
+transform:scale(1.08);
+box-shadow:0 8px 22px rgba(0,0,0,.8);
+}
+
+.voltar svg{
+width:22px;
+height:22px;
+}
+
+</style>
+
+</head>
+
+<body>
+<a href="criar-conta.html" class="voltar" aria-label="Voltar">
+<svg viewBox="0 0 24 24" width="20" height="20">
+<path d="M15 18l-6-6 6-6" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</a>
+
+<div class="box">
+
+<h2>Completar Cadastro</h2>
+
+<input id="nome" placeholder="Nome completo">
+<input id="telefone" placeholder="Telefone">
+<input id="endereco" placeholder="Endereço">
+<input id="nome" placeholder="Nome completo" required>
+<input id="telefone" placeholder="Telefone" required>
+<input id="endereco" placeholder="Endereço" required>
+
+<button onclick="salvar()">Salvar</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
+import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
+authDomain:"guga-energy-agendamentos-778f1.firebaseapp.com",
+projectId:"guga-energy-agendamentos-778f1"
+
+}
+
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const telefoneInput = document.getElementById("telefone")
+
+telefoneInput.addEventListener("input", function(){
+
+let numero = telefoneInput.value.replace(/\D/g,"")
+
+numero = numero.substring(0,11)
+
+if(numero.length > 2){
+numero = numero.replace(/^(\d{2})(\d)/g,"($1) $2")
+}
+
+if(numero.length > 10){
+numero = numero.replace(/(\d{5})(\d{4})$/,"$1-$2")
+}
+
+telefoneInput.value = numero
+
+})
+
+window.salvar = async function(){
+
+const user = auth.currentUser
+
+const nome = document.getElementById("nome").value
+const telefone = document.getElementById("telefone").value
+const endereco = document.getElementById("endereco").value
+
+await updateDoc(doc(db,"usuarios",user.uid),{
+
+nome,
+telefone,
+endereco,
+perfilCompleto:true
+
+})
+
+window.location.href="cliente.html"
+
+}
+
+auth.onAuthStateChanged((user)=>{
+
+if(!user){
+
+alert("Sessão expirada. Faça login novamente.")
+window.location.href="login.html"
+
+}
+
+})
+
+if(!nome || !telefone || !endereco){
+
+alert("Preencha todos os campos.")
+return
+
+}
+
+</script>
+
+</body>
+</html>
