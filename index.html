@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
@@ -416,7 +416,7 @@ position:absolute;
 width:220px;
 height:150px;
 left:50%;
-top:55%;
+top:50%;
 overflow:hidden;
 transition:transform .8s;
 }
@@ -801,11 +801,14 @@ display:none;
 
 @media(max-width:768px){
 
-input,
+input:focus,
 select,
-textarea{
-font-size:16px;
+textarea:focus{
+font-size:16px !important;
 padding:14px;
+transform: scale(1);
+outline:none;
+box-shadow:0 0 0 2px #FFD000;
 }
 
 }
@@ -1303,18 +1306,30 @@ menu.style.display = "block"
 
 }
 
-/* CARROSSEL */
+/* CARROSSEL CORRIGIDO */
 
 let slides
 let angle = 0
-const step = 72
+let step
 let radius
 
 function atualizarRadius(){
-radius = window.innerWidth < 700 ? 220 : 380
+
+if(window.innerWidth < 480){
+radius = 160
+}
+else if(window.innerWidth < 768){
+radius = 220
+}
+else{
+radius = 420
+}
+
 }
 
 function update(){
+
+if(!slides || slides.length === 0) return
 
 slides.forEach((slide,i)=>{
 
@@ -1331,10 +1346,14 @@ window.addEventListener("load", function(){
 
 slides = document.querySelectorAll(".slide")
 
+if(slides.length === 0) return
+
+step = 360 / slides.length
+
 atualizarRadius()
 update()
 
-setInterval(rotate,3500)
+setInterval(rotate,4000)
 
 })
 
