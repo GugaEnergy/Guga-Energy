@@ -323,7 +323,7 @@ Criar Conta
 
 </div>
 
-<script type="module">
+<<script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
 
@@ -331,16 +331,15 @@ import {
 getAuth,
 signInWithEmailAndPassword,
 GoogleAuthProvider,
-signInWithPopup
+signInWithRedirect,
+getRedirectResult
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
 
 import {
 getFirestore,
 doc,
 getDoc,
-setDoc,
-collection,
-getDocs
+setDoc
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 /* CONFIG */
@@ -355,7 +354,39 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore(app)
 
-/* FUNÇÃO: VERIFICAR OU CRIAR USUÁRIO */
+/* =========================
+   LOGIN GOOGLE (RETORNO)
+========================= */
+
+getRedirectResult(auth)
+.then(async (result) => {
+
+if(result){
+
+const user = result.user
+const dados = await garantirUsuario(user)
+
+/* REDIRECIONAMENTO */
+
+if(dados.tipo === "admin"){
+window.location.href = "painel.html"
+}else if(dados.perfilCompleto){
+window.location.href = "cliente.html"
+}else{
+window.location.href = "completar-perfil.html"
+}
+
+}
+
+})
+.catch((error) => {
+console.log("Erro login Google:", error)
+alert("Erro ao entrar com Google")
+})
+
+/* =========================
+   FUNÇÃO: GARANTIR USUÁRIO
+========================= */
 
 async function garantirUsuario(user){
 
@@ -383,7 +414,9 @@ perfilCompleto:true
 
 }
 
-/* LOGIN NORMAL */
+/* =========================
+   LOGIN NORMAL
+========================= */
 
 window.entrar = async function(){
 
@@ -420,7 +453,9 @@ alert("Usuário ou senha incorretos")
 
 }
 
-/* LOGIN GOOGLE */
+/* =========================
+   LOGIN GOOGLE
+========================= */
 
 const provider = new GoogleAuthProvider()
 
@@ -428,20 +463,7 @@ window.loginGoogle = async function(){
 
 try{
 
-const result = await signInWithPopup(auth, provider)
-const user = result.user
-
-const dados = await garantirUsuario(user)
-
-/* REDIRECIONAMENTO */
-
-if(dados.tipo === "admin"){
-window.location.href = "painel.html"
-}else if(dados.perfilCompleto){
-window.location.href = "cliente.html"
-}else{
-window.location.href = "completar-perfil.html"
-}
+await signInWithRedirect(auth, provider)
 
 }catch(error){
 
@@ -452,7 +474,9 @@ alert("Erro ao entrar com Google")
 
 }
 
-/* OLHO SENHA */
+/* =========================
+   OLHO SENHA
+========================= */
 
 window.verSenha = function(){
 
@@ -482,7 +506,9 @@ icone.innerHTML = `
 
 }
 
-/* ENTER */
+/* =========================
+   ENTER
+========================= */
 
 document.addEventListener("keydown",function(e){
 if(e.key === "Enter"){
