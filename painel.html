@@ -431,9 +431,10 @@ import {
 getFirestore,
 collection,
 onSnapshot,
-deleteDoc,
 doc,
-updateDoc
+updateDoc,
+query,
+where
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 import {
@@ -452,38 +453,27 @@ appId:"1:384265745174:web:a9284d4036f4a787bf5637"
 }
 
 const app = initializeApp(firebaseConfig)
-
 const db = getFirestore(app)
 const auth = getAuth(app)
 
 /* SAIR */
 
 window.sair = async function(){
-
 if(!confirm("Deseja sair do painel?")) return
-
 await signOut(auth)
-
 window.location.href="index.html"
-
 }
 
 /* LOGIN */
 
 onAuthStateChanged(auth,(user)=>{
-
 if(!user){
-
 window.location.href="login.html"
 return
-
 }
-
 document.getElementById("painel").style.display="block"
 document.getElementById("topo").style.display="flex"
-
 carregar()
-
 })
 
 /* CARREGAR DADOS */
@@ -492,14 +482,41 @@ function carregar(){
 
 const lista = document.getElementById("listaClientes")
 
-if(!lista){
-console.error("Elemento listaClientes não encontrado")
-return
+let totalAnterior = 0
+
+const q = query(
+collection(db,"agendamentos"),
+where("arquivado","!=",true)
+)
+
+onSnapshot(q,(snapshot)=>{
+
+console.log("Documentos:", snapshot.size)
+
+/* NOTIFICAÇÃO */
+
+if(snapshot.size > totalAnterior){
+
+const som = document.getElementById("somNovo")
+if(som) som.play()
+
+const noti = document.getElementById("notificacao")
+if(noti){
+noti.style.display = "block"
+setTimeout(()=>{ noti.style.display = "none" },3000)
 }
 
-onSnapshot(collection(db,"agendamentos"),(snapshot)=>{
+}
 
-console.log("Documentos encontrados:", snapshot.size)
+totalAnterior = snapshot.size
+
+/* CONTADORES */
+
+let pendentes = 0
+let concluidos = 0
+let hoje = 0
+
+const hojeData = new Date().toLocaleDateString("pt-BR")
 
 let cards = ""
 
@@ -509,6 +526,20 @@ const dados = documento.data()
 const id = documento.id
 
 const telefone = String(dados.telefone || "").replace(/\D/g,'')
+
+/* CONTAGEM */
+
+if(dados.status === "Concluído"){
+concluidos++
+}else{
+pendentes++
+}
+
+if(dados.dataHora && dados.dataHora.includes(hojeData)){
+hoje++
+}
+
+/* CARD */
 
 cards += `
 
@@ -549,11 +580,6 @@ target="_blank">
 Mapa
 </a>
 
-<button class="btn"
-onclick="abrirAgenda('${dados.nome}','${telefone}','${dados.regiao}','${dados.problema}','${dados.dataHora}')">
-Agenda
-</button>
-
 <button class="btn verde" onclick="concluir('${id}')">
 Concluir
 </button>
@@ -567,12 +593,19 @@ Arquivar
 </div>
 
 </div>
-    
+
 `
 
 })
 
 lista.innerHTML = cards
+
+/* ATUALIZA DASHBOARD */
+
+document.getElementById("pendentes").innerText = pendentes
+document.getElementById("concluidos").innerText = concluidos
+document.getElementById("hoje").innerText = hoje
+document.getElementById("total").innerText = snapshot.size
 
 })
 
@@ -581,38 +614,28 @@ lista.innerHTML = cards
 /* ABRIR CARD */
 
 window.toggleCard = function(card){
-
 let info = card.querySelector(".cliente-info")
-
 info.style.display =
 info.style.display === "block" ? "none" : "block"
-
 }
 
 /* CONCLUIR */
 
 window.concluir = async function(id){
-
 await updateDoc(doc(db,"agendamentos",id),{
 status:"Concluído"
 })
-
 }
 
 /* ARQUIVAR */
 
 window.arquivar = async function(id){
-
-if(!confirm("Mover atendimento para lixeira por 30 dias?")) return
-
+if(!confirm("Mover para lixeira?")) return
 await updateDoc(doc(db,"agendamentos",id),{
 arquivado:true,
 dataArquivado:Date.now()
 })
-
 }
-
-
 
 </script>
 
