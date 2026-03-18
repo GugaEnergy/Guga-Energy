@@ -884,7 +884,7 @@ white-space:nowrap;
 }
 
 .bloco-ia{
-display:flex;
+display:none;
 flex-direction:column;
 gap:8px;
 margin-bottom:12px;
@@ -1194,7 +1194,7 @@ Instalações conforme NBR 5410 • Profissional NR10
 
 <div class="bloco-ia">
 
-<textarea id="descricaoIA" placeholder="Descreva seu problema (ex: caiu energia na cozinha, disjuntor desarma...)" ></textarea>
+<textarea id="descricaoIA" placeholder="Descreva seu problema..." autocomplete="off"></textarea>
 
 <button type="button" onclick="melhorarDescricao()" class="btn-ia">
 ⚡ Melhorar descrição com IA
@@ -1261,15 +1261,13 @@ WhatsApp:
 </a>
 <a class="ligar" href="tel:+5561992176914">📞 Ligar Agora</a>
 
-</script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -1283,13 +1281,10 @@ appId: "1:384265745174:web:a9284d4036f4a787bf5637"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.db = db
-window.addDoc = addDoc
-window.collection = collection
-window.getDocs = getDocs
-window.query = query
-window.where = where
-window.serverTimestamp = serverTimestamp
+window.db = db;
+window.addDoc = addDoc;
+window.collection = collection;
+window.serverTimestamp = serverTimestamp;
 
 </script>
 
@@ -1306,6 +1301,8 @@ const overlay = document.getElementById("menu-overlay")
 const body = document.body
 const btn = document.getElementById("menuBtn")
 
+if(!sidebar || !overlay || !btn) return
+
 sidebar.classList.toggle("active")
 overlay.classList.toggle("active")
 body.classList.toggle("menu-open")
@@ -1321,22 +1318,21 @@ if(this.getAttribute("onclick") === "toggleServicos()"){
 return
 }
 
-document.getElementById("sidebar").classList.remove("active")
-document.getElementById("menu-overlay").classList.remove("active")
+document.getElementById("sidebar")?.classList.remove("active")
+document.getElementById("menu-overlay")?.classList.remove("active")
 document.body.classList.remove("menu-open")
-
-document.getElementById("menuBtn").classList.remove("hidden")
+document.getElementById("menuBtn")?.classList.remove("hidden")
 
 })
 
 })
 
-document.getElementById("menu-overlay").addEventListener("click", function(){
+document.getElementById("menu-overlay")?.addEventListener("click", function(){
 
-document.getElementById("sidebar").classList.remove("active")
-document.getElementById("menu-overlay").classList.remove("active")
+document.getElementById("sidebar")?.classList.remove("active")
+document.getElementById("menu-overlay")?.classList.remove("active")
 document.body.classList.remove("menu-open")
-document.getElementById("menuBtn").classList.remove("hidden")
+document.getElementById("menuBtn")?.classList.remove("hidden")
 
 })
 
@@ -1344,15 +1340,14 @@ function toggleServicos(){
 
 const menu = document.getElementById("submenuServicos")
 
-if(menu.style.display === "block"){
-menu.style.display = "none"
-}else{
-menu.style.display = "block"
-}
+if(!menu) return
+
+menu.style.display =
+menu.style.display === "block" ? "none" : "block"
 
 }
 
-/* CARROSSEL CORRIGIDO */
+/* CARROSSEL */
 
 let slides
 let angle = 0
@@ -1392,7 +1387,10 @@ window.addEventListener("load", function(){
 
 slides = document.querySelectorAll(".slide")
 
-if(slides.length === 0) return
+if(!slides || slides.length === 0){
+console.log("Nenhum slide encontrado")
+return
+}
 
 step = 360 / slides.length
 
@@ -1461,41 +1459,38 @@ event.preventDefault()
 if(document.getElementById("site").value !== ""){
 return
 }
+
 let agoraEnvio = Date.now()
 
 if(agoraEnvio - ultimoEnvio < 60000){
-
 alert("Aguarde 1 minuto antes de enviar novamente.")
-
 return
-
 }
 
 ultimoEnvio = agoraEnvio
 
 let nome = document.getElementById("nome").value
-let telefone = document.getElementById("telefone").value
+let telInput = document.getElementById("telefone")
+let telefone = telInput.value
+
 let numeroLimpo = telefone.replace(/\D/g,"")
 
 if(numeroLimpo.length !== 11 || numeroLimpo[2] !== "9"){
-
 alert("Telefone inválido. Verifique o número.")
 return
-
 }
 
 let tempoAtual = Date.now()
 
-if(tempoAtual - tempoEntrada < 4000){
-
-alert("Envio muito rápido. Aguarde alguns segundos.")
-
+// bloqueio mais inteligente (2 segundos apenas)
+if(tempoAtual - tempoEntrada < 2000){
+console.log("Proteção anti-spam ativa")
 return
-
 }
 
 let data = document.getElementById("data").value
 let hora = document.getElementById("hora").value
+
 let dataHora = data + " às " + hora
 let problema = document.getElementById("problema").value
 
@@ -1507,25 +1502,30 @@ alert("Valor da visita não encontrado para esta região.")
 return
 }
 
-let valor = tabelaValores[regiao]
+let valor = tabelaValores[regiao] || "A combinar"
 let zona = identificarZona(regiao)
 
 try{
 
 await addDoc(collection(db, "agendamentos"), {
-
 nome,
 telefone,
 regiao,
 dataHora,
 problema,
+status:"Pendente",
 dataCriacao: serverTimestamp()
-
 })
+
+console.log("Agendamento salvo com sucesso")
 
 }catch(e){
 
-console.log("Erro ao salvar no Firebase")
+console.error("Erro ao salvar no Firebase:", e)
+
+alert("Erro ao enviar. Verifique sua conexão ou tente novamente.")
+
+return
 
 }
 
@@ -1551,36 +1551,18 @@ ${problema}
 
 let url = "https://api.whatsapp.com/send?phone=5561992176914&text=" + encodeURIComponent(mensagem)
 
+setTimeout(()=>{
 window.location.href = url
-
-/* GOOGLE CALENDAR */
-
-let [dia,mes,ano] = data.split("/")
-let inicio = `${ano}-${mes}-${dia}T${hora}`
-let fim = new Date(inicio)
-
-fim.setHours(fim.getHours()+1)
-
-let inicioFormatado = inicio.replace(/[-:]/g,"")
-let fimFormatado = fim.toISOString().replace(/[-:]/g,"").split(".")[0]
-
-let agenda = "https://calendar.google.com/calendar/render?action=TEMPLATE"
-+ "&text=Visita Técnica - " + nome
-+ "&details=Cliente: " + nome + " | Telefone: " + telefone
-+ "&location=" + regiao
-+ "&dates=" + inicioFormatado + "/" + fimFormatado
-
-window.open(agenda)
+},800)
 
 alert("Solicitação enviada!")
 
 document.querySelector("form").reset()
-
 valorVisita.innerHTML=""
 
 }
 
-/* VALOR DA VISITA */
+/* VALORES */
 
 const cidade = document.getElementById("cidade")
 const valorVisita = document.getElementById("valorVisita")
@@ -1602,206 +1584,81 @@ if(tabelaValores[regiao] !== undefined){
 
 let valor = tabelaValores[regiao]
 
-document.getElementById("valorVisita").innerHTML =
+valorVisita.innerHTML =
 "Valor da visita técnica (deslocamento incluso): <strong>R$ " + valor + "</strong>"
 
 infoVisita.style.display = "block"
 
 }else{
 
-document.getElementById("valorVisita").innerHTML =
-"Valor da visita não encontrado."
-
+valorVisita.innerHTML = "Valor da visita não encontrado."
 infoVisita.style.display = "none"
 
 }
 
 })
 
-/* SCROLL SUAVE */
+/* TELEFONE */
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+const telefoneInput = document.getElementById("telefone")
 
-anchor.addEventListener("click", function(e){
+telefoneInput.addEventListener("input", function(){
 
-let targetId = this.getAttribute("href")
+let numero = telefoneInput.value.replace(/\D/g,"").substring(0,11)
 
-if(targetId.length > 1){
-
-e.preventDefault()
-
-let target = document.querySelector(targetId)
-
-window.scrollTo({
-
-top: target.offsetTop - 80,
-behavior: "smooth"
-
-})
-
-}
-
-})
-
-})
-
-/* CALENDÁRIO */
-
-const telefone = document.getElementById("telefone")
-const avisoTelefone = document.getElementById("avisoTelefone")
-
-telefone.addEventListener("input", function(){
-
-let numero = telefone.value.replace(/\D/g,"")
-
-// limitar a 11 números
-numero = numero.substring(0,11)
-
-if(numero.length > 0){
-
+if(numero.length > 2){
 numero = numero.replace(/^(\d{2})(\d)/g,"($1) $2")
-
 }
 
 if(numero.length > 10){
-
 numero = numero.replace(/(\d{5})(\d{4})$/,"$1-$2")
-
-}else if(numero.length > 6){
-
-numero = numero.replace(/(\d{4})(\d{0,4})$/,"$1-$2")
-
 }
 
-telefone.value = numero
+telefoneInput.value = numero
 
 })
 
-telefone.addEventListener("input", function(){
-
-let numero = telefone.value.replace(/\D/g,"")
-
-const dddsValidos = [
-11,12,13,14,15,16,17,18,19,
-21,22,24,
-27,28,
-31,32,33,34,35,37,38,
-41,42,43,44,45,46,
-47,48,49,
-51,53,54,55,
-61,62,63,64,65,66,67,
-68,69,
-71,73,74,75,77,79,
-81,82,83,84,85,86,87,88,89,
-91,92,93,94,95,96,97,98,99
-]
-
-let ddd = parseInt(numero.substring(0,2))
-let primeiroDigito = numero.substring(2,3)
-
-if(
-numero.length !== 11 ||
-!dddsValidos.includes(ddd) ||
-primeiroDigito !== "9"
-){
-
-avisoTelefone.style.display="block"
-telefone.style.border="1px solid red"
-
-}else{
-
-avisoTelefone.style.display="none"
-telefone.style.border="none"
-
-}
-
-})
-
-const selectHora = document.getElementById("hora")
-const avisoHorario = document.getElementById("avisoHorario")
-const avisoDuplicado = document.getElementById("avisoDuplicado")
-
-selectHora.addEventListener("change", async function(){
-
-let dataSelecionada = document.getElementById("data").value
-if(!dataSelecionada) return
-
-let dataHora = dataSelecionada + " às " + selectHora.value
-
-/* verificar se horário já passou */
-
-let [dia,mes,ano] = dataSelecionada.split("/")
-
-let dataHoraEscolhida = new Date(`${ano}-${mes}-${dia}T${selectHora.value}:00`)
-
-let agora = new Date()
-
-agora.setMinutes(agora.getMinutes() + 60)
-
-if(dataHoraEscolhida <= agora){
-
-avisoHorario.style.display = "block"
-avisoDuplicado.style.display = "none"
-selectHora.value = ""
-return
-
-}else{
-
-avisoHorario.style.display = "none"
-
-}
-
-/* verificar no firebase */
-
-let q = query(
-collection(db,"agendamentos"),
-where("dataHora","==",dataHora)
-)
-
-let snapshot = await getDocs(q)
-
-if(!snapshot.empty){
-
-avisoDuplicado.style.display = "block"
-selectHora.value = ""
-
-}else{
-
-avisoDuplicado.style.display = "none"
-
-}
-
-})
-
-function abrirPainel(){
-window.location.href = "login.html"
-}
-
-document.addEventListener("click",function(e){
-
-const sidebar = document.getElementById("sidebar")
-const overlay = document.getElementById("menu-overlay")
-
-if(e.target === overlay){
-
-sidebar.classList.remove("active")
-overlay.classList.remove("active")
-document.body.classList.remove("menu-open")
-
-}
-
-})
+/* IA (ISOLADA) */
 
 function melhorarDescricao(){
 
+const inputIA = document.getElementById("descricaoIA")
+const output = document.getElementById("problema")
 const aviso = document.getElementById("statusIA")
+
+let texto = inputIA.value.trim()
+
+if(!texto){
+alert("Digite algo para melhorar")
+return
+}
+
+let textoMelhorado = `
+Cliente relata: ${texto}.
+
+Possível causa: verificar circuito, disjuntor e conexões.
+
+Recomendado: realizar diagnóstico técnico conforme NBR 5410.
+`
 
 aviso.style.display = "block"
 
+/* NÃO interfere no envio, só preenche se quiser */
+output.value = textoMelhorado
+
 setTimeout(()=>{
 aviso.style.display = "none"
-},4000)
+},3000)
 
+}
+
+/* CALENDÁRIO */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+if(typeof flatpickr === "undefined"){
+console.log("Flatpickr não carregou")
+return
 }
 
 flatpickr("#data", {
@@ -1809,12 +1666,12 @@ locale: "pt",
 dateFormat: "d/m/Y",
 minDate: "today",
 disableMobile: true,
-
 disable: [
 function(date) {
-return (date.getDay() === 0) // domingo bloqueado
+return (date.getDay() === 0)
 }
 ]
+})
 
 })
 
