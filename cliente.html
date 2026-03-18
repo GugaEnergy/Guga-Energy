@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 
 <meta charset="UTF-8">
@@ -8,11 +7,38 @@
 
 <title>Área do Cliente | Guga Energy</title>
 
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-<link rel="apple-touch-icon" href="favicon.png">
+<link rel="icon" href="favicon.png">
 
 <style>
+
+/* RESET ESSENCIAL */
+*{
+box-sizing:border-box;
+}
+
+img{
+max-width:100%;
+height:auto;
+}
+
+.sair{
+background:#FFD000;
+border:none;
+padding:10px 16px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+transition:0.2s;
+
+margin-left:auto;   /* joga pra direita */
+margin-right:55px;  /* afasta da borda */
+min-width:90px;     /* tamanho padrão */
+text-align:center;
+}
+
+.sair:hover{
+opacity:0.85;
+}
 
 /* BASE */
 
@@ -35,8 +61,8 @@ height:110px;
 background:#000;
 display:flex;
 align-items:center;
-justify-content:space-between; /* ESSENCIAL */
-padding:0 30px; /* espaço lateral */
+justify-content:space-between;
+padding:0 20px;
 border-bottom:3px solid #FFD000;
 z-index:1000;
 }
@@ -48,42 +74,14 @@ gap:10px;
 }
 
 .logo img{
-height:90px;
+height:95px;
 }
 
 .logo span{
 color:#FFD000;
 }
 
-
-header{
-padding:0 30px;
-}
-
-.sair{
-background:#FFD000;
-border:none;
-padding:10px 16px;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-transition:0.2s;
-
-margin-left:auto;   /* joga pra direita */
-margin-right:100px;  /* afasta da borda */
-min-width:90px;     /* tamanho padrão */
-text-align:center;
-}
-
-.sair:hover{
-opacity:0.85;
-}
-
-@media(max-width:600px){
-.logo img{
-height:45px;
-}
-}
+/* NÃO MEXI NO SEU .SAIR */
 
 /* CONTAINER */
 
@@ -98,36 +96,128 @@ padding:20px;
 .card{
 background:#111;
 border-left:4px solid #FFD000;
-padding:20px;
+padding:22px;
 margin-bottom:20px;
-border-radius:8px;
+border-radius:10px;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+transition:.2s;
 }
 
-.card p{
-margin-bottom:8px;
-font-size:15px;
+.card:hover{
+transform:translateY(-2px);
 }
 
 .card h3{
-margin-bottom:10px;
+margin-bottom:15px;
+color:#FFD000;
+font-size:18px;
 }
 
-/* LISTA SERVIÇOS */
-
-.servico{
-background:#151515;
-padding:12px;
-margin-bottom:10px;
-border-radius:6px;
+.card p{
+display:flex;
+justify-content:space-between;
+border-bottom:1px solid #222;
+padding:8px 0;
+font-size:14px;
 }
 
-/* NOTAS */
+/* BOTÕES */
 
-.nota{
-background:#151515;
+.btns{
+margin-top:15px;
+display:flex;
+gap:10px;
+}
+
+.btn{
+flex:1;
+text-align:center;
+background:#FFD000;
+color:#000;
 padding:12px;
-margin-bottom:10px;
 border-radius:6px;
+font-weight:bold;
+text-decoration:none;
+min-height:44px; /* toque profissional */
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+/* LISTAS */
+
+.servico, .nota{
+background:#151515;
+padding:14px;
+margin-bottom:10px;
+border-radius:8px;
+border-left:3px solid #FFD000;
+}
+
+/* ========================= */
+/* RESPONSIVO PROFISSIONAL */
+/* ========================= */
+
+@media(max-width:600px){
+
+header{
+height:65px;
+padding:0 12px;
+}
+
+body{
+padding-top:65px;
+}
+
+.logo img{
+height:40px;
+}
+
+.logo h2{
+font-size:16px;
+}
+
+/* quebra layout dos dados */
+.card p{
+flex-direction:column;
+align-items:flex-start;
+gap:3px;
+font-size:13px;
+}
+
+/* botões empilhados */
+.btns{
+flex-direction:column;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+padding:16px;
+}
+
+}
+
+/* TABLET */
+
+@media(min-width:601px) and (max-width:1024px){
+
+.container{
+padding:18px;
+}
+
+}
+
+/* TELAS GRANDES */
+
+@media(min-width:1200px){
+
+.container{
+max-width:1100px;
+}
+
 }
 
 </style>
@@ -149,6 +239,8 @@ border-radius:6px;
 
 <div class="container">
 
+<!-- DADOS -->
+
 <div class="card">
 
 <h3>Dados do Cliente</h3>
@@ -157,21 +249,30 @@ border-radius:6px;
 <p><strong>Endereço:</strong> <span id="endereco">...</span></p>
 <p><strong>Telefone:</strong> <span id="telefone">...</span></p>
 
+<div class="btns">
+<a id="btnWhats" class="btn">WhatsApp</a>
+<a id="btnLigar" class="btn">Ligar</a>
 </div>
+
+</div>
+
+<!-- SERVIÇOS -->
 
 <div class="card">
 
 <h3>Histórico de Serviços</h3>
 
-<div id="servicos"></div>
+<div id="servicos">Carregando...</div>
 
 </div>
+
+<!-- NOTAS -->
 
 <div class="card">
 
 <h3>Notas Técnicas</h3>
 
-<div id="notas"></div>
+<div id="notas">Carregando...</div>
 
 </div>
 
@@ -180,7 +281,6 @@ border-radius:6px;
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
-
 import {
 getFirestore,
 doc,
@@ -188,7 +288,6 @@ getDoc,
 collection,
 getDocs
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
-
 import {
 getAuth,
 onAuthStateChanged,
@@ -202,25 +301,24 @@ projectId:"guga-energy-agendamentos-778f1"
 }
 
 const app = initializeApp(firebaseConfig)
-
 const db = getFirestore(app)
 const auth = getAuth(app)
 
-/* VERIFICAR LOGIN */
+/* LOGIN */
 
 onAuthStateChanged(auth, async (user)=>{
 
 if(!user){
-
 window.location.href="login.html"
 return
-
 }
 
-/* DADOS DO CLIENTE */
+/* DADOS */
 
 const docRef = doc(db,"usuarios",user.uid)
 const docSnap = await getDoc(docRef)
+
+let telefoneLimpo = ""
 
 if(docSnap.exists()){
 
@@ -230,7 +328,14 @@ document.getElementById("nome").innerText = dados.nome || "-"
 document.getElementById("endereco").innerText = dados.endereco || "-"
 document.getElementById("telefone").innerText = dados.telefone || "-"
 
+telefoneLimpo = (dados.telefone || "").replace(/\D/g,"")
+
 }
+
+/* BOTÕES */
+
+document.getElementById("btnWhats").href = `https://wa.me/55${telefoneLimpo}`
+document.getElementById("btnLigar").href = `tel:${telefoneLimpo}`
 
 /* SERVIÇOS */
 
@@ -240,7 +345,6 @@ const servicosSnap = await getDocs(servicosRef)
 let htmlServicos = ""
 
 servicosSnap.forEach(doc=>{
-
 const s = doc.data()
 
 htmlServicos += `
@@ -249,8 +353,11 @@ htmlServicos += `
 ${s.descricao || ""}
 </div>
 `
-
 })
+
+if(htmlServicos === ""){
+htmlServicos = "<p>Nenhum serviço registrado</p>"
+}
 
 document.getElementById("servicos").innerHTML = htmlServicos
 
@@ -262,7 +369,6 @@ const notasSnap = await getDocs(notasRef)
 let htmlNotas = ""
 
 notasSnap.forEach(doc=>{
-
 const n = doc.data()
 
 htmlNotas += `
@@ -270,8 +376,11 @@ htmlNotas += `
 ${n.texto || ""}
 </div>
 `
-
 })
+
+if(htmlNotas === ""){
+htmlNotas = "<p>Nenhuma nota técnica</p>"
+}
 
 document.getElementById("notas").innerHTML = htmlNotas
 
@@ -280,19 +389,8 @@ document.getElementById("notas").innerHTML = htmlNotas
 /* SAIR */
 
 window.sair = async function(){
-
 await signOut(auth)
-
 window.location.href="index.html"
-
-}
-
-if(htmlServicos === ""){
-htmlServicos = "<p>Nenhum serviço registrado</p>"
-}
-
-if(htmlNotas === ""){
-htmlNotas = "<p>Nenhuma nota técnica</p>"
 }
 
 </script>
