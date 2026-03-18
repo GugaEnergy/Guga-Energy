@@ -29,7 +29,7 @@ border-radius:8px;
 }
 
 input{
-width:100%;
+width:94%;
 padding:10px;
 margin-bottom:10px;
 border:none;
@@ -114,9 +114,6 @@ height:22px;
 
 <h2>Completar Cadastro</h2>
 
-<input id="nome" placeholder="Nome completo">
-<input id="telefone" placeholder="Telefone">
-<input id="endereco" placeholder="Endereço">
 <input id="nome" placeholder="Nome completo" required>
 <input id="telefone" placeholder="Telefone" required>
 <input id="endereco" placeholder="Endereço" required>
@@ -128,26 +125,26 @@ height:22px;
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
 import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 const firebaseConfig = {
-
 apiKey:"AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
 authDomain:"guga-energy-agendamentos-778f1.firebaseapp.com",
 projectId:"guga-energy-agendamentos-778f1"
-
 }
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore(app)
+
+/* MÁSCARA TELEFONE */
+
 const telefoneInput = document.getElementById("telefone")
 
 telefoneInput.addEventListener("input", function(){
 
 let numero = telefoneInput.value.replace(/\D/g,"")
-
 numero = numero.substring(0,11)
 
 if(numero.length > 2){
@@ -162,42 +159,54 @@ telefoneInput.value = numero
 
 })
 
+/* VERIFICAR LOGIN */
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+alert("Sessão expirada. Faça login novamente.")
+window.location.href="login.html"
+}
+
+})
+
+/* SALVAR */
+
 window.salvar = async function(){
 
 const user = auth.currentUser
 
-const nome = document.getElementById("nome").value
-const telefone = document.getElementById("telefone").value
-const endereco = document.getElementById("endereco").value
+if(!user){
+alert("Usuário não autenticado")
+return
+}
+
+const nome = document.getElementById("nome").value.trim()
+const telefone = document.getElementById("telefone").value.trim()
+const endereco = document.getElementById("endereco").value.trim()
+
+if(!nome || !telefone || !endereco){
+alert("Preencha todos os campos.")
+return
+}
+
+try{
 
 await updateDoc(doc(db,"usuarios",user.uid),{
-
 nome,
 telefone,
 endereco,
 perfilCompleto:true
-
 })
+
+alert("Cadastro atualizado com sucesso")
 
 window.location.href="cliente.html"
 
+}catch(e){
+console.error(e)
+alert("Erro ao salvar. Tente novamente.")
 }
-
-auth.onAuthStateChanged((user)=>{
-
-if(!user){
-
-alert("Sessão expirada. Faça login novamente.")
-window.location.href="login.html"
-
-}
-
-})
-
-if(!nome || !telefone || !endereco){
-
-alert("Preencha todos os campos.")
-return
 
 }
 
