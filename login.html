@@ -215,6 +215,26 @@ width:22px;
 height:22px;
 }
 
+.ver-senha{
+position:absolute;
+right:12px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.ver-senha svg{
+transition:.2s;
+}
+
+.ver-senha:hover svg{
+transform:scale(1.1);
+opacity:0.8;
+}
+
 </style>
 
 </head>
@@ -249,7 +269,16 @@ height:22px;
 <div class="campo-senha">
 <div class="senha-box">
 <input id="senha" type="password" placeholder="Senha">
-<span class="ver-senha" onclick="verSenha()">👁</span>
+<span class="ver-senha" onclick="verSenha()">
+
+<svg id="iconeOlho" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="#FFD000" stroke-width="2" viewBox="0 0 24 24">
+
+<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+<circle cx="12" cy="12" r="3"/>
+
+</svg>
+
+</span>
 </div>
 </div>
 
@@ -278,8 +307,6 @@ Criar Conta
 
 </div>
 
-
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
@@ -287,20 +314,20 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/fireba
 import {
 getAuth,
 signInWithEmailAndPassword,
-createUserWithEmailAndPassword,
 GoogleAuthProvider,
-signInWithPopup,
-onAuthStateChanged
+signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
 
 import {
 getFirestore,
 doc,
 getDoc,
-setDoc
+setDoc,
+collection,
+getDocs
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
-/* CONFIG FIREBASE */
+/* CONFIG */
 
 const firebaseConfig = {
 apiKey:"AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
@@ -309,10 +336,46 @@ projectId:"guga-energy-agendamentos-778f1"
 }
 
 const app = initializeApp(firebaseConfig)
-
 const auth = getAuth(app)
-
 const db = getFirestore(app)
+
+/* FUNÇÃO: VERIFICAR OU CRIAR USUÁRIO */
+
+async function garantirUsuario(user){
+
+const ref = doc(db,"usuarios",user.uid)
+const snap = await getDoc(ref)
+
+/* se já existe */
+if(snap.exists()){
+return snap.data()
+}
+
+/* verificar se já existe admin */
+const todos = await getDocs(collection(db,"usuarios"))
+
+let existeAdmin = false
+
+todos.forEach(docItem=>{
+if(docItem.data().tipo === "admin"){
+existeAdmin = true
+}
+})
+
+const tipo = existeAdmin ? "cliente" : "admin"
+
+/* cria usuário */
+await setDoc(ref,{
+email:user.email || "",
+nome:user.displayName || "",
+tipo:tipo,
+perfilCompleto:false,
+criado:Date.now()
+})
+
+return { tipo, perfilCompleto:false }
+
+}
 
 /* LOGIN NORMAL */
 
@@ -324,33 +387,23 @@ let senha = document.getElementById("senha").value.trim()
 try{
 
 const cred = await signInWithEmailAndPassword(auth,email,senha)
+const user = cred.user
 
-const uid = cred.user.uid
+const dados = await garantirUsuario(user)
 
-const ref = doc(db,"usuarios",uid)
-const snap = await getDoc(ref)
+/* REDIRECIONAMENTO */
 
-if(!snap.exists()){
-
-alert("Usuário não cadastrado")
-return
-
-}
-
-const tipo = snap.data().tipo
-
-if(tipo === "admin"){
-
-window.location.href = "painel-admin.html"
-
-}else{
-
+if(dados.tipo === "admin"){
+window.location.href = "painel.html"
+}else if(dados.perfilCompleto){
 window.location.href = "cliente.html"
-
+}else{
+window.location.href = "completar-perfil.html"
 }
 
 }catch(e){
 
+console.log(e)
 alert("Usuário ou senha incorretos")
 
 }
@@ -366,41 +419,18 @@ window.loginGoogle = async function(){
 try{
 
 const result = await signInWithPopup(auth, provider)
-
 const user = result.user
-const uid = user.uid
 
-const ref = doc(db,"usuarios",uid)
-const snap = await getDoc(ref)
+const dados = await garantirUsuario(user)
 
-/* PRIMEIRO ACESSO */
+/* REDIRECIONAMENTO */
 
-if(!snap.exists()){
-
-await setDoc(ref,{
-email:user.email || "",
-nome:user.displayName || "",
-tipo:"cliente",
-perfilCompleto:false,
-criado:Date.now()
-})
-
-window.location.href = "completar-perfil.html"
-return
-}
-
-/* USUÁRIO EXISTENTE */
-
-const dados = snap.data()
-
-if(dados.perfilCompleto){
-
+if(dados.tipo === "admin"){
+window.location.href = "painel.html"
+}else if(dados.perfilCompleto){
 window.location.href = "cliente.html"
-
 }else{
-
 window.location.href = "completar-perfil.html"
-
 }
 
 }catch(error){
@@ -410,45 +440,45 @@ alert("Erro ao entrar com Google")
 
 }
 
-
-/* redirecionar */
-
-window.location.href = "cliente.html"
-
-
-/* VERIFICAR LOGIN */
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-
-console.log("Usuário logado")
-
 }
 
-})
-
-/* MOSTRAR SENHA */
+/* OLHO SENHA */
 
 window.verSenha = function(){
 
 let campo = document.getElementById("senha")
+let icone = document.getElementById("iconeOlho")
 
-campo.type = campo.type === "password" ? "text" : "password"
+if(campo.type === "password"){
+
+campo.type = "text"
+
+icone.innerHTML = `
+<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+<circle cx="12" cy="12" r="3"/>
+<line x1="2" y1="2" x2="22" y2="22" stroke-width="1.5"/>
+`
+
+}else{
+
+campo.type = "password"
+
+icone.innerHTML = `
+<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+<circle cx="12" cy="12" r="3"/>
+`
 
 }
 
-/* ENTER PARA LOGIN */
+}
+
+/* ENTER */
 
 document.addEventListener("keydown",function(e){
-
 if(e.key === "Enter"){
 entrar()
 }
-
 })
-
-}
 
 </script>
 
