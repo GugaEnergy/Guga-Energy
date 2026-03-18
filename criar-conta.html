@@ -8,6 +8,10 @@
 
 <title>Criar Conta | Guga Energy</title>
 
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+
 <style>
 
 /* RESET */
@@ -28,7 +32,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 min-height:100vh;
-padding:20px;
+padding:110px;
 }
 
 /* CONTAINER */
@@ -46,6 +50,12 @@ align-items:center;
 .logo{
 width:260px;
 margin-bottom:20px;
+}
+
+@media(max-width:600px){
+.logo img{
+height:45px;
+}
 }
 
 /* BOX */
@@ -249,9 +259,13 @@ type="password"
 placeholder="Senha"
 autocomplete="new-password">
 
-<button onclick="criarConta()">
+<div class="campo-botao">
+<button type="button" onclick="window.location.href='criar-conta.html'" style="background:#444;color:#fff">
 Criar Conta
 </button>
+</div>
+
+</form>
 
 <span class="voltar-login" onclick="window.location.href='login.html'">
 Voltar para login
