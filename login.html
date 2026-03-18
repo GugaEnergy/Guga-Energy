@@ -8,6 +8,10 @@
 
 <title>Login | Guga Energy</title>
 
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+
 <style>
 
 /* RESET */
@@ -235,6 +239,10 @@ transform:scale(1.1);
 opacity:0.8;
 }
 
+.btn-google svg{
+flex-shrink:0;
+}
+
 </style>
 
 </head>
@@ -288,8 +296,16 @@ opacity:0.8;
 
 <div class="campo-botao">
 <button type="button" onclick="loginGoogle()" class="btn-google">
-<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+
+<svg width="20" height="20" viewBox="0 0 48 48">
+<path fill="#EA4335" d="M24 9.5c3.54 0 6.73 1.22 9.23 3.6l6.9-6.9C35.64 2.4 30.2 0 24 0 14.82 0 6.86 5.48 3.12 13.44l8.06 6.26C13.36 13.18 18.23 9.5 24 9.5z"/>
+<path fill="#4285F4" d="M46.5 24.5c0-1.54-.14-3.02-.4-4.44H24v8.4h12.7c-.55 2.96-2.23 5.46-4.76 7.14l7.36 5.72C43.96 37.16 46.5 31.4 46.5 24.5z"/>
+<path fill="#FBBC05" d="M11.18 28.7a14.5 14.5 0 010-9.4l-8.06-6.26A23.93 23.93 0 000 24c0 3.88.93 7.54 2.56 10.8l8.62-6.1z"/>
+<path fill="#34A853" d="M24 48c6.2 0 11.4-2.04 15.2-5.54l-7.36-5.72c-2.04 1.36-4.66 2.16-7.84 2.16-5.77 0-10.64-3.68-12.82-8.8l-8.62 6.1C6.86 42.52 14.82 48 24 48z"/>
+</svg>
+
 Entrar com Google
+
 </button>
 </div>
 
@@ -351,29 +367,19 @@ if(snap.exists()){
 return snap.data()
 }
 
-/* verificar se já existe admin */
-const todos = await getDocs(collection(db,"usuarios"))
-
-let existeAdmin = false
-
-todos.forEach(docItem=>{
-if(docItem.data().tipo === "admin"){
-existeAdmin = true
-}
-})
-
-const tipo = existeAdmin ? "cliente" : "admin"
-
-/* cria usuário */
+/* cria sempre como cliente */
 await setDoc(ref,{
 email:user.email || "",
 nome:user.displayName || "",
-tipo:tipo,
-perfilCompleto:false,
+tipo:"cliente",
+perfilCompleto:true,
 criado:Date.now()
 })
 
-return { tipo, perfilCompleto:false }
+return {
+tipo:"cliente",
+perfilCompleto:true
+}
 
 }
 
@@ -395,11 +401,15 @@ const dados = await garantirUsuario(user)
 
 if(dados.tipo === "admin"){
 window.location.href = "painel.html"
-}else if(dados.perfilCompleto){
-window.location.href = "cliente.html"
-}else{
-window.location.href = "completar-perfil.html"
+return
 }
+
+if(!dados.perfilCompleto){
+window.location.href = "completar-perfil.html"
+return
+}
+
+window.location.href = "cliente.html"
 
 }catch(e){
 
