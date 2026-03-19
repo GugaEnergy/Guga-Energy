@@ -500,8 +500,7 @@ function carregar(){
 const lista = document.getElementById("listaClientes")
 
 const q = query(
-collection(db,"agendamentos"),
-where("arquivado","==",false)
+collection(db,"agendamentos")
 )
 
 onSnapshot(q,(snapshot)=>{
@@ -518,6 +517,10 @@ snapshot.forEach((docu)=>{
 
 const dados = docu.data()
 const id = docu.id
+
+// 🔴 FILTRO AQUI (corrigido)
+if(dados.arquivado === true) return
+
 const telefone = String(dados.telefone || "").replace(/\D/g,'')
 
 if(dados.status === "Concluído"){
@@ -665,6 +668,7 @@ await updateDoc(doc(db,"agendamentos",id),{arquivado:false})
 window.excluir = async function(id){
 if(!confirm("Excluir definitivamente?")) return
 await deleteDoc(doc(db,"agendamentos",id))
+
 }
 
 </script>
