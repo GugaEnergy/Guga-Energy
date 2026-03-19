@@ -331,8 +331,7 @@ import {
 getAuth,
 signInWithEmailAndPassword,
 GoogleAuthProvider,
-signInWithRedirect,
-getRedirectResult
+signInWithPopup
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
 
 import {
@@ -355,36 +354,6 @@ const auth = getAuth(app)
 const db = getFirestore(app)
 
 /* =========================
-   LOGIN GOOGLE (RETORNO)
-========================= */
-
-getRedirectResult(auth)
-.then(async (result) => {
-
-if(result){
-
-const user = result.user
-const dados = await garantirUsuario(user)
-
-/* REDIRECIONAMENTO */
-
-if(dados.tipo === "admin"){
-window.location.href = "painel.html"
-}else if(dados.perfilCompleto){
-window.location.href = "cliente.html"
-}else{
-window.location.href = "completar-perfil.html"
-}
-
-}
-
-})
-.catch((error) => {
-console.log("Erro login Google:", error)
-alert("Erro ao entrar com Google")
-})
-
-/* =========================
    FUNÇÃO: GARANTIR USUÁRIO
 ========================= */
 
@@ -393,12 +362,10 @@ async function garantirUsuario(user){
 const ref = doc(db,"usuarios",user.uid)
 const snap = await getDoc(ref)
 
-/* se já existe */
 if(snap.exists()){
 return snap.data()
 }
 
-/* cria sempre como cliente */
 await setDoc(ref,{
 email:user.email || "",
 nome:user.displayName || "",
@@ -422,6 +389,11 @@ window.entrar = async function(){
 
 let email = document.getElementById("usuario").value.trim()
 let senha = document.getElementById("senha").value.trim()
+
+if(!email || !senha){
+alert("Preencha email e senha")
+return
+}
 
 try{
 
@@ -454,7 +426,7 @@ alert("Usuário ou senha incorretos")
 }
 
 /* =========================
-   LOGIN GOOGLE
+   LOGIN GOOGLE (CORRIGIDO)
 ========================= */
 
 const provider = new GoogleAuthProvider()
@@ -463,11 +435,24 @@ window.loginGoogle = async function(){
 
 try{
 
-await signInWithRedirect(auth, provider)
+const result = await signInWithPopup(auth, provider)
+
+const user = result.user
+const dados = await garantirUsuario(user)
+
+/* REDIRECIONAMENTO */
+
+if(dados.tipo === "admin"){
+window.location.href = "painel.html"
+}else if(dados.perfilCompleto){
+window.location.href = "cliente.html"
+}else{
+window.location.href = "completar-perfil.html"
+}
 
 }catch(error){
 
-console.log(error)
+console.log("Erro Google:", error)
 alert("Erro ao entrar com Google")
 
 }
