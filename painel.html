@@ -136,9 +136,10 @@ color:#fff;
 .painel{
 display:none;
 padding:30px 20px;
-max-width:1500px;
+max-width:1200px;
 margin:auto;
 }
+
 
 /* CARDS SUPERIORES */
 
@@ -228,6 +229,7 @@ background:#111;
 border-left:4px solid #FFD000;
 border-radius:10px;
 overflow:hidden;
+box-shadow:0 4px 12px rgba(0,0,0,0.4);
 }
 
 /* TOPO CARD */
@@ -270,10 +272,10 @@ font-size:15px;
 
 .acoes{
 display:grid;
-grid-template-columns:repeat(2,1fr);
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
 gap:10px;
-margin-top:12px;
 }
+
 
 /* RESPONSIVO */
 
@@ -347,9 +349,27 @@ Sair
 
 </header>
 
+<!-- LIXEIRA (FORA DO HEADER) -->
+
+<div class="painel" id="painelLixeira" style="display:none;">
+
+<h2 style="margin-bottom:20px;">🗑️ Lixeira (30 dias)</h2>
+
+<div id="listaLixeira" class="clientes"></div>
+
+<button onclick="voltarPainel()" class="btn" style="margin-top:20px;">
+Voltar
+</button>
+
+</div>
+
 <!-- PAINEL -->
 
 <div class="painel" id="painel">
+
+<button onclick="abrirLixeira()" class="sair-btn" style="background:#dc3545;color:#fff;margin-bottom:15px;">
+Lixeira
+</button>
 
 <!-- CARDS SUPERIORES -->
 
@@ -366,18 +386,14 @@ Sair
 <div class="empresa-desc">Distrito Federal</div>
 </div>
 
-</div>
 
 <!-- BUSCA -->
-
-<div class="busca-box">
 
 <input 
 type="text"
 id="buscaCliente"
 placeholder="🔎 Buscar cliente ou telefone"
 >
-
 </div>
 
 <!-- DASHBOARD -->
@@ -434,7 +450,8 @@ onSnapshot,
 doc,
 updateDoc,
 query,
-where
+where,
+deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 import {
@@ -476,41 +493,18 @@ document.getElementById("topo").style.display="flex"
 carregar()
 })
 
-/* CARREGAR DADOS */
+/* CARREGAR */
 
 function carregar(){
 
 const lista = document.getElementById("listaClientes")
 
-let totalAnterior = 0
-
 const q = query(
 collection(db,"agendamentos"),
-where("arquivado","!=",true)
+where("arquivado","==",false)
 )
 
 onSnapshot(q,(snapshot)=>{
-
-console.log("Documentos:", snapshot.size)
-
-/* NOTIFICAÇÃO */
-
-if(snapshot.size > totalAnterior){
-
-const som = document.getElementById("somNovo")
-if(som) som.play()
-
-const noti = document.getElementById("notificacao")
-if(noti){
-noti.style.display = "block"
-setTimeout(()=>{ noti.style.display = "none" },3000)
-}
-
-}
-
-totalAnterior = snapshot.size
-
-/* CONTADORES */
 
 let pendentes = 0
 let concluidos = 0
@@ -520,14 +514,11 @@ const hojeData = new Date().toLocaleDateString("pt-BR")
 
 let cards = ""
 
-snapshot.forEach((documento)=>{
+snapshot.forEach((docu)=>{
 
-const dados = documento.data()
-const id = documento.id
-
+const dados = docu.data()
+const id = docu.id
 const telefone = String(dados.telefone || "").replace(/\D/g,'')
-
-/* CONTAGEM */
 
 if(dados.status === "Concluído"){
 concluidos++
@@ -539,22 +530,12 @@ if(dados.dataHora && dados.dataHora.includes(hojeData)){
 hoje++
 }
 
-/* CARD */
-
 cards += `
-
 <div class="cliente-card">
 
 <div class="cliente-topo" onclick="toggleCard(this.parentElement)">
-
-<div class="cliente-nome">
-${dados.nome || "-"}
-</div>
-
-<div class="cliente-status">
-${dados.status || "Pendente"}
-</div>
-
+<div class="cliente-nome">${dados.nome || "-"}</div>
+<div class="cliente-status">${dados.status || "Pendente"}</div>
 </div>
 
 <div class="cliente-info">
@@ -566,41 +547,24 @@ ${dados.status || "Pendente"}
 
 <div class="acoes">
 
-<a class="btn" href="https://wa.me/55${telefone}" target="_blank">
-WhatsApp
-</a>
+<a class="btn" href="https://wa.me/55${telefone}" target="_blank">WhatsApp</a>
+<a class="btn" href="tel:${telefone}">Ligar</a>
 
-<a class="btn" href="tel:${telefone}">
-Ligar
-</a>
-
-<a class="btn"
-href="https://www.google.com/maps?q=${encodeURIComponent((dados.regiao || '') + ' Brasilia DF')}"
-target="_blank">
+<a class="btn" href="https://www.google.com/maps?q=${encodeURIComponent((dados.regiao || '') + ' Brasilia DF')}" target="_blank">
 Mapa
 </a>
 
-<button class="btn verde" onclick="concluir('${id}')">
-Concluir
-</button>
-
-<button class="btn vermelho" onclick="arquivar('${id}')">
-Arquivar
-</button>
+<button class="btn verde" onclick="concluir('${id}')">Concluir</button>
+<button class="btn vermelho" onclick="arquivar('${id}')">Arquivar</button>
 
 </div>
-
 </div>
-
 </div>
-
 `
 
 })
 
 lista.innerHTML = cards
-
-/* ATUALIZA DASHBOARD */
 
 document.getElementById("pendentes").innerText = pendentes
 document.getElementById("concluidos").innerText = concluidos
@@ -611,23 +575,16 @@ document.getElementById("total").innerText = snapshot.size
 
 }
 
-/* ABRIR CARD */
+/* AÇÕES */
 
 window.toggleCard = function(card){
 let info = card.querySelector(".cliente-info")
-info.style.display =
-info.style.display === "block" ? "none" : "block"
+info.style.display = info.style.display === "block" ? "none" : "block"
 }
-
-/* CONCLUIR */
 
 window.concluir = async function(id){
-await updateDoc(doc(db,"agendamentos",id),{
-status:"Concluído"
-})
+await updateDoc(doc(db,"agendamentos",id),{status:"Concluído"})
 }
-
-/* ARQUIVAR */
 
 window.arquivar = async function(id){
 if(!confirm("Mover para lixeira?")) return
@@ -635,6 +592,79 @@ await updateDoc(doc(db,"agendamentos",id),{
 arquivado:true,
 dataArquivado:Date.now()
 })
+}
+
+/* LIXEIRA */
+
+window.abrirLixeira = function(){
+document.getElementById("painel").style.display = "none"
+document.getElementById("painelLixeira").style.display = "block"
+carregarLixeira()
+}
+
+window.voltarPainel = function(){
+document.getElementById("painel").style.display = "block"
+document.getElementById("painelLixeira").style.display = "none"
+}
+
+function carregarLixeira(){
+
+const lista = document.getElementById("listaLixeira")
+
+const q = query(
+collection(db,"agendamentos"),
+where("arquivado","==",true)
+)
+
+onSnapshot(q,(snapshot)=>{
+
+let cards = ""
+
+snapshot.forEach((docu)=>{
+
+const dados = docu.data()
+const id = docu.id
+
+cards += `
+<div class="cliente-card">
+
+<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+<div class="cliente-nome">${dados.nome || "-"}</div>
+<div class="cliente-status" style="background:#dc3545;">Arquivado</div>
+</div>
+
+<div class="cliente-info">
+
+<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
+<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
+<p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
+
+<div class="acoes">
+
+<button class="btn verde" onclick="restaurar('${id}')">Restaurar</button>
+<button class="btn vermelho" onclick="excluir('${id}')">Excluir</button>
+
+</div>
+
+</div>
+</div>
+`
+
+})
+
+lista.innerHTML = cards
+
+})
+
+}
+
+window.restaurar = async function(id){
+await updateDoc(doc(db,"agendamentos",id),{arquivado:false})
+}
+
+window.excluir = async function(id){
+if(!confirm("Excluir definitivamente?")) return
+await deleteDoc(doc(db,"agendamentos",id))
 }
 
 </script>
