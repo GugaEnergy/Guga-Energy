@@ -5,7 +5,6 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Painel Guga Energy</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
@@ -14,298 +13,267 @@
 
 <style>
 
-/* RESET */
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-a{
-text-decoration:none;
-color:inherit;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-/* BASE */
-
-body{
-font-family:Arial, Helvetica, sans-serif;
-background:#020202;
-color:#fff;
-padding-top:110px;
-min-height:100vh;
-line-height:1.4;
+/* ── BASE ── */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #020202;
+  color: #fff;
+  padding-top: 110px;
+  min-height: 100vh;
+  line-height: 1.4;
 }
 
-/* HEADER */
-
-header{
-background:#000;
-height:110px;
-padding:0 20px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-border-bottom:3px solid #FFD000;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-z-index:3000;
+/* ── HEADER ── */
+header {
+  background: #000;
+  height: 110px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid #FFD000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3000;
 }
 
-/* LOGO */
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
+/* ── LOGO ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.logo img{
-height:90px;
+.logo img {
+  height: 90px;
 }
 
-.logo h2{
-font-size:25px;
+.logo h2 {
+  font-size: 25px;
 }
 
-.logo span{
-color:#FFD000;
+.logo span,
+.empresa-nome span {
+  color: #FFD000;  /* FIX: agora aplica também no card empresa */
 }
 
-@media(max-width:600px){
-.logo img{
-height:45px;
-}
+@media (max-width: 600px) {
+  .logo img { height: 45px; }
 }
 
-/* BOTÃO SAIR */
-
-.sair-btn{
-background:#FFD000;
-color:#000;
-border:none;
-border-radius:6px;
-padding:10px 14px;
-font-weight:bold;
-font-size:14px;
-cursor:pointer;
-transition:.2s;
+/* ── BOTÃO SAIR ── */
+.sair-btn {
+  background: #FFD000;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: .2s;
 }
 
-.sair-btn:hover{
-opacity:.9;
+.sair-btn:hover { opacity: .9; }
+
+/* ── BOTÕES ── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFD000;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 12px;
+  font-size: 14px;
+  min-height: 40px;
+  transition: .2s;
 }
 
-/* BOTÕES */
+.btn:hover { opacity: .9; }
+.btn.verde  { background: #28a745; color: #fff; }
+.btn.vermelho { background: #dc3545; color: #fff; }
 
-.btn{
-display:flex;
-align-items:center;
-justify-content:center;
-background:#FFD000;
-color:#000;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-padding:10px 12px;
-font-size:14px;
-min-height:40px;
-transition:.2s;
+/* ── PAINEL ── */
+.painel {
+  display: none;
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.btn:hover{
-opacity:.9;
+/* ── CARDS SUPERIORES ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
 }
 
-.btn.verde{
-background:#28a745;
-color:#fff;
+.card {
+  background: #151515;
+  padding: 20px;
+  border-left: 4px solid #FFD000;
+  border-radius: 10px;
+  font-size: 15px;
 }
 
-.btn.vermelho{
-background:#dc3545;
-color:#fff;
+/* ── BUSCA ── */
+/* FIX: busca dentro de um card próprio para alinhar no grid */
+.card-busca {
+  background: #151515;
+  padding: 10px 16px;
+  border-left: 4px solid #FFD000;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
 }
 
-/* PAINEL */
-
-.painel{
-display:none;
-padding:30px 20px;
-max-width:1200px;
-margin:auto;
+#buscaCliente {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #111;
+  color: #fff;
+  font-size: 15px;
 }
 
-
-/* CARDS SUPERIORES */
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:16px;
-margin-bottom:22px;
+/* ── DASHBOARD ── */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
-.card{
-background:#151515;
-padding:20px;
-border-left:4px solid #FFD000;
-border-radius:10px;
-font-size:15px;
+.dash-card {
+  background: #111;
+  padding: 16px;
+  border-left: 4px solid #FFD000;
+  border-radius: 8px;
+  text-align: center;
 }
 
-/* BUSCA */
+.dash-card span { font-size: 13px; color: #aaa; }
 
-.busca-box{
-margin-bottom:20px;
+.dash-card strong {
+  display: block;
+  font-size: 22px;
+  color: #FFD000;
+  margin-top: 5px;
 }
 
-#buscaCliente{
-width:100%;
-padding:14px;
-border-radius:8px;
-border:none;
-background:#111;
-color:#fff;
-font-size:15px;
+/* ── CONTADOR ── */
+.contador-atendimentos {
+  margin: 20px 0;
+  background: #111;
+  padding: 14px;
+  border-left: 4px solid #FFD000;
+  border-radius: 6px;
+  font-size: 15px;
 }
 
-/* DASHBOARD */
-
-.dashboard{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:14px;
-margin-bottom:20px;
+/* ── LISTA CLIENTES ── */
+.clientes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.dash-card{
-background:#111;
-padding:16px;
-border-left:4px solid #FFD000;
-border-radius:8px;
-text-align:center;
+/* ── CARD CLIENTE ── */
+.cliente-card {
+  background: #111;
+  border-left: 4px solid #FFD000;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.4);
 }
 
-.dash-card span{
-font-size:13px;
-color:#aaa;
+/* ── TOPO CARD ── */
+.cliente-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+  background: #151515;
+  user-select: none;
 }
 
-.dash-card strong{
-display:block;
-font-size:22px;
-color:#FFD000;
-margin-top:5px;
+.cliente-nome  { font-weight: bold; font-size: 16px; }
+
+.cliente-status {
+  font-size: 12px;
+  background: #333;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
-/* CONTADOR */
-
-.contador-atendimentos{
-margin:20px 0;
-background:#111;
-padding:14px;
-border-left:4px solid #FFD000;
-border-radius:6px;
-font-size:15px;
+/* ── INFO CARD ── */
+.cliente-info {
+  display: none;
+  padding: 16px;
+  border-top: 1px solid #333;
 }
 
-/* LISTA CLIENTES */
+.cliente-info p { margin-bottom: 8px; font-size: 15px; }
 
-.clientes{
-display:flex;
-flex-direction:column;
-gap:16px;
+/* ── AÇÕES ── */
+.acoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
 }
 
-/* CARD CLIENTE */
-
-.cliente-card{
-background:#111;
-border-left:4px solid #FFD000;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,0.4);
+/* ── NOTIFICAÇÃO ── */
+#notificacao {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #FFD000;
+  color: #000;
+  padding: 16px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: none;
+  z-index: 9999;
+  box-shadow: 0 5px 20px rgba(0,0,0,.5);
+  animation: slideUp .3s ease;
 }
 
-/* TOPO CARD */
-
-.cliente-topo{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:16px;
-cursor:pointer;
-background:#151515;
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
-.cliente-nome{
-font-weight:bold;
-font-size:16px;
-}
-
-.cliente-status{
-font-size:12px;
-background:#333;
-padding:5px 10px;
-border-radius:6px;
-}
-
-/* INFO CARD */
-
-.cliente-info{
-display:none;
-padding:16px;
-border-top:1px solid #333;
-}
-
-.cliente-info p{
-margin-bottom:8px;
-font-size:15px;
-}
-
-/* AÇÕES */
-
-.acoes{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:10px;
-}
-
-
-/* RESPONSIVO */
-
-@media(max-width:700px){
-
-.painel{
-padding:20px 14px;
-}
-
-.logo h2{
-font-size:17px;
-}
-
-.dashboard{
-grid-template-columns:1fr 1fr;
-}
-
-.cards{
-grid-template-columns:1fr;
-}
-
-.btn{
-font-size:13px;
-min-height:36px;
-}
-
-.cliente-nome{
-font-size:15px;
-}
-
+/* ── RESPONSIVO ── */
+@media (max-width: 700px) {
+  .painel        { padding: 20px 14px; }
+  .logo h2       { font-size: 17px; }
+  .dashboard     { grid-template-columns: 1fr 1fr; }
+  .cards         { grid-template-columns: 1fr; }
+  .btn           { font-size: 13px; min-height: 36px; }
+  .cliente-nome  { font-size: 15px; }
 }
 
 </style>
@@ -314,553 +282,639 @@ font-size:15px;
 
 <body>
 
-<div id="notificacao" style="
-position:fixed;
-bottom:25px;
-right:25px;
-background:#FFD000;
-color:#000;
-padding:16px 20px;
-border-radius:8px;
-font-weight:bold;
-display:none;
-z-index:9999;
-box-shadow:0 5px 20px rgba(0,0,0,0.5);
-">
-Novo atendimento recebido
-</div>
-
-<!-- OVERLAY -->
-
-<div id="menu-overlay"></div>
+<!-- NOTIFICAÇÃO -->
+<div id="notificacao">🔔 Novo atendimento recebido!</div>
 
 <!-- HEADER -->
-
 <header id="topo" style="display:none">
-
-<a href="#" class="logo" onclick="location.reload()">
-<img src="/logo-guga-energy.png" alt="Logo Guga Energy">
-<h2>GUGA <span>ENERGY</span></h2>
-</a>
-
-<button onclick="sair()" class="sair-btn">
-Sair
-</button>
-
+  <a href="#" class="logo" onclick="location.reload(); return false;">
+    <img src="/logo-guga-energy.png" alt="Logo Guga Energy">
+    <h2>GUGA <span>ENERGY</span></h2>
+  </a>
+  <button onclick="sair()" class="sair-btn">Sair</button>
 </header>
 
-<!-- LIXEIRA (FORA DO HEADER) -->
-
-<div class="painel" id="painelLixeira" style="display:none;">
-
-<h2 style="margin-bottom:20px;">🗑️ Lixeira (30 dias)</h2>
-
-<div id="listaLixeira" class="clientes"></div>
-
-<button onclick="voltarPainel()" class="btn" style="margin-top:20px;">
-Voltar
-</button>
-
+<!-- ══ PAINEL LIXEIRA ══ -->
+<div class="painel" id="painelLixeira">
+  <h2 style="margin-bottom:20px;">🗑️ Lixeira (30 dias)</h2>
+  <div id="listaLixeira" class="clientes"></div>
+  <button onclick="voltarPainel()" class="btn" style="margin-top:20px;">← Voltar</button>
 </div>
 
-<div class="painel" id="painelAgenda" style="display:none;">
-
-<h2 style="margin-bottom:20px;">📅 Agenda de Atendimentos</h2>
-
-<div id="listaAgenda" class="clientes"></div>
-
-<button onclick="voltarPainel()" class="btn" style="margin-top:20px;">
-Voltar
-</button>
-
+<!-- ══ PAINEL AGENDA ══ -->
+<div class="painel" id="painelAgenda">
+  <h2 style="margin-bottom:20px;">📅 Agenda de Atendimentos</h2>
+  <div id="listaAgenda" class="clientes"></div>
+  <button onclick="voltarPainel()" class="btn" style="margin-top:20px;">← Voltar</button>
 </div>
 
-<div class="painel" id="painelConcluidos" style="display:none;">
-
-<h2 style="margin-bottom:20px;">✅ Serviços Concluídos</h2>
-
-<div id="listaConcluidos" class="clientes"></div>
-
-<button onclick="voltarPainel()" class="btn" style="margin-top:20px;">
-Voltar
-</button>
-
+<!-- ══ PAINEL CONCLUÍDOS ══ -->
+<div class="painel" id="painelConcluidos">
+  <h2 style="margin-bottom:20px;">✅ Serviços Concluídos</h2>
+  <div id="listaConcluidos" class="clientes"></div>
+  <button onclick="voltarPainel()" class="btn" style="margin-top:20px;">← Voltar</button>
 </div>
 
-<!-- PAINEL -->
-
+<!-- ══ PAINEL PRINCIPAL ══ -->
 <div class="painel" id="painel">
 
-<button onclick="abrirLixeira()" class="sair-btn" style="background:#dc3545;color:#fff;margin-bottom:15px;">
-Lixeira
-</button>
+  <!-- BOTÕES DE NAVEGAÇÃO -->
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+    <button onclick="abrirLixeira()"    class="sair-btn" style="background:#dc3545;color:#fff;">🗑️ Lixeira</button>
+    <button onclick="abrirAgenda()"     class="sair-btn" style="background:#17a2b8;color:#fff;">📅 Agenda</button>
+    <button onclick="abrirConcluidos()" class="sair-btn" style="background:#28a745;color:#fff;">✅ Concluídos</button>
+  </div>
 
-<button onclick="abrirAgenda()" class="sair-btn" style="background:#17a2b8;color:#fff;margin-bottom:15px;">
-Agenda
-</button>
+  <!-- CARDS SUPERIORES + BUSCA -->
+  <div class="cards">
 
-<button onclick="abrirConcluidos()" class="sair-btn" style="background:#28a745;color:#fff;margin-bottom:15px;">
-Concluídos
-</button>
+    <div class="card">
+      <strong>Empresa</strong>
+      <div class="empresa-nome" style="font-size:18px;font-weight:bold;margin-top:6px;">
+        GUGA <span>ENERGY</span>
+      </div>
+      <div class="empresa-desc" style="color:#aaa;font-size:13px;margin-top:4px;">Soluções Elétricas</div>
+    </div>
 
-<!-- CARDS SUPERIORES -->
+    <div class="card">
+      <strong>Região de Atendimento</strong>
+      <div class="empresa-desc" style="color:#aaa;font-size:13px;margin-top:6px;">Distrito Federal</div>
+    </div>
 
-<div class="cards">
+    <!-- FIX: busca dentro de card próprio -->
+    <div class="card-busca">
+      <input
+        type="text"
+        id="buscaCliente"
+        placeholder="🔎 Buscar cliente ou telefone"
+        autocomplete="off"
+      >
+    </div>
 
-<div class="card">
-<strong>Empresa</strong>
-<div class="empresa-nome">GUGA <span>ENERGY</span></div>
-<div class="empresa-desc">Soluções Elétricas</div>
-</div>
+  </div>
 
-<div class="card">
-<strong>Região de Atendimento</strong>
-<div class="empresa-desc">Distrito Federal</div>
-</div>
+  <!-- DASHBOARD -->
+  <div class="dashboard">
+    <div class="dash-card"><span>Pendentes</span>  <strong id="pendentes">0</strong></div>
+    <div class="dash-card"><span>Concluídos</span> <strong id="concluidos">0</strong></div>
+    <div class="dash-card"><span>Arquivados</span> <strong id="arquivados">0</strong></div>
+    <div class="dash-card"><span>Hoje</span>       <strong id="hoje">0</strong></div>
+  </div>
 
-<!-- BUSCA -->
+  <!-- CONTADOR -->
+  <div class="contador-atendimentos">
+    Atendimentos ativos: <strong id="total">0</strong>
+  </div>
 
-<input 
-type="text"
-id="buscaCliente"
-placeholder="🔎 Buscar cliente ou telefone"
->
-</div>
-
-<!-- DASHBOARD -->
-
-<div class="dashboard">
-
-<div class="dash-card">
-<span>Pendentes</span>
-<strong id="pendentes">0</strong>
-</div>
-
-<div class="dash-card">
-<span>Concluídos</span>
-<strong id="concluidos">0</strong>
-</div>
-
-
-<div class="dash-card">
-<span>Arquivados</span>
-<strong id="arquivados">0</strong>
-</div>
-
-<div class="dash-card">
-<span>Hoje</span>
-<strong id="hoje">0</strong>
-</div>
+  <!-- LISTA DE CLIENTES -->
+  <div id="listaClientes" class="clientes"></div>
 
 </div>
 
-<!-- CONTADOR -->
-
-<div class="contador-atendimentos">
-Atendimentos registrados:
-<strong id="total">0</strong>
-</div>
-
-<!-- LISTA DE CLIENTES (CARDS) -->
-
-<div id="listaClientes" class="clientes"></div>
-
-</div>
-
-<audio id="somNovo">
-<source src="https://actions.google.com/sounds/v1/alarms/notification.ogg" type="audio/ogg">
+<!-- SOM DE NOTIFICAÇÃO -->
+<audio id="somNovo" preload="auto">
+  <source src="https://actions.google.com/sounds/v1/alarms/notification.ogg" type="audio/ogg">
 </audio>
 
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT / FIREBASE
+══════════════════════════════════════════════ -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
 
 import {
-getFirestore,
-collection,
-onSnapshot,
-doc,
-updateDoc,
-query,
-where,
-deleteDoc
+  getFirestore,
+  collection,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js"
 
 import {
-getAuth,
-signOut,
-onAuthStateChanged
+  getAuth,
+  signOut,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js"
 
+/* ── CONFIG FIREBASE ── */
 const firebaseConfig = {
-apiKey:"AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
-authDomain:"guga-energy-agendamentos-778f1.firebaseapp.com",
-projectId:"guga-energy-agendamentos-778f1",
-storageBucket:"guga-energy-agendamentos-778f1.firebasestorage.app",
-messagingSenderId:"384265745174",
-appId:"1:384265745174:web:a9284d4036f4a787bf5637"
+  apiKey:            "AIzaSyDdP2-_Dr67CVhaNmgrs8x0JvTan2f9mNc",
+  authDomain:        "guga-energy-agendamentos-778f1.firebaseapp.com",
+  projectId:         "guga-energy-agendamentos-778f1",
+  storageBucket:     "guga-energy-agendamentos-778f1.firebasestorage.app",
+  messagingSenderId: "384265745174",
+  appId:             "1:384265745174:web:a9284d4036f4a787bf5637"
 }
 
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+const app  = initializeApp(firebaseConfig)
+const db   = getFirestore(app)
 const auth = getAuth(app)
 
-/* SAIR */
+/* ══════════════════════════════════════════
+   CONTROLE DE LISTENER
+══════════════════════════════════════════ */
+let unsubscribeAtual = null
+let totalAnterior    = null   // detecta novos atendimentos
 
-window.sair = async function(){
-if(!confirm("Deseja sair do painel?")) return
-await signOut(auth)
-window.location.href="index.html"
+function limparListener() {
+  if (unsubscribeAtual) {
+    unsubscribeAtual()
+    unsubscribeAtual = null
+  }
 }
 
-/* LOGIN */
-
-onAuthStateChanged(auth,(user)=>{
-if(!user){
-window.location.href="login.html"
-return
+/* ══════════════════════════════════════════
+   NOTIFICAÇÃO VISUAL
+══════════════════════════════════════════ */
+function mostrarNotif(msg = "🔔 Novo atendimento recebido!") {
+  const el = document.getElementById("notificacao")
+  el.innerText  = msg
+  el.style.display = "block"
+  setTimeout(() => { el.style.display = "none" }, 2800)
 }
-document.getElementById("painel").style.display="block"
-document.getElementById("topo").style.display="flex"
-carregar()
+
+/* ══════════════════════════════════════════
+   SAIR
+══════════════════════════════════════════ */
+window.sair = async function () {
+  if (!confirm("Deseja sair do painel?")) return
+  limparListener()
+  await signOut(auth)
+  window.location.href = "index.html"
+}
+
+/* ══════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════ */
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html"
+    return
+  }
+  document.getElementById("painel").style.display = "block"
+  document.getElementById("topo").style.display   = "flex"
+  carregar()
+  document.getElementById("buscaCliente").addEventListener("input", () => {
+    totalAnterior = null   // FIX: evita falso-positivo de notificação ao filtrar
+    carregar()
+  })
 })
 
-/* CARREGAR */
+/* ══════════════════════════════════════════
+   PAINEL PRINCIPAL
+══════════════════════════════════════════ */
+function carregar() {
 
-function carregar(){
+  const lista = document.getElementById("listaClientes")
+  const busca = document.getElementById("buscaCliente").value.toLowerCase().trim()
 
-const lista = document.getElementById("listaClientes")
+  limparListener()
 
-const q = query(
-collection(db,"agendamentos")
-)
+  unsubscribeAtual = onSnapshot(
+    query(collection(db, "agendamentos")),
+    (snapshot) => {
 
-onSnapshot(q,(snapshot)=>{
+      let pendentes  = 0
+      let concluidos = 0
+      let hoje       = 0
+      let arquivados = 0
+      let totalReal  = 0
 
-let pendentes = 0
-let concluidos = 0
-let hoje = 0
+      const hojeData = new Date().toLocaleDateString("pt-BR")
+      let cards = ""
 
-const hojeData = new Date().toLocaleDateString("pt-BR")
+      const docs = []
 
-let cards = ""
+      // Coleta
+      snapshot.forEach(docu => {
+        docs.push({ id: docu.id, ...docu.data() })
+      })
 
-snapshot.forEach((docu)=>{
+      // Ordena por data
+      docs.sort((a, b) => {
+        const parse = (s) => {
+          const m = s?.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/)
+          if (!m) return 0
+          return new Date(m[3], m[2]-1, m[1], m[4], m[5]).getTime()
+        }
+        return parse(a.dataHora) - parse(b.dataHora)
+      })
 
-const dados = docu.data()
-const id = docu.id
+      // Monta cards
+      docs.forEach(dados => {
 
-// 🔴 FILTRO AQUI (corrigido)
-if(dados.arquivado === true) return
+        if (dados.arquivado === true) {
+          arquivados++
+          return
+        }
 
-const telefone = String(dados.telefone || "").replace(/\D/g,'')
+        totalReal++
 
-if(dados.status === "Concluído"){
-concluidos++
-}else{
-pendentes++
+        if (dados.status === "Concluído") concluidos++
+        else pendentes++
+
+        if (dados.dataHora && dados.dataHora.includes(hojeData)) hoje++
+
+        const nome = (dados.nome || "").toLowerCase()
+        const telefone = String(dados.telefone || "").replace(/\D/g,'')
+
+        if (busca && !nome.includes(busca) && !telefone.includes(busca)) return
+
+        const id = dados.id
+
+        window.__dadosCache = window.__dadosCache || {}
+        window.__dadosCache[id] = dados
+
+        cards += montarCard(id, dados, telefone, [
+          `<a class="btn" href="https://wa.me/55${telefone}" target="_blank">WhatsApp</a>`,
+          `<a class="btn" href="tel:${telefone}">Ligar</a>`,
+          `<a class="btn" href="https://www.google.com/maps?q=${encodeURIComponent((dados.regiao || '') + ' Brasília DF')}" target="_blank">Mapa</a>`,
+          `<button class="btn" style="background:#17a2b8;color:#fff;" onclick="agendarGoogle('${id}')">Agendar</button>`,
+          `<button class="btn verde" onclick="concluir('${id}')">Concluir</button>`,
+          `<button class="btn vermelho" onclick="arquivar('${id}')">Arquivar</button>`
+        ])
+      })
+
+      // Render
+      lista.innerHTML = cards || `<p style="color:#aaa;text-align:center;padding:30px;">Nenhum resultado encontrado.</p>`
+
+      document.getElementById("pendentes").innerText  = pendentes
+      document.getElementById("concluidos").innerText = concluidos
+      document.getElementById("hoje").innerText       = hoje
+      document.getElementById("arquivados").innerText = arquivados
+      document.getElementById("total").innerText      = totalReal
+
+      // 🔔 Notificação correta
+      let novos = 0
+
+      snapshot.docChanges().forEach(change => {
+        if (change.type === "added") novos++
+      })
+
+      if (novos > 0 && totalAnterior !== null) {
+        document.getElementById("somNovo").play().catch(() => {})
+        mostrarNotif("🔔 Novo atendimento recebido!")
+      }
+
+      totalAnterior = snapshot.size
+
+    }
+  )
 }
 
-if(dados.dataHora && dados.dataHora.includes(hojeData)){
-hoje++
-}
+    lista.innerHTML = cards || `<p style="color:#aaa;text-align:center;padding:30px;">Nenhum resultado encontrado.</p>`
 
-cards += `
-<div class="cliente-card">
+    document.getElementById("pendentes").innerText  = pendentes
+    document.getElementById("concluidos").innerText = concluidos
+    document.getElementById("hoje").innerText       = hoje
+    document.getElementById("arquivados").innerText = arquivados
+    document.getElementById("total").innerText      = totalReal
+let novos = 0
 
-<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
-<div class="cliente-nome">${dados.nome || "-"}</div>
-<div class="cliente-status">${dados.status || "Pendente"}</div>
-</div>
-
-<div class="cliente-info">
-
-<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
-<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
-<p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
-<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
-
-<div class="acoes">
-
-<a class="btn" href="https://wa.me/55${telefone}" target="_blank">WhatsApp</a>
-<a class="btn" href="tel:${telefone}">Ligar</a>
-
-<a class="btn" href="https://www.google.com/maps?q=${encodeURIComponent((dados.regiao || '') + ' Brasilia DF')}" target="_blank">
-Mapa
-</a>
-
-<button class="btn" style="background:#17a2b8;color:#fff;" onclick="agendarGoogle(${JSON.stringify(dados)})">
-Agendar
-</button>
-
-<button class="btn verde" onclick="concluir('${id}')">Concluir</button>
-<button class="btn vermelho" onclick="arquivar('${id}')">Arquivar</button>
-
-</div>
-</div>
-</div>
-`
-
+snapshot.docChanges().forEach(change => {
+  if (change.type === "added") novos++
 })
 
-lista.innerHTML = cards
-
-document.getElementById("pendentes").innerText = pendentes
-document.getElementById("concluidos").innerText = concluidos
-document.getElementById("hoje").innerText = hoje
-document.getElementById("total").innerText = snapshot.size
-
-})
-
+if (novos > 0 && totalAnterior !== null) {
+  document.getElementById("somNovo").play().catch(() => {})
+  mostrarNotif("🔔 Novo atendimento recebido!")
 }
 
-/* AÇÕES */
+totalAnterior = snapshot.size
 
-window.concluir = async function(id){
-await updateDoc(doc(db,"agendamentos",id),{
-status:"Concluído"
-})
-
-// volta automático pro painel principal
-document.getElementById("painel").style.display = "block"
-document.getElementById("painelAgenda").style.display = "none"
+/* ══════════════════════════════════════════
+   FUNÇÃO AUXILIAR: MONTAR CARD HTML
+══════════════════════════════════════════ */
+function montarCard(id, dados, _tel, acoesBtns) {
+  return `
+  <div class="cliente-card">
+    <div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+      <div class="cliente-nome">${esc(dados.nome)}</div>
+      <div class="cliente-status">${esc(dados.status || "Pendente")}</div>
+    </div>
+    <div class="cliente-info">
+      <p><strong>Telefone:</strong> ${esc(dados.telefone)}</p>
+      <p><strong>Região:</strong>   ${esc(dados.regiao)}</p>
+      <p><strong>Data:</strong>     ${esc(dados.dataHora)}</p>
+      <p><strong>Problema:</strong> ${esc(dados.problema)}</p>
+      <div class="acoes">${acoesBtns.join("")}</div>
+    </div>
+  </div>`
 }
 
-window.arquivar = async function(id){
-if(!confirm("Mover para lixeira?")) return
-await updateDoc(doc(db,"agendamentos",id),{
-arquivado:true,
-dataArquivado:Date.now()
-})
+/* ── Escapa HTML para evitar XSS ── */
+function esc(v) {
+  if (v == null) return "-"
+  return String(v)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;")
 }
 
-/* LIXEIRA */
-
-window.abrirLixeira = function(){
-document.getElementById("painel").style.display = "none"
-document.getElementById("painelAgenda").style.display = "none"
-document.getElementById("painelLixeira").style.display = "block"
-carregarLixeira()
+/* ══════════════════════════════════════════
+   TOGGLE CARD
+══════════════════════════════════════════ */
+window.toggleCard = function (card) {
+  const info = card.querySelector(".cliente-info")
+  info.style.display = info.style.display === "block" ? "none" : "block"
 }
 
-window.abrirAgenda = function(){
-document.getElementById("painel").style.display = "none"
-document.getElementById("painelLixeira").style.display = "none"
-document.getElementById("painelAgenda").style.display = "block"
-carregarAgenda()
+/* ══════════════════════════════════════════
+   CONCLUIR
+══════════════════════════════════════════ */
+window.concluir = async function (id) {
+  if (!confirm("Marcar este atendimento como Concluído?")) return
+  try {
+    await updateDoc(doc(db, "agendamentos", id), { status: "Concluído" })
+    mostrarNotif("✅ Atendimento concluído!")
+  } catch (e) {
+    alert("Erro ao concluir: " + e.message)
+  }
 }
 
-function carregarLixeira(){
-
-const lista = document.getElementById("listaLixeira")
-
-const q = query(
-collection(db,"agendamentos"),
-where("arquivado","==",true)
-)
-
-onSnapshot(q,(snapshot)=>{
-
-let cards = ""
-
-snapshot.forEach((docu)=>{
-
-const dados = docu.data()
-const id = docu.id
-
-cards += `
-<div class="cliente-card">
-
-<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
-<div class="cliente-nome">${dados.nome || "-"}</div>
-<div class="cliente-status" style="background:#dc3545;">Arquivado</div>
-</div>
-
-<div class="cliente-info">
-
-<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
-<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
-<p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
-<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
-
-<div class="acoes">
-
-<button class="btn" style="background:#ffc107;color:#000;" onclick="reabrir('${docu.id}')">
-Reagendar
-</button>
-
-<button class="btn vermelho" onclick="excluir('${docu.id}')">
-Excluir
-</button>
-
-</div>
-
-</div>
-</div>
-`
-
-})
-
-lista.innerHTML = cards
-
-})
-
+/* ══════════════════════════════════════════
+   ARQUIVAR
+══════════════════════════════════════════ */
+window.arquivar = async function (id) {
+  if (!confirm("Arquivar este atendimento?")) return
+  try {
+    await updateDoc(doc(db, "agendamentos", id), {
+      arquivado:      true,
+      dataArquivado:  new Date().toLocaleDateString("pt-BR")
+    })
+    mostrarNotif("🗑️ Atendimento arquivado.")
+  } catch (e) {
+    alert("Erro ao arquivar: " + e.message)
+  }
 }
 
-window.restaurar = async function(id){
-await updateDoc(doc(db,"agendamentos",id),{arquivado:false})
+/* ══════════════════════════════════════════
+   EXCLUIR PERMANENTE (só na lixeira)
+══════════════════════════════════════════ */
+window.excluir = async function (id) {
+  if (!confirm("⚠️ Excluir PERMANENTEMENTE?\nEssa ação não pode ser desfeita.")) return
+  try {
+    await deleteDoc(doc(db, "agendamentos", id))
+    mostrarNotif("❌ Registro excluído permanentemente.")
+  } catch (e) {
+    alert("Erro ao excluir: " + e.message)
+  }
 }
 
-window.excluir = async function(id){
-if(!confirm("Excluir definitivamente?")) return
-await deleteDoc(doc(db,"agendamentos",id))
-
+/* ══════════════════════════════════════════
+   REAGENDAR (lixeira → pendente)
+══════════════════════════════════════════ */
+window.reabrir = async function (id) {
+  if (!confirm("Reagendar este atendimento?")) return
+  try {
+    await updateDoc(doc(db, "agendamentos", id), {
+      status:        "Pendente",
+      arquivado:     false,
+      dataArquivado: null
+    })
+    fecharTodos()
+    document.getElementById("painel").style.display = "block"
+    totalAnterior = null
+    carregar()
+    mostrarNotif("🔄 Reagendado com sucesso!")
+  } catch (e) {
+    alert("Erro ao reagendar: " + e.message)
+  }
 }
 
-function carregarAgenda(){
+/* ══════════════════════════════════════════
+   GOOGLE CALENDAR
+   FIX: usa cache de dados (sem JSON no onclick)
+══════════════════════════════════════════ */
+window.agendarGoogle = function (id) {
+  const dados = (window.__dadosCache || {})[id]
+  if (!dados) return
 
-const lista = document.getElementById("listaAgenda")
+  let inicio = ""
+  let fim    = ""
 
-const q = query(collection(db,"agendamentos"))
+  if (dados.dataHora) {
+    const m = dados.dataHora.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/)
+    if (m) {
+      const [, dia, mes, ano, hora, min] = m
+      const dt    = new Date(ano, mes - 1, dia, hora, min)
+      const dtFim = new Date(dt.getTime() + 3600_000) // +1 hora
 
-onSnapshot(q,(snapshot)=>{
+      const fmt = (d) => d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z"
+      inicio = fmt(dt)
+      fim    = fmt(dtFim)
+    }
+  }
 
-let cards = ""
+  const titulo  = encodeURIComponent(`Atendimento: ${dados.nome || "Cliente"}`)
+  const detalhe = encodeURIComponent(`Problema: ${dados.problema || "-"}\nTelefone: ${dados.telefone || "-"}`)
+  const local   = encodeURIComponent(`${dados.regiao || ""} Brasília DF`)
 
-snapshot.forEach((docu)=>{
+  let url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titulo}&details=${detalhe}&location=${local}`
+  if (inicio) url += `&dates=${inicio}/${fim}`
 
-const dados = docu.data()
-
-if(dados.arquivado === true) return
-
-cards += `
-<div class="cliente-card">
-<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
-<div class="cliente-nome">${dados.nome || "-"}</div>
-<div class="cliente-status">${dados.dataHora || "-"}</div>
-</div>
-
-<div class="cliente-info">
-<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
-<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
-<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
-</div>
-</div>
-`
-
-})
-
-lista.innerHTML = cards
-
-})
+  window.open(url, "_blank")
 }
 
-window.irAgenda = function(id){
-document.getElementById("painel").style.display = "none"
-document.getElementById("painelLixeira").style.display = "none"
-document.getElementById("painelAgenda").style.display = "block"
-carregarAgenda()
+/* ══════════════════════════════════════════
+   CONTROLE DE PAINÉIS
+══════════════════════════════════════════ */
+function fecharTodos() {
+  ["painel","painelLixeira","painelAgenda","painelConcluidos"]
+    .forEach(id => document.getElementById(id).style.display = "none")
 }
 
-window.agendarGoogle = function(dados){
-
-const titulo = encodeURIComponent("Atendimento - " + (dados.nome || "Cliente"))
-
-const descricao = encodeURIComponent(
-"Cliente: " + (dados.nome || "-") + "\n" +
-"Telefone: " + (dados.telefone || "-") + "\n" +
-"Problema: " + (dados.problema || "-")
-)
-
-const local = encodeURIComponent(dados.regiao || "Brasília DF")
-
-// ⚠️ DATA PADRÃO (AGORA + 1H)
-let inicio = new Date()
-let fim = new Date(inicio.getTime() + 60*60*1000)
-
-// FORMATO GOOGLE: YYYYMMDDTHHmmss
-function formatarData(d){
-return d.toISOString().replace(/[-:]/g,"").split(".")[0]
+window.voltarPainel = function () {
+  fecharTodos()
+  document.getElementById("painel").style.display = "block"
+  totalAnterior = null
+  carregar()
 }
 
-const dataFormatada = formatarData(inicio) + "/" + formatarData(fim)
-
-const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${titulo}&details=${descricao}&location=${local}&dates=${dataFormatada}`
-
-window.open(url, "_blank")
+window.abrirLixeira = function () {
+  fecharTodos()
+  document.getElementById("painelLixeira").style.display = "block"
+  carregarLixeira()
 }
 
-window.abrirConcluidos = function(){
-document.getElementById("painel").style.display = "none"
-document.getElementById("painelLixeira").style.display = "none"
-document.getElementById("painelAgenda").style.display = "none"
-document.getElementById("painelConcluidos").style.display = "block"
-carregarConcluidos()
+window.abrirAgenda = function () {
+  fecharTodos()
+  document.getElementById("painelAgenda").style.display = "block"
+  carregarAgenda()
 }
 
-window.voltarPainel = function(){
-document.getElementById("painel").style.display = "block"
-document.getElementById("painelLixeira").style.display = "none"
-document.getElementById("painelAgenda").style.display = "none"
-document.getElementById("painelConcluidos").style.display = "none"
+window.abrirConcluidos = function () {
+  fecharTodos()
+  document.getElementById("painelConcluidos").style.display = "block"
+  carregarConcluidos()
 }
 
-function carregarConcluidos(){
+/* ══════════════════════════════════════════
+   LIXEIRA
+══════════════════════════════════════════ */
+function carregarLixeira() {
 
-const lista = document.getElementById("listaConcluidos")
+  const lista = document.getElementById("listaLixeira")
 
-const q = query(collection(db,"agendamentos"))
+  limparListener()
 
-onSnapshot(q,(snapshot)=>{
+  unsubscribeAtual = onSnapshot(
+    query(collection(db, "agendamentos"), where("arquivado", "==", true)),
+    (snapshot) => {
 
-let cards = ""
+      if (snapshot.empty) {
+        lista.innerHTML = `<p style="color:#aaa;text-align:center;padding:30px;">🗑️ Lixeira vazia</p>`
+        return
+      }
 
-snapshot.forEach((docu)=>{
+      let cards = ""
+      snapshot.forEach((docu) => {
+        const dados = docu.data()
+        cards += `
+        <div class="cliente-card">
+          <div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+            <div class="cliente-nome">${esc(dados.nome)}</div>
+            <div class="cliente-status" style="background:#dc3545;">Arquivado</div>
+          </div>
+          <div class="cliente-info">
+            <p><strong>Telefone:</strong>     ${esc(dados.telefone)}</p>
+            <p><strong>Região:</strong>        ${esc(dados.regiao)}</p>
+            <p><strong>Data:</strong>          ${esc(dados.dataHora)}</p>
+            <p><strong>Problema:</strong>      ${esc(dados.problema)}</p>
+            <p><strong>Arquivado em:</strong>  ${esc(dados.dataArquivado)}</p>
+            <div class="acoes">
+              <button class="btn" style="background:#ffc107;color:#000;" onclick="reabrir('${docu.id}')">🔄 Reagendar</button>
+              <button class="btn vermelho" onclick="excluir('${docu.id}')">🗑️ Excluir</button>
+            </div>
+          </div>
+        </div>`
+      })
 
-const dados = docu.data()
-
-if(dados.arquivado === true) return
-if(dados.status !== "Concluído") return
-
-cards += `
-<div class="cliente-card">
-
-<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
-<div class="cliente-nome">${dados.nome || "-"}</div>
-<div class="cliente-status" style="background:#28a745;">Concluído</div>
-</div>
-
-<div class="cliente-info">
-<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
-<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
-<p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
-<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
-</div>
-
-</div>
-`
-
-})
-
-lista.innerHTML = cards
-
-})
+      lista.innerHTML = cards
+    }
+  )
 }
 
-window.reabrir = async function(id){
-await updateDoc(doc(db,"agendamentos",id),{
-status:"Pendente"
-})
+/* ══════════════════════════════════════════
+   AGENDA (ordenada por data)
+══════════════════════════════════════════ */
+function carregarAgenda() {
 
-// joga direto pra agenda
-document.getElementById("painelConcluidos").style.display = "none"
-document.getElementById("painelAgenda").style.display = "block"
-carregarAgenda()
+  const lista = document.getElementById("listaAgenda")
+
+  limparListener()
+
+  unsubscribeAtual = onSnapshot(
+    query(collection(db, "agendamentos")),
+    (snapshot) => {
+
+      /* Coleta e ordena por dataHora */
+      const docs = []
+      snapshot.forEach((docu) => {
+        const d = docu.data()
+        if (d.arquivado === true) return
+        docs.push({ id: docu.id, ...d })
+      })
+
+      /* FIX: ordena cronologicamente (dd/mm/aaaa hh:mm) */
+      docs.sort((a, b) => {
+        const parseData = (s) => {
+          if (!s) return 0
+          const m = s.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/)
+          if (!m) return 0
+          return new Date(m[3], m[2]-1, m[1], m[4], m[5]).getTime()
+        }
+        return parseData(a.dataHora) - parseData(b.dataHora)
+      })
+
+      if (docs.length === 0) {
+        lista.innerHTML = `<p style="color:#aaa;text-align:center;padding:30px;">Nenhum atendimento na agenda.</p>`
+        return
+      }
+
+      window.__dadosCache = window.__dadosCache || {}
+      let cards = ""
+
+      docs.forEach((dados) => {
+        const telefone = String(dados.telefone || "").replace(/\D/g, "")
+        window.__dadosCache[dados.id] = dados
+        cards += `
+        <div class="cliente-card">
+          <div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+            <div class="cliente-nome">${esc(dados.nome)}</div>
+            <div class="cliente-status">${esc(dados.dataHora)}</div>
+          </div>
+          <div class="cliente-info">
+            <p><strong>Telefone:</strong> ${esc(dados.telefone)}</p>
+            <p><strong>Região:</strong>   ${esc(dados.regiao)}</p>
+            <p><strong>Problema:</strong> ${esc(dados.problema)}</p>
+            <p><strong>Status:</strong>   ${esc(dados.status || "Pendente")}</p>
+            <div class="acoes">
+              <a class="btn" href="https://wa.me/55${telefone}" target="_blank">WhatsApp</a>
+              <button class="btn" style="background:#17a2b8;color:#fff;" onclick="agendarGoogle('${dados.id}')">📅 Google Calendar</button>
+            </div>
+          </div>
+        </div>`
+      })
+
+      lista.innerHTML = cards
+    }
+  )
 }
 
-window.toggleCard = function(card){
-let info = card.querySelector(".cliente-info")
-info.style.display = info.style.display === "block" ? "none" : "block"
+/* ══════════════════════════════════════════
+   CONCLUÍDOS
+   FIX: mostra mensagem vazia quando todos estão arquivados
+══════════════════════════════════════════ */
+function carregarConcluidos() {
+
+  const lista = document.getElementById("listaConcluidos")
+
+  limparListener()
+
+  unsubscribeAtual = onSnapshot(
+    query(collection(db, "agendamentos"), where("status", "==", "Concluído")),
+    (snapshot) => {
+
+      window.__dadosCache = window.__dadosCache || {}
+      let cards = ""
+
+      snapshot.forEach((docu) => {
+        const dados = docu.data()
+        if (dados.arquivado === true) return   // ignora arquivados
+
+        const telefone = String(dados.telefone || "").replace(/\D/g, "")
+        window.__dadosCache[docu.id] = dados
+
+        cards += `
+        <div class="cliente-card">
+          <div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+            <div class="cliente-nome">${esc(dados.nome)}</div>
+            <div class="cliente-status" style="background:#28a745;">✅ Concluído</div>
+          </div>
+          <div class="cliente-info">
+            <p><strong>Telefone:</strong> ${esc(dados.telefone)}</p>
+            <p><strong>Região:</strong>   ${esc(dados.regiao)}</p>
+            <p><strong>Data:</strong>     ${esc(dados.dataHora)}</p>
+            <p><strong>Problema:</strong> ${esc(dados.problema)}</p>
+            <div class="acoes">
+              <a class="btn" href="https://wa.me/55${telefone}" target="_blank">WhatsApp</a>
+              <button class="btn vermelho" onclick="arquivar('${docu.id}')">Arquivar</button>
+            </div>
+          </div>
+        </div>`
+      })
+
+      /* FIX: verifica se cards está vazio APÓS o forEach (não usa snapshot.empty) */
+      lista.innerHTML = cards || `<p style="color:#aaa;text-align:center;padding:30px;">Nenhum serviço concluído ainda.</p>`
+    }
+  )
 }
 
 </script>
