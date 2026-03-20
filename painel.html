@@ -363,12 +363,44 @@ Voltar
 
 </div>
 
+<div class="painel" id="painelAgenda" style="display:none;">
+
+<h2 style="margin-bottom:20px;">📅 Agenda de Atendimentos</h2>
+
+<div id="listaAgenda" class="clientes"></div>
+
+<button onclick="voltarPainel()" class="btn" style="margin-top:20px;">
+Voltar
+</button>
+
+</div>
+
+<div class="painel" id="painelConcluidos" style="display:none;">
+
+<h2 style="margin-bottom:20px;">✅ Serviços Concluídos</h2>
+
+<div id="listaConcluidos" class="clientes"></div>
+
+<button onclick="voltarPainel()" class="btn" style="margin-top:20px;">
+Voltar
+</button>
+
+</div>
+
 <!-- PAINEL -->
 
 <div class="painel" id="painel">
 
 <button onclick="abrirLixeira()" class="sair-btn" style="background:#dc3545;color:#fff;margin-bottom:15px;">
 Lixeira
+</button>
+
+<button onclick="abrirAgenda()" class="sair-btn" style="background:#17a2b8;color:#fff;margin-bottom:15px;">
+Agenda
+</button>
+
+<button onclick="abrirConcluidos()" class="sair-btn" style="background:#28a745;color:#fff;margin-bottom:15px;">
+Concluídos
 </button>
 
 <!-- CARDS SUPERIORES -->
@@ -385,7 +417,6 @@ Lixeira
 <strong>Região de Atendimento</strong>
 <div class="empresa-desc">Distrito Federal</div>
 </div>
-
 
 <!-- BUSCA -->
 
@@ -409,6 +440,7 @@ placeholder="🔎 Buscar cliente ou telefone"
 <span>Concluídos</span>
 <strong id="concluidos">0</strong>
 </div>
+
 
 <div class="dash-card">
 <span>Arquivados</span>
@@ -557,6 +589,10 @@ cards += `
 Mapa
 </a>
 
+<button class="btn" style="background:#17a2b8;color:#fff;" onclick="agendarGoogle(${JSON.stringify(dados)})">
+Agendar
+</button>
+
 <button class="btn verde" onclick="concluir('${id}')">Concluir</button>
 <button class="btn vermelho" onclick="arquivar('${id}')">Arquivar</button>
 
@@ -580,13 +616,14 @@ document.getElementById("total").innerText = snapshot.size
 
 /* AÇÕES */
 
-window.toggleCard = function(card){
-let info = card.querySelector(".cliente-info")
-info.style.display = info.style.display === "block" ? "none" : "block"
-}
-
 window.concluir = async function(id){
-await updateDoc(doc(db,"agendamentos",id),{status:"Concluído"})
+await updateDoc(doc(db,"agendamentos",id),{
+status:"Concluído"
+})
+
+// volta automático pro painel principal
+document.getElementById("painel").style.display = "block"
+document.getElementById("painelAgenda").style.display = "none"
 }
 
 window.arquivar = async function(id){
@@ -601,13 +638,16 @@ dataArquivado:Date.now()
 
 window.abrirLixeira = function(){
 document.getElementById("painel").style.display = "none"
+document.getElementById("painelAgenda").style.display = "none"
 document.getElementById("painelLixeira").style.display = "block"
 carregarLixeira()
 }
 
-window.voltarPainel = function(){
-document.getElementById("painel").style.display = "block"
+window.abrirAgenda = function(){
+document.getElementById("painel").style.display = "none"
 document.getElementById("painelLixeira").style.display = "none"
+document.getElementById("painelAgenda").style.display = "block"
+carregarAgenda()
 }
 
 function carregarLixeira(){
@@ -641,11 +681,17 @@ cards += `
 <p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
 <p><strong>Região:</strong> ${dados.regiao || "-"}</p>
 <p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
+<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
 
 <div class="acoes">
 
-<button class="btn verde" onclick="restaurar('${id}')">Restaurar</button>
-<button class="btn vermelho" onclick="excluir('${id}')">Excluir</button>
+<button class="btn" style="background:#ffc107;color:#000;" onclick="reabrir('${docu.id}')">
+Reagendar
+</button>
+
+<button class="btn vermelho" onclick="excluir('${docu.id}')">
+Excluir
+</button>
 
 </div>
 
@@ -669,6 +715,152 @@ window.excluir = async function(id){
 if(!confirm("Excluir definitivamente?")) return
 await deleteDoc(doc(db,"agendamentos",id))
 
+}
+
+function carregarAgenda(){
+
+const lista = document.getElementById("listaAgenda")
+
+const q = query(collection(db,"agendamentos"))
+
+onSnapshot(q,(snapshot)=>{
+
+let cards = ""
+
+snapshot.forEach((docu)=>{
+
+const dados = docu.data()
+
+if(dados.arquivado === true) return
+
+cards += `
+<div class="cliente-card">
+<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+<div class="cliente-nome">${dados.nome || "-"}</div>
+<div class="cliente-status">${dados.dataHora || "-"}</div>
+</div>
+
+<div class="cliente-info">
+<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
+<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
+<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
+</div>
+</div>
+`
+
+})
+
+lista.innerHTML = cards
+
+})
+}
+
+window.irAgenda = function(id){
+document.getElementById("painel").style.display = "none"
+document.getElementById("painelLixeira").style.display = "none"
+document.getElementById("painelAgenda").style.display = "block"
+carregarAgenda()
+}
+
+window.agendarGoogle = function(dados){
+
+const titulo = encodeURIComponent("Atendimento - " + (dados.nome || "Cliente"))
+
+const descricao = encodeURIComponent(
+"Cliente: " + (dados.nome || "-") + "\n" +
+"Telefone: " + (dados.telefone || "-") + "\n" +
+"Problema: " + (dados.problema || "-")
+)
+
+const local = encodeURIComponent(dados.regiao || "Brasília DF")
+
+// ⚠️ DATA PADRÃO (AGORA + 1H)
+let inicio = new Date()
+let fim = new Date(inicio.getTime() + 60*60*1000)
+
+// FORMATO GOOGLE: YYYYMMDDTHHmmss
+function formatarData(d){
+return d.toISOString().replace(/[-:]/g,"").split(".")[0]
+}
+
+const dataFormatada = formatarData(inicio) + "/" + formatarData(fim)
+
+const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${titulo}&details=${descricao}&location=${local}&dates=${dataFormatada}`
+
+window.open(url, "_blank")
+}
+
+window.abrirConcluidos = function(){
+document.getElementById("painel").style.display = "none"
+document.getElementById("painelLixeira").style.display = "none"
+document.getElementById("painelAgenda").style.display = "none"
+document.getElementById("painelConcluidos").style.display = "block"
+carregarConcluidos()
+}
+
+window.voltarPainel = function(){
+document.getElementById("painel").style.display = "block"
+document.getElementById("painelLixeira").style.display = "none"
+document.getElementById("painelAgenda").style.display = "none"
+document.getElementById("painelConcluidos").style.display = "none"
+}
+
+function carregarConcluidos(){
+
+const lista = document.getElementById("listaConcluidos")
+
+const q = query(collection(db,"agendamentos"))
+
+onSnapshot(q,(snapshot)=>{
+
+let cards = ""
+
+snapshot.forEach((docu)=>{
+
+const dados = docu.data()
+
+if(dados.arquivado === true) return
+if(dados.status !== "Concluído") return
+
+cards += `
+<div class="cliente-card">
+
+<div class="cliente-topo" onclick="toggleCard(this.parentElement)">
+<div class="cliente-nome">${dados.nome || "-"}</div>
+<div class="cliente-status" style="background:#28a745;">Concluído</div>
+</div>
+
+<div class="cliente-info">
+<p><strong>Telefone:</strong> ${dados.telefone || "-"}</p>
+<p><strong>Região:</strong> ${dados.regiao || "-"}</p>
+<p><strong>Data:</strong> ${dados.dataHora || "-"}</p>
+<p><strong>Problema:</strong> ${dados.problema || "-"}</p>
+</div>
+
+</div>
+`
+
+})
+
+lista.innerHTML = cards
+
+})
+}
+
+window.reabrir = async function(id){
+await updateDoc(doc(db,"agendamentos",id),{
+status:"Pendente"
+})
+
+// joga direto pra agenda
+document.getElementById("painelConcluidos").style.display = "none"
+document.getElementById("painelAgenda").style.display = "block"
+carregarAgenda()
+}
+
+window.toggleCard = function(card){
+let info = card.querySelector(".cliente-info")
+info.style.display = info.style.display === "block" ? "none" : "block"
 }
 
 </script>
