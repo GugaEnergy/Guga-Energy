@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Página em Desenvolvimento | Guga Energy</title>
+<title>Quadros Elétricos | Guga Energy</title>
 
 <link rel="icon" href="favicon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
@@ -15,87 +18,1282 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
+font-family:'Montserrat',sans-serif;
 }
 
 body{
-height:100vh;
+background:#050505;
+color:#fff;
+overflow-x:hidden;
+}
+
+/* HERO */
+
+.hero{
+position:relative;
+min-height:92vh;
+
 display:flex;
 align-items:center;
 justify-content:center;
-background:#0b0b0b;
-color:#fff;
+
+padding:180px 20px 120px;
+
 text-align:center;
-padding:20px;
+overflow:hidden;
+
+background:
+linear-gradient(
+180deg,
+rgba(0,0,0,.78),
+rgba(0,0,0,.88)
+),
+url("equipe1.jpg");
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 }
 
-.container{
-max-width:500px;
+.hero-content{
+max-width:900px;
 }
 
-.logo{
-font-size:34px;
-font-weight:700;
-margin-bottom:15px;
+.hero-overlay{
+position:absolute;
+inset:0;
+
+background:
+radial-gradient(
+circle at top,
+rgba(255,208,0,.08),
+transparent 45%
+);
+
+z-index:1;
 }
 
-.logo span{
+.hero-content{
+position:relative;
+z-index:2;
+max-width:1100px;
+}
+
+.hero h1{
+font-size:120px;
+font-weight:900;
+line-height:.92;
+letter-spacing:-5px;
+margin-bottom:24px;
+color:#fff;
+text-transform:uppercase;
+}
+
+.hero h1 span{
 color:#FFD000;
+
+text-shadow:
+0 0 18px rgba(255,208,0,.35),
+0 0 45px rgba(255,208,0,.12);
 }
 
-h1{
-font-size:28px;
-margin-bottom:10px;
-color:#FFD000;
-}
-
-p{
-color:#ccc;
-margin-bottom:30px;
+.hero-sub{
+font-size:22px;
 line-height:1.6;
+max-width:760px;
+margin:auto;
+margin-bottom:40px;
+color:#d6d6d6;
+font-weight:500;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:18px;
+margin-bottom:40px;
+flex-wrap:wrap;
+}
+
+.hero-btn{
+padding:16px 34px;
+border-radius:60px;
+font-size:15px;
+font-weight:700;
+text-decoration:none;
+transition:.25s;
+}
+
+.hero-btn-primary{
+background:#FFD000;
+color:#000;
+}
+
+.hero-btn-primary:hover{
+background:#fff;
+transform:translateY(-3px);
+}
+
+.hero-btn-secondary{
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:#fff;
+backdrop-filter:blur(10px);
+}
+
+.hero-btn-secondary:hover{
+background:#1f1f1f;
+transform:translateY(-3px);
+}
+
+.hero-badges{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:12px;
+}
+
+.hero-badge{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.06);
+padding:14px 18px;
+border-radius:40px;
+font-size:13px;
+font-weight:700;
+backdrop-filter:blur(10px);
+}
+
+/* HEADER */
+
+body{
+padding-top:110px;
+}
+
+/* HEADER */
+
+header{
+background:rgba(0,0,0,.88);
+backdrop-filter:blur(12px);
+padding:15px 25px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:3px solid #FFD000;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+z-index:3000;
+}
+
+.header-logo{
+display:flex;
+align-items:center;
+gap:15px;
+text-decoration:none;
+color:#fff;
+}
+
+.header-logo img{
+height:88px;
+transition:.25s;
+}
+
+.header-logo:hover img{
+transform:scale(1.03);
+}
+
+.header-logo h2{
+font-size:34px;
+letter-spacing:2px;
+}
+
+.header-logo span{
+color:#FFD000;
+}
+
+nav{
+display:flex;
+gap:25px;
+}
+
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+transition:.2s;
+}
+
+nav a:hover{
+color:#FFD000;
+}
+
+/* DROPDOWN */
+
+.dropdown{
+position:relative;
+}
+
+.dropdown-menu{
+display:none;
+position:absolute;
+top:100%;
+left:0;
+background:#111;
+min-width:230px;
+border:1px solid rgba(255,255,255,.08);
+flex-direction:column;
+}
+
+.dropdown-menu a{
+padding:14px 16px;
+font-size:14px;
+border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.dropdown-menu a:hover{
+background:#FFD000;
+color:#000;
+}
+
+.dropdown:hover .dropdown-menu{
+display:flex;
+}
+
+/* MENU BUTTON */
+
+.menu-btn{
+display:none;
+width:45px;
+height:45px;
+position:relative;
+cursor:pointer;
+background:none;
+border:none;
+}
+
+.menu-btn span{
+position:absolute;
+width:26px;
+height:3px;
+background:#FFD000;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+}
+
+.menu-btn span:nth-child(1){
+transform:translate(-50%,-9px);
+}
+
+.menu-btn span:nth-child(2){
+transform:translate(-50%,0);
+}
+
+.menu-btn span:nth-child(3){
+transform:translate(-50%,9px);
+}
+
+/* SIDEBAR */
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+opacity:0;
+pointer-events:none;
+transition:.3s;
+z-index:4000;
+}
+
+.overlay.active{
+opacity:1;
+pointer-events:auto;
+}
+
+.sidebar{
+position:fixed;
+top:0;
+left:0;
+width:280px;
+height:100%;
+background:#111;
+padding:40px 25px;
+transform:translateX(-100%);
+transition:.35s;
+z-index:6000;
+overflow-y:auto;
+}
+
+.sidebar.active{
+transform:translateX(0);
+}
+
+.sidebar a{
+display:block;
+padding:18px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+text-decoration:none;
+color:#fff;
+font-weight:600;
+}
+
+.sidebar a:hover{
+color:#FFD000;
+}
+
+.close-btn{
+position:absolute;
+top:18px;
+right:20px;
+font-size:32px;
+cursor:pointer;
+color:#FFD000;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+nav{
+display:none;
+}
+
+.menu-btn{
+display:block;
+}
+
+.header-logo img{
+height:72px;
+}
+
+.header-logo h2{
+font-size:24px;
+}
+
+}
+
+@media(max-width:700px){
+
+body{
+padding-top:90px;
+}
+
+header{
+padding:10px 15px;
+}
+
+.header-logo img{
+height:58px;
+}
+
+.header-logo h2{
+font-size:21px;
+}
+
+}
+
+.hero h1{
+font-size:48px;
+margin-bottom:20px;
+line-height:1.1;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.8;
+color:#cfcfcf;
+max-width:760px;
+margin:auto;
+}
+
+/* CONTEÚDO */
+
+.section{
+max-width:1200px;
+margin:auto;
+padding:70px 20px;
+}
+
+.section-title{
+font-size:42px;
+margin-bottom:18px;
+text-align:center;
+}
+
+.section-sub{
+text-align:center;
+color:#bdbdbd;
+max-width:800px;
+margin:auto;
+line-height:1.8;
+margin-bottom:50px;
+}
+
+/* GRID */
+
+.qdc-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+gap:24px;
+align-items:stretch;
+}
+
+.qdc-card{
+background:#111;
+border:1px solid rgba(255,255,255,.06);
+border-radius:24px;
+overflow:hidden;
+transition:.3s;
+
+display:flex;
+flex-direction:column;
+height:100%;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.35);
+}
+
+.qdc-card:hover{
+transform:translateY(-6px);
+
+border-color:rgba(255,208,0,.25);
+}
+
+.qdc-image{
+height:260px;
+overflow:hidden;
+}
+
+.qdc-image img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform .5s ease;
+}
+
+.qdc-image video{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.qdc-card:hover img{
+transform:scale(1.05);
+}
+
+.qdc-content{
+padding:26px;
+
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.qdc-tag{
+display:inline-block;
+
+padding:8px 14px;
+
+border-radius:40px;
+
+background:rgba(255,208,0,.1);
+
+border:1px solid rgba(255,208,0,.18);
+
+color:#FFD000;
+
+font-size:12px;
+font-weight:700;
+
+margin-bottom:18px;
+}
+
+.qdc-content h3{
+font-size:24px;
+margin-bottom:14px;
+line-height:1.2;
+}
+
+.qdc-content p{
+font-size:15px;
+line-height:1.8;
+color:#bdbdbd;
+margin-bottom:20px;
+}
+
+.qdc-list{
+list-style:none;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.qdc-list li{
+font-size:14px;
+color:#ddd;
+}
+
+/* BOTÃO */
+
+.btn-area{
+text-align:center;
+margin-top:30px;
+margin-bottom:0;
 }
 
 .btn{
-display:inline-block;
-padding:12px 24px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+padding:16px 32px;
+
 background:#FFD000;
 color:#000;
-text-decoration:none;
+
 font-weight:700;
-border-radius:30px;
-transition:0.3s;
+text-decoration:none;
+
+border-radius:60px;
+
+transition:.25s;
 }
 
 .btn:hover{
 background:#fff;
-transform:translateY(-2px);
+transform:translateY(-3px);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero{
+min-height:78vh;
+padding:140px 20px 80px;
+}
+
+.hero h1{
+font-size:62px;
+line-height:.95;
+letter-spacing:-2px;
+}
+
+.hero-sub{
+font-size:16px;
+margin-bottom:30px;
+}
+
+.hero-buttons{
+flex-direction:column;
+align-items:center;
+}
+
+.hero-btn{
+width:100%;
+max-width:320px;
+}
+
+.hero-badges{
+gap:10px;
+}
+
+.hero-badge{
+font-size:12px;
+padding:12px 14px;
+}
+
 }
 
 </style>
 
 </head>
 
-<body>
+<body id="topo">
 
-<div class="container">
+<!-- OVERLAY -->
 
-<div class="logo">
-GUGA <span>ENERGY</span>
-</div>
+<div class="overlay" id="menu-overlay"></div>
 
-<h1>Página em desenvolvimento</h1>
+<!-- MENU MOBILE -->
 
-<p>
-Estamos preparando esta página com informações completas sobre nossos serviços elétricos.
-<br><br>
-Em breve ela estará disponível.
-</p>
+<div class="sidebar" id="sidebar">
 
-<a class="btn" href="index.html">
-Voltar ao site
+<div class="close-btn" onclick="toggleMenu()">✕</div>
+
+<a href="javascript:void(0)" onclick="toggleServicos()">
+Serviços ▾
+</a>
+
+<div id="submenuServicos" style="display:none;padding-left:10px;">
+
+<a href="instalacoes-eletricas.html">
+Instalações elétricas
+</a>
+
+<a href="manutencao-eletrica.html">
+Manutenção elétrica
+</a>
+
+<a href="quadros-eletricos.html">
+Quadros elétricos
+</a>
+
+<a href="refletores-led.html">
+Refletores LED
+</a>
+
+<a href="automacao-residencial.html">
+Automação residencial
+</a>
+
+<a href="perfil-led.html">
+Perfil LED
+</a>
+
+<a href="cftv.html">
+CFTV
+</a>
+
+<a href="infraestrutura-eletrica.html">
+Infraestrutura
 </a>
 
 </div>
 
+<a href="index.html#galeria">
+Galeria
+</a>
+
+<a href="index.html#avaliacoes">
+Avaliações
+</a>
+
+<a href="index.html#agendamento">
+Agendamento
+</a>
+
+</div>
+
+<!-- HEADER -->
+
+<header>
+
+<a href="index.html" class="header-logo">
+
+<img src="logo-guga-energy.png" alt="Logo Guga Energy">
+
+<h2>
+GUGA <span>ENERGY</span>
+</h2>
+
+</a>
+
+<nav>
+
+<div class="dropdown">
+
+<a href="#">
+Serviços ▾
+</a>
+
+<div class="dropdown-menu">
+
+<a href="instalacoes-eletricas.html">
+Instalações elétricas
+</a>
+
+<a href="manutencao-eletrica.html">
+Manutenção elétrica
+</a>
+
+<a href="quadros-eletricos.html">
+Quadros elétricos
+</a>
+
+<a href="refletores-led.html">
+Refletores LED
+</a>
+
+<a href="automacao-residencial.html">
+Automação residencial
+</a>
+
+<a href="perfil-led.html">
+Perfil LED
+</a>
+
+<a href="cftv.html">
+CFTV e segurança
+</a>
+
+<a href="infraestrutura-eletrica.html">
+Infraestrutura elétrica
+</a>
+
+</div>
+
+</div>
+
+<a href="#quadros">
+Quadros
+</a>
+
+<a href="#protecao">
+Proteções
+</a>
+
+<a href="#contato">
+Contato
+</a>
+
+</nav>
+
+<div class="menu-btn" onclick="toggleMenu()">
+
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+GUGA <span>ENERGY</span>
+</h1>
+
+<p class="hero-sub">
+Execução profissional de quadros elétricos com proteção DR e DPS, distribuição correta de carga e dimensionamento técnico conforme NBR 5410.
+</p>
+
+<div class="hero-buttons">
+
+<a href="#contato" class="hero-btn hero-btn-primary">
+Solicitar orçamento
+</a>
+
+<a href="https://wa.me/5561992176914" target="_blank" class="hero-btn hero-btn-secondary">
+WhatsApp
+</a>
+
+</div>
+
+<div class="hero-badges">
+
+<div class="hero-badge">
+✔ NBR 5410
+</div>
+
+<div class="hero-badge">
+✔ DR e DPS
+</div>
+
+<div class="hero-badge">
+✔ Balanceamento de carga
+</div>
+
+<div class="hero-badge">
+✔ Alto padrão
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- QUADROS -->
+
+<!-- PROTEÇÕES -->
+
+<section class="section" id="protecao">
+
+<h2 class="section-title">
+Proteções Elétricas Essenciais
+</h2>
+
+<p class="section-sub">
+Quadros elétricos modernos precisam de proteção correta contra choque elétrico, surtos e sobrecarga.
+</p>
+
+<div class="qdc-grid">
+
+<div class="qdc-card">
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+DR
+</div>
+
+<h3>
+Proteção contra choque elétrico
+</h3>
+
+<p>
+O DR identifica fuga de corrente e desarma automaticamente o circuito, reduzindo drasticamente riscos de choque elétrico.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Segurança para pessoas</li>
+<li>✔ Obrigatório pela NBR 5410</li>
+<li>✔ Proteção em áreas molhadas</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="qdc-card">
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+DPS
+</div>
+
+<h3>
+Proteção contra surtos
+</h3>
+
+<p>
+O DPS protege equipamentos eletrônicos contra surtos elétricos causados por raios e oscilações da rede.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Proteção para eletrônicos</li>
+<li>✔ Segurança para automação</li>
+<li>✔ Redução de danos elétricos</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section" id="quadros">
+
+<h2 class="section-title" style="
+color:#fff;
+text-shadow:
+0 0 18px rgba(255,208,0,.25);
+">
+Quadros <span style="color:#FFD000;">Elétricos</span> de Alto Padrão
+</h2>
+
+<p class="section-sub">
+Montagem e adequação de quadros elétricos com distribuição correta de cargas, proteção individualizada e execução conforme NBR 5410.
+</p>
+
+<div class="qdc-grid">
+
+<!-- CARD 1 -->
+
+<div class="qdc-card">
+
+<div class="qdc-image">
+<img src="qdc residencial.png" alt="Quadro elétrico residencial">
+</div>
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+QDC RESIDENCIAL
+</div>
+
+<h3>
+Organização técnica e proteção completa
+</h3>
+
+<p>
+Quadros montados com acabamento profissional, separação correta dos circuitos e proteção adequada para cada aplicação elétrica.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Instalação de DR</li>
+<li>✔ Instalação de DPS</li>
+<li>✔ Circuitos identificados</li>
+<li>✔ Barramentos organizados</li>
+<li>✔ Proteção contra sobrecarga</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- CARD 2 -->
+
+<div class="qdc-card">
+
+<div class="qdc-image">
+<img src="dr 01.png" alt="Proteção DR">
+</div>
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+PROTEÇÃO DR
+</div>
+
+<h3>
+Proteção contra choque elétrico
+</h3>
+
+<p>
+O DR monitora fuga de corrente e desarma automaticamente o circuito em situações de risco, reduzindo drasticamente o perigo de choque elétrico.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Mais segurança para pessoas</li>
+<li>✔ Obrigatório em diversos circuitos</li>
+<li>✔ Proteção em áreas molhadas</li>
+<li>✔ Atuação automática</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- CARD 3 -->
+
+<div class="qdc-card">
+
+<div class="qdc-image">
+<img src="dps 1.png" alt="Proteção DPS">
+</div>
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+PROTEÇÃO DPS
+</div>
+
+<h3>
+Proteção contra surtos elétricos
+</h3>
+
+<p>
+O DPS protege equipamentos eletrônicos contra surtos causados por descargas atmosféricas e oscilações da rede elétrica.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Proteção de eletrônicos</li>
+<li>✔ Segurança para automação</li>
+<li>✔ Proteção para CFTV</li>
+<li>✔ Redução de danos elétricos</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- CARD 4 -->
+
+<div class="qdc-card">
+
+<div class="qdc-image">
+<img src="dimencionamento.png" alt="Proteção DPS">
+</div>
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+DIMENSIONAMENTO
+</div>
+
+<h3>
+Distribuição correta de carga
+</h3>
+
+<p>
+Dimensionamento técnico dos disjuntores, cabos e proteção elétrica conforme demanda da instalação e expansão futura.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Balanceamento de fases</li>
+<li>✔ Disjuntores corretos</li>
+<li>✔ Evita aquecimento</li>
+<li>✔ Preparação para futuras cargas</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- CARD 5 -->
+
+<div class="qdc-card">
+
+<div class="qdc-image">
+<img src="qdc de automação.png" alt="Painel de automação">
+</div>
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+AUTOMAÇÃO
+</div>
+
+<h3>
+Painéis de automação elétrica
+</h3>
+
+<p>
+Montagem de painéis elétricos para automação residencial e comercial com organização técnica, proteção individualizada e acabamento profissional.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Acionamentos automatizados</li>
+<li>✔ Organização profissional</li>
+<li>✔ Proteções elétricas dedicadas</li>
+<li>✔ Facilidade de manutenção</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- CARD 6 -->
+
+<div class="qdc-card">
+
+<div class="qdc-image">
+<img src="qdc sistema auto.png" alt="QDC de automação">
+</div>
+
+<div class="qdc-content">
+
+<div class="qdc-tag">
+QDC AUTOMAÇÃO
+</div>
+
+<h3>
+QDC para sistemas automatizados
+</h3>
+
+<p>
+Quadros preparados para automação com divisão técnica de circuitos, proteção dedicada e estrutura preparada para futuras expansões.
+</p>
+
+<ul class="qdc-list">
+
+<li>✔ Integração com automação</li>
+<li>✔ Separação de circuitos</li>
+<li>✔ Proteção DR e DPS</li>
+<li>✔ Expansão futura facilitada</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="btn-area" id="contato">
+
+<a href="https://wa.me/5561992176914" class="btn">
+Solicitar orçamento
+</a>
+
+</div>
+
+</section>
+
+<script>
+
+function toggleMenu(){
+
+const sidebar = document.getElementById("sidebar")
+const overlay = document.getElementById("menu-overlay")
+
+sidebar.classList.toggle("active")
+overlay.classList.toggle("active")
+
+}
+
+function toggleServicos(){
+
+const menu = document.getElementById("submenuServicos")
+
+if(menu.style.display === "block"){
+menu.style.display = "none"
+}else{
+menu.style.display = "block"
+}
+
+}
+
+document.getElementById("menu-overlay").addEventListener("click", function(){
+
+document.getElementById("sidebar").classList.remove("active")
+document.getElementById("menu-overlay").classList.remove("active")
+
+})
+
+</script>
+
+<!-- FOOTER -->
+
+<footer style="
+background:linear-gradient(180deg,#050505,#000);
+border-top:3px solid #FFD000;
+padding:60px 20px 35px;
+margin-top:35px;
+">
+
+<div style="
+max-width:1200px;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:40px;
+">
+
+<!-- EMPRESA -->
+
+<div>
+
+<h3 style="
+font-size:28px;
+margin-bottom:18px;
+font-weight:800;
+letter-spacing:1px;
+">
+GUGA <span style="color:#FFD000;">ENERGY</span>
+</h3>
+
+<p style="
+color:#bdbdbd;
+line-height:1.8;
+font-size:15px;
+">
+Quadros elétricos com montagem profissional, proteção DR e DPS, organização técnica e execução conforme NBR 5410.
+</p>
+
+</div>
+
+<!-- LINKS -->
+
+<div>
+
+<h4 style="
+font-size:18px;
+margin-bottom:18px;
+color:#FFD000;
+">
+Nesta Página
+</h4>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+">
+
+<a href="#protecao" style="
+color:#fff;
+text-decoration:none;
+">
+Proteções elétricas
+</a>
+
+<a href="#quadros" style="
+color:#fff;
+text-decoration:none;
+">
+Quadros elétricos
+</a>
+
+<a href="#contato" style="
+color:#fff;
+text-decoration:none;
+">
+Solicitar orçamento
+</a>
+
+</div>
+
+</div>
+
+<!-- CONTATO -->
+
+<div>
+
+<h4 style="
+font-size:18px;
+margin-bottom:18px;
+color:#FFD000;
+">
+Contato
+</h4>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:14px;
+color:#d6d6d6;
+font-size:15px;
+">
+
+<div>
+📍 Brasília – DF
+</div>
+
+<div>
+📞 (61) 99217-6914
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FINAL -->
+
+<div style="
+border-top:1px solid rgba(255,255,255,.08);
+margin-top:45px;
+padding-top:25px;
+text-align:center;
+color:#8d8d8d;
+font-size:14px;
+">
+
+© 2024 – 2026 Guga Energy
+
+</div>
+
+</footer>
+
 </body>
+
 </html>
