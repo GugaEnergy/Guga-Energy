@@ -617,6 +617,11 @@ text-decoration:none !important;
 -webkit-text-fill-color:#d6d6d6 !important;
 }
 
+html{
+scroll-behavior:smooth;
+scroll-padding-top:120px;
+}
+
 </style>
 
 </head>
@@ -639,7 +644,7 @@ Serviços ▾
 
 <div id="submenuServicos" style="display:none;padding-left:10px;">
 
-<a href="instalacoes-eletricas.html">
+<a href="instalacoes-eletricas.html" onclick="toggleMenu()">
 Instalações elétricas
 </a>
 
@@ -673,17 +678,11 @@ Infraestrutura
 
 </div>
 
-<a href="index.html#galeria">
-Galeria
-</a>
+<a href="#protecao" onclick="toggleMenu()">Proteções</a>
 
-<a href="index.html#avaliacoes">
-Avaliações
-</a>
+<a href="#quadros" onclick="toggleMenu()">Quadros</a>
 
-<a href="index.html#agendamento">
-Agendamento
-</a>
+<a href="#contato" onclick="toggleMenu()">Orçamento</a>
 
 </div>
 
@@ -1305,5 +1304,24 @@ font-size:14px;
 </footer>
 
 </body>
+
+<script>
+
+document.querySelectorAll('.sidebar a').forEach(link => {
+
+link.addEventListener('click', function(){
+
+if(this.getAttribute('onclick') === 'toggleServicos()'){
+return;
+}
+
+document.getElementById('sidebar').classList.remove('active');
+document.getElementById('menu-overlay').classList.remove('active');
+
+});
+
+});
+
+</script>
 
 </html>
