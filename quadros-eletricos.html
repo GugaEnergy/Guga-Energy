@@ -196,16 +196,41 @@ color:#fff;
 
 .header-logo img{
 height:88px;
-transition:.25s;
+cursor:pointer;
+transition:transform .25s;
 }
 
-.header-logo:hover img{
-transform:scale(1.03);
+.header-logo:hover{
+transform:scale(1.05);
 }
 
 .header-logo h2{
 font-size:34px;
 letter-spacing:2px;
+position:relative;
+overflow:hidden;
+}
+
+.header-logo h2::after{
+content:"";
+position:absolute;
+top:0;
+left:-150%;
+width:120%;
+height:100%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,208,0,.6),
+transparent
+);
+opacity:0;
+transition:left 1.6s ease, opacity .3s ease;
+}
+
+.header-logo:hover h2::after{
+left:150%;
+opacity:1;
 }
 
 .header-logo span{
@@ -774,7 +799,7 @@ Orçamento
 
 <div class="dropdown">
 
-    
+
 <div class="dropdown-menu">
 </div>
 
